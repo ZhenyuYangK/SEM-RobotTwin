@@ -21,9 +21,9 @@ python3 scripts/discover_tasks.py --workspace . --validate
 
 RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定首次实际检出并审计的`41112765f9904efb2374dd9c8946fb5af452861a`。两份老师原件位于`teacher_inputs/`，哈希清单见`reports/teacher_inputs_sha256.txt`。
 
-## 首批任务与工具
+## 训练任务与工具
 
-首批5个任务已按确认顺序写入`configs/project.json`。先完成`place_empty_cup`的云端闭环，再逐项推进其余独立单任务实验。源码证据见[候选任务报告](reports/task_candidates.md)。
+训练范围固定为`configs/project.json`中已确认的5个任务。先完成`place_empty_cup`的云端闭环，再逐项推进其余4个独立单任务实验。源码证据见[任务报告](reports/task_candidates.md)。
 
 | 工具 | 用途 |
 |---|---|

@@ -20,7 +20,7 @@ def runbook(cfg):
     sections = [
         '# 云端独立单任务启动清单',
         '',
-        '按已确认顺序推进。启动前完成`docs/CLOUD_HANDOFF.md`的迁移与环境核验。',
+        f'按已确认顺序推进清单中的{len(tasks)}个任务。启动前完成`docs/CLOUD_HANDOFF.md`的迁移与环境核验。',
         '采集、打包、训练、评估的参数与当前提交见`reports/code_audit.md`。',
         '',
     ]

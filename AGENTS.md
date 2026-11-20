@@ -2,7 +2,7 @@
 
 ## 目标与边界
 - 当前阶段：**仅本地预开发**，Ubuntu22.04+RTX4060 8GB。不得操作云GPU；不得下载完整模型、仿真资产和数据集。
-- 后续云端：RTX4090 24GB、CUDA12.1.1镜像，16核CPU/90GB内存。第一轮完成独立单任务SEM-Tiny；先1个任务，再5个，再10个。多任务联合训练需要独立审批与实验编号。
+- 后续云端：RTX4090 24GB、CUDA12.1.1镜像，16核CPU/90GB内存。独立单任务SEM-Tiny实验固定为配置中的5个任务，先验证第1个任务，再逐项推进其余4个。多任务联合训练需要独立审批与实验编号。
 - 老师原文件`teacher_inputs/SEM评估流程.md`、`teacher_inputs/arx5_description_isaac.urdf`始终只读；保留SHA256。禁止自动修补URDF的网格路径、关节拓扑、角度与关节限位。
 - 优先维护本仓库`configs/`、`scripts/`、`tests/`、`docs/`。不要在未经批准时改动上游`src/RoboTwin`或`src/RoboOrchardLab`代码。
 
