@@ -39,3 +39,5 @@ RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定�
 | `run_formal_experiments.py` | 通过C6后，按配置顺序运行5项正式实验并核对各项训练和评估产物。 |
 
 云端步骤见[采集与训练评估](docs/DATA_TRAIN_EVAL.md)和[迁移与启动清单](docs/CLOUD_HANDOFF.md)。阶段验收见[阶段计划](docs/PHASE_PLAN.md)。
+
+训练与评估进度见[云端实验记录](reports/cloud_preflight.md#c7正式实验进展)。模型权重、Checkpoint恢复状态、配置、日志和评估视频可从[训练产物目录](https://github.com/ZhenyuYangK/SEM-cloud/tree/training-results/artifacts/sem-tiny)下载。

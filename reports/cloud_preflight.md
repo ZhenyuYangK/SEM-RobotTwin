@@ -74,13 +74,15 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 
 ## C7正式实验进展
 
-2026-11-20 10:06（太平洋时间）。云端改用最多3项并行的调度方式，每项仍独立采集、训练和评估。[并行调度代码](../scripts/c7_parallel)
+2026-11-20 10:14（太平洋时间）。云端改用最多3项并行的调度方式，每项仍独立采集、训练和评估。[并行调度代码](../scripts/c7_parallel)
 
 | 任务 | 训练进度 | 正式评估 |
 | --- | --- | --- |
-| `place_empty_cup` | 100000/100000步，约9小时14分钟 | 已完成44/100个有效Episode，成功41次（93.2%），评估进行中 |
-| `adjust_bottle` | 35175/100000步 | 待训练完成 |
-| `beat_block_hammer` | 37775/100000步 | 待训练完成 |
+| `place_empty_cup` | 100000/100000步，约9小时14分钟 | 已完成51/100个有效Episode，成功47次（92.16%），评估进行中 |
+| `adjust_bottle` | 36300/100000步 | 待训练完成 |
+| `beat_block_hammer` | 38900/100000步 | 待训练完成 |
 | `handover_block`、`place_container_plate` | 排队中 | 待训练完成 |
 
 `place_empty_cup`使用100条成功示范和`batch_size=2`完成训练。最终Checkpoint为`runs/c7-formal/place_empty_cup/train/checkpoints/checkpoint_25/model.safetensors`，大小为198329592字节。训练日志记录`GlobalStep[100000/100000]`及结束保存，评估日志保存在同一任务目录的`eval.log`。
+
+GitHub产物快照收录正式实验、短训练和并行验证中的303个文件，包括权重、训练恢复状态、配置、日志、GPU采样和评估视频。快照中51个正式评估视频均可读取，首次缩量评估留下的空视频随故障日志保留。大文件通过Git LFS下载，清单记录每个文件的大小与SHA-256。原始示范及LMDB数据集存放在云端数据盘。[下载训练产物](https://github.com/ZhenyuYangK/SEM-cloud/tree/training-results/artifacts/sem-tiny) · [校验清单](https://github.com/ZhenyuYangK/SEM-cloud/blob/training-results/artifacts/sem-tiny/snapshot.json)
