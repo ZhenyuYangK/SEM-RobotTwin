@@ -70,3 +70,4 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 
 - 云端已启动`run_formal_experiments.py`。按固定顺序从`place_empty_cup`开始，每任务采集100条成功示范，使用`batch_size=2`独立训练100000步，再执行100个有效Episode的正式评估。
 - 结果目录为数据盘`runs/c7-formal/`，总控日志为`logs/c7-formal.log`。启动时可用容量约180GiB。按C5后段0.28秒/步估算，5项训练约38.9小时。按工程配置的1.98元/小时，训练部分约77元，采集和评估另计。
+- 首项100条示范通过结构与文件检查，原始目录为6338551210字节，LMDB为1448296725字节。首条正式HDF5为67100223字节，4路深度均使用无损`gzip`级别1。`place_empty_cup`正式训练已开始，超过1000步时的平均耗时为0.28秒/步。
