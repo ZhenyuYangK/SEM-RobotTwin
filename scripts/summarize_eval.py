@@ -116,7 +116,7 @@ def main():
     outputs = p.add_mutually_exclusive_group(required=True)
     outputs.add_argument('--output', type=Path, help='Verified run summary CSV')
     outputs.add_argument('--episode-output', type=Path, help='CSV with one row per valid episode')
-    p.add_argument('--allow-incomplete', action='store_true', help='Permit episode export while the evaluation is running')
+    p.add_argument('--allow-incomplete', action='store_true', help='Permit episode export before the final result is saved')
     a = p.parse_args()
     try:
         if (a.episode_output and not a.log) or (a.allow_incomplete and not a.episode_output):
@@ -129,7 +129,7 @@ def main():
             if a.episode_output:
                 episodes, completed = eval_log_episodes(log, a.task, expected, allow_incomplete=a.allow_incomplete)
                 write_csv(a.episode_output, ['episode', 'scene_seed', 'success'], episodes)
-                print(f'Evaluation {"complete" if completed else "in progress"}: {len(episodes)}/{expected} episodes')
+                print(f'{"Complete" if completed else "Partial"} evaluation: {len(episodes)}/{expected} episodes')
                 print(f'Wrote: {a.episode_output}')
                 return
             report, skipped = aggregate([eval_log_row(log, a.task, expected)])

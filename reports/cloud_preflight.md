@@ -74,21 +74,21 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 
 ## C7正式实验进展
 
-2026-11-20 10:41（太平洋时间）。云端最多同时运行3项独立实验。[并行调度代码](../scripts/c7_parallel)
+2026-11-20 10:51（太平洋时间）。云端最多同时运行3项独立实验。[并行调度代码](../scripts/c7_parallel)
 
 | 任务 | 训练进度 | 正式评估 |
 | --- | --- | --- |
-| `place_empty_cup` | 100000/100000步，约9小时14分钟 | 已完成85/100个有效Episode，成功78次（91.76%），评估进行中 |
-| `adjust_bottle` | 40175/100000步 | 待训练完成 |
-| `beat_block_hammer` | 42775/100000步 | 待训练完成 |
+| `place_empty_cup` | 100000/100000步，约9小时14分钟 | 手动停止。计划100回合，已完成94回合，其中86次成功（91.49%） |
+| `adjust_bottle` | 41825/100000步 | 待训练完成 |
+| `beat_block_hammer` | 44400/100000步 | 待训练完成 |
 | `handover_block`、`place_container_plate` | 排队中 | 待训练完成 |
 
 `place_empty_cup`使用100条成功示范和`batch_size=2`完成训练。最终Checkpoint为`runs/c7-formal/place_empty_cup/train/checkpoints/checkpoint_25/model.safetensors`，大小为198329592字节。训练日志记录`GlobalStep[100000/100000]`及结束保存，评估日志保存在同一任务目录的`eval.log`。
 
 ### 验收文件与代码
 
-- `place_empty_cup`按要求停止评估，日志记录94个有效Episode，成功86次。原始评估日志和视频留存。另在任务目录的`review_videos/`保留14条成功视频和1条失败视频，合计4分37秒，`selection.csv`记录原始回合与场景种子。
+- `place_empty_cup`于10:50手动停止评估，汇总按已完成的94个有效回合计算。云端保留原始评估日志和视频，任务目录的`review_videos/`另有14条成功视频和1条失败视频，合计4分37秒。`selection.csv`记录原始回合与场景种子。
 
-- `place_empty_cup`的最终权重、模型与处理器配置、实测训练和评估配置、逐回合CSV、评估计数记录及4段代表视频已发布。逐回合CSV记录场景种子和成败，4段视频覆盖成功与失败。权重通过Git LFS下载，清单提供每个文件的SHA-256。[验收文件](https://github.com/ZhenyuYangK/SEM-cloud/tree/training-results/artifacts/sem-tiny/c7-formal/place_empty_cup) · [逐回合结果](https://github.com/ZhenyuYangK/SEM-cloud/blob/training-results/artifacts/sem-tiny/c7-formal/place_empty_cup/eval_episodes.csv) · [校验清单](https://github.com/ZhenyuYangK/SEM-cloud/blob/training-results/artifacts/sem-tiny/snapshot.json)
+- GitHub验收包保留最终权重、模型与处理器配置、实测训练和评估配置、训练损失CSV、评估汇总、逐回合结果和4段代表视频。逐回合CSV记录场景种子和成败，视频覆盖成功与失败。权重通过Git LFS下载，清单提供每个文件的SHA-256。[验收文件](https://github.com/ZhenyuYangK/SEM-cloud/tree/training-results/artifacts/sem-tiny/c7-formal/place_empty_cup) · [评估汇总](https://github.com/ZhenyuYangK/SEM-cloud/blob/training-results/artifacts/sem-tiny/c7-formal/results.csv) · [逐回合结果](https://github.com/ZhenyuYangK/SEM-cloud/blob/training-results/artifacts/sem-tiny/c7-formal/place_empty_cup/eval_episodes.csv) · [校验清单](https://github.com/ZhenyuYangK/SEM-cloud/blob/training-results/artifacts/sem-tiny/snapshot.json)
 - 本次云端工程检出为`3a20e74`，上游为RoboTwin `e71140e`和RoboOrchardLab `4111276`。已核对运行副本的任务、训练、打包和评估入口，以及SEM部署策略文件，均与锁定源码一致。[实际训练入口](https://github.com/ZhenyuYangK/SEM-cloud/blob/3a20e74496401cd1f09f36b23b5e006bfbfe6384/scripts/run_formal_experiments.py) · [实际并行调度](https://github.com/ZhenyuYangK/SEM-cloud/tree/training-results/artifacts/sem-tiny/c7-parallel-control) · [RoboTwin源码](https://github.com/RoboTwin-Platform/RoboTwin/tree/e71140e9734e69686daa420a9be8b75a20ff4587) · [RoboOrchardLab源码](https://github.com/HorizonRobotics/RoboOrchardLab/tree/41112765f9904efb2374dd9c8946fb5af452861a)
 - 完整日志、可续训状态和原始视频留在云端。先前的全量产物快照可按历史提交访问。[历史快照](https://github.com/ZhenyuYangK/SEM-cloud/tree/93e69994c7fb033d9e52de27e15b4fceadcd353f/artifacts/sem-tiny)

@@ -74,7 +74,7 @@ python3 scripts/summarize_eval.py --log "$RUN_DIR/eval_smoke.log" --task place_e
 
 正式评估用`make_eval_config.py --episodes 15`生成启动器，从已部署的`RoboTwin/policy/sem_policy/`运行`bash eval.sh`，将完整标准输出保留到`eval.log`。用`summarize_eval.py --log --expected-episodes 15`核对15条连续计数和结果保存标记。用`--input`可读取核对后的CSV。
 
-验收用`--episode-output`导出每个有效回合的编号、场景种子和成败。场景种子来自评估日志中的`current seed`，评估启动参数仍为`seed=10000`。评估进行中可用`--allow-incomplete`导出进度，正式成绩以指定回合数完成后的汇总为准。
+验收用`--episode-output`导出每个有效回合的编号、场景种子和成败。场景种子来自评估日志中的`current seed`，评估启动参数仍为`seed=10000`。评估进行中或手动停止后，可用`--allow-incomplete`导出已完成的回合，并在汇总中标明状态和计划回合数。正式成绩以指定回合数完成后的汇总为准。
 
 ```bash
 python3 scripts/summarize_eval.py --log "$RUN_DIR/eval.log" --task adjust_bottle \
