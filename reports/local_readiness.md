@@ -24,6 +24,10 @@
 | `TestTrainAndSource` | 9/9 | 配置补丁、任务源码检查、未核验任务拦截、预算与容量估算。 |
 | `TestURDF` | 4/4 | 老师原件、非法关节引用、非连通树、同名关节限位差异。 |
 
+## 已有本地RoboTwin环境
+
+在已有Conda环境`RoboTwin`核对Torch2.4.1+cu121、TorchVision0.19.1、SAPIEN3.0.0b1、MPLib0.2.1、NumPy1.26.4和h5py3.16.0。已用该环境通过HDF5深度无损压缩往返测试。
+
 ## 云端GPU验证
 
 - 在RTX4090目标环境验证GPU驱动、Vulkan、CUDA、SAPIEN、CuRobo、可编辑安装和FFmpeg。

@@ -46,3 +46,10 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 - 原SSH连接在下载期间停止响应。重新登录后完成CUDA12.1版Torch2.4.1安装，并在RTX4090上验证CUDA卷积与cuDNN9.1.0。Torch、TorchVision和CUDA依赖的wheel均与发布源SHA256匹配。CuRobo首次编译因缺少多架构头文件的根目录失败，修正头文件搜索路径后重新编译。
 - CuRobo0.7.8的5个CUDA扩展均编译并加载成功。UR5e带长方体障碍物的最小场景生成了31×6的有限GPU轨迹，终点位置误差为0.0m，单次规划约0.064秒，PyTorch峰值保留显存298MiB。Warp1.6.2在R580驱动上记录了`cuDeviceGetUuid`兼容提示，升级至上游修复版本Warp1.8.1后成功枚举RTX4090。[NVIDIA Warp驱动兼容记录](https://github.com/NVIDIA/warp/issues/940)
 - C2通过。`pip check`通过，已验证RoboTwin和SEM的运行包导入及PyTorch3D0.7.8的GPU最远点采样。软件版本清单在数据盘`logs/python-freeze.txt`，下载暂存文件已清理。
+
+## C4示范采集
+
+- 官方`objects.zip`共3737778549字节，通过发布清单SHA256校验。锁定的`demo_clean`关闭背景随机化，物体和机械臂资源已满足本次采集。解包完成后已清理下载包。[RoboTwin官方资产](https://huggingface.co/datasets/TianxingChen/RoboTwin2.0/tree/3dc3b798668feb99ac61cc9086d84cbcc3d79186)
+- `place_empty_cup`使用种子0～9生成10条成功示范，共1739帧，每条167～185帧。4路相机为前视、头部和双腕，深度分辨率为320×240。10条示范的RGB-D、相机参量、14维末端状态、14维关节动作和`seen`/`unseen`指令检查全部通过。10个视频已生成。
+- 采集耗时251.6秒，显存采样峰值5772MiB。HDF5共4365619317字节。数据与证据在云端数据盘`runs/place_empty_cup-smoke/`，其中`hdf5_check.json`记录每条示范的结构、种子和文件大小。
+- 首条示范的HDF5为447026974字节。对4路深度使用逐帧分块、`shuffle`和`gzip`级别1后，深度存储量从437452800字节降至57475873字节，读取后的数值和数据类型逐元素一致。据此估算首条压缩示范约67MB。正式采集入口在首次写入时启用该无损压缩。

@@ -29,6 +29,7 @@ RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定�
 |---|---|
 | `audit_urdf.py` | 检查老师URDF结构及当前资源，支持对本地参照URDF输出差异报告。 |
 | `prepare_collection.py` | 生成云端暂存`demo_clean.yml`，开启Depth和Endpose并设置示范条数。 |
+| `run_compressed_collection.py` | 运行锁定采集器，以无损压缩写入相机深度。 |
 | `inspect_hdf5.py` | 检查真实单个HDF5文件，或按任务核验SEM采集目录、种子及数据键。 |
 | `make_training_config.py` | 基于锁定SEM配置生成独立单任务Python配置。 |
 | `make_eval_config.py` | 生成老师协议的部署YAML和启动器，`--expert-data-num`显式记录训练示范数。 |

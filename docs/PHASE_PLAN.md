@@ -45,4 +45,6 @@
 
 C1与C2通过。RTX4090、Vulkan、SAPIEN的RGB-D渲染、Torch的CUDA卷积和CuRobo的GPU轨迹规划已验收。[云端预检报告](../reports/cloud_preflight.md)
 
-C3通过。老师URDF与官方仿真URDF的SHA256一致。已验证Mesh加载、双臂关节映射和正运动学。C4已暂存10条`place_empty_cup`示范配置，正在准备场景物体资产。[URDF验收报告](../reports/urdf_differences.md)
+C3通过。老师URDF与官方仿真URDF的SHA256一致。已验证Mesh加载、双臂关节映射和正运动学。[URDF验收报告](../reports/urdf_differences.md)
+
+C4通过。`place_empty_cup`的10条成功示范已验证4路RGB-D、末端状态、关节动作及指令，并生成10个视频。C5已进入LMDB与短训练验收。[示范采集记录](../reports/cloud_preflight.md#c4示范采集)

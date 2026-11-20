@@ -19,6 +19,8 @@ python3 scripts/inspect_hdf5.py --dataset-root "$ROBOTWIN/data" --task place_emp
 
 上面第二条在采集完成后执行。也可用`--file <episodeN.hdf5> --sem`单独排查一个文件。
 
+正式采集可从本包运行`python -u scripts/run_compressed_collection.py --runtime "$ROBOTWIN" --task place_empty_cup`。该入口校验锁定采集器和HDF5写入器，仅在写入相机深度数据集时启用HDF5无损压缩。对应的`demo_clean.yml`由`prepare_collection.py --episodes 100`生成并应用到运行副本。
+
 ## 打包与短训练
 
 在已准备好的SEM运行环境中，从RoboOrchardLab根目录使用下列打包入口，选择新LMDB输出目录。随后检查`depth/`、`image/`、`index/`、`meta/`，用真实DataLoader读取首个Batch并核对指令、相机顺序和14维双臂状态。
