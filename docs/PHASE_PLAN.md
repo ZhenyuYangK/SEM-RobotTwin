@@ -43,4 +43,6 @@
 
 ## 云端进度
 
-C1通过。SSH、工程迁移、提交及原件核对完成，RTX4090、CUDA Driver API、数据盘读写和无头Vulkan均通过。C2已完成锁定版SAPIEN的RGB-D最小场景验收，CuRobo的CUDA扩展安装、编译和功能验收待完成。证据见[云端预检报告](../reports/cloud_preflight.md)。
+C1与C2通过。RTX4090、Vulkan、SAPIEN的RGB-D渲染、Torch的CUDA卷积和CuRobo的GPU轨迹规划已验收。[云端预检报告](../reports/cloud_preflight.md)
+
+C3通过。老师URDF与官方仿真URDF的SHA256一致。已验证Mesh加载、双臂关节映射和正运动学。C4已暂存10条`place_empty_cup`示范配置，正在准备场景物体资产。[URDF验收报告](../reports/urdf_differences.md)
