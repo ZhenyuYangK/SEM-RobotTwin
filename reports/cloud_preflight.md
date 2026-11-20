@@ -71,3 +71,16 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 - 云端已启动`run_formal_experiments.py`。按固定顺序从`place_empty_cup`开始，每任务采集100条成功示范，使用`batch_size=2`独立训练100000步，再执行100个有效Episode的正式评估。
 - 结果目录为数据盘`runs/c7-formal/`，总控日志为`logs/c7-formal.log`。启动时可用容量约180GiB。按C5后段0.28秒/步估算，5项训练约38.9小时。按工程配置的1.98元/小时，训练部分约77元，采集和评估另计。
 - 首项100条示范通过结构与文件检查，原始目录为6338551210字节，LMDB为1448296725字节。首条正式HDF5为67100223字节，4路深度均使用无损`gzip`级别1。`place_empty_cup`正式训练已开始，超过1000步时的平均耗时为0.28秒/步。
+
+## C7正式实验进展
+
+2026-11-20 10:06（太平洋时间）。云端改用最多3项并行的调度方式，每项仍独立采集、训练和评估。[并行调度代码](../scripts/c7_parallel)
+
+| 任务 | 训练进度 | 正式评估 |
+| --- | --- | --- |
+| `place_empty_cup` | 100000/100000步，约9小时14分钟 | 已完成44/100个有效Episode，成功41次（93.2%），评估进行中 |
+| `adjust_bottle` | 35175/100000步 | 待训练完成 |
+| `beat_block_hammer` | 37775/100000步 | 待训练完成 |
+| `handover_block`、`place_container_plate` | 排队中 | 待训练完成 |
+
+`place_empty_cup`使用100条成功示范和`batch_size=2`完成训练。最终Checkpoint为`runs/c7-formal/place_empty_cup/train/checkpoints/checkpoint_25/model.safetensors`，大小为198329592字节。训练日志记录`GlobalStep[100000/100000]`及结束保存，评估日志保存在同一任务目录的`eval.log`。

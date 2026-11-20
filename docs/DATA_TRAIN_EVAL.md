@@ -87,3 +87,7 @@ python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" --output "$OUTP
 ```
 
 入口按`configs/project.json`的顺序采集、打包、训练和评估。每项使用100条成功示范独立训练，并按既定协议进行100个有效Episode的正式评估。任务目录保存Checkpoint、部署配置、训练和评估日志、`_result.txt`与视频。根目录的`results.csv`会在每项评估通过核验后追加一行。
+
+本次云端运行采用[并行调度脚本](../scripts/c7_parallel)，最多同时运行3项独立实验。每项使用自己的RoboTwin运行副本，并独立保存训练与评估产物。调度状态记录在数据盘`runs/c7-parallel-control/queue.json`。
+
+`schedule.py --preflight`校验运行副本和权重。`--adopt`用于本次从串行入口交接首项训练，需要原入口及其训练和监控进程仍在运行，同时两个后续任务的工作进程已启动。交接会终止原串行入口进程，由并行调度继续跟踪其训练子进程。
