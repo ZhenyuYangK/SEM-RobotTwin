@@ -53,4 +53,4 @@ C5通过。LMDB和DataLoader已验收，1000步训练完成并保存Checkpoint�
 
 C6通过。已验证Checkpoint加载、有限的32×14动作序列、3次有效评估和3个视频。短训练模型结果为0/3。[缩量评估记录](../reports/cloud_preflight.md#c6策略加载与缩量评估)
 
-C7运行中。`place_empty_cup`已完成100000步训练，评估手动停止时完成94回合、成功86次，验收文件已发布。`adjust_bottle`与`beat_block_hammer`正在独立训练，其余两项排队。后续任务计划各完成15次有效评估。[正式实验进展](../reports/cloud_preflight.md#c7正式实验进展)
+C7运行中。`place_empty_cup`已完成100000步训练，评估停在94次、成功86次，云端实验目录保留15条精选视频。`adjust_bottle`与`beat_block_hammer`继续训练，`handover_block`开始采集，`place_container_plate`排队。后续任务各完成15次有效评估后写入汇总。[正式实验进展](../reports/cloud_preflight.md#c7正式实验进展)
