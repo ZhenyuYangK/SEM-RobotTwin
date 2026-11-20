@@ -11,10 +11,11 @@ from discover_tasks import SAFE_NAME
 
 REQUIRED = {'task_name', 'episodes', 'successes'}
 ANSI = re.compile(r'\x1b\[[0-9;]*m')
-PROGRESS = re.compile(r'^Success rate: ([0-9]+)/([0-9]+) =>', re.M)
+PROGRESS = re.compile(r'^Success rate: ([0-9]+)/([0-9]+) =>([^\r\n]*)', re.M)
+SCENE_SEED = re.compile(r', current seed: ([0-9]+)\s*$')
 
 
-def eval_log_row(log, task, expected):
+def checked_progress(log, task, expected, *, allow_incomplete=False):
     if not SAFE_NAME.fullmatch(task) or expected < 1:
         raise ValueError('Use a valid task name and positive expected episode count')
     clean = ANSI.sub('', log)
@@ -22,16 +23,46 @@ def eval_log_row(log, task, expected):
         raise ValueError(f'Evaluation log does not identify {task}')
     if not re.search(r'^Policy Name: sem_policy\s*$', clean, re.M):
         raise ValueError('Evaluation log does not identify sem_policy')
-    previous = 0
     matches = PROGRESS.findall(clean)
-    for step, (raw_successes, raw_episodes) in enumerate(matches, 1):
+    rows = []
+    previous = 0
+    for step, (raw_successes, raw_episodes, detail) in enumerate(matches, 1):
         successes, episodes = int(raw_successes), int(raw_episodes)
         if episodes != step or successes - previous not in (0, 1):
             raise ValueError(f'Evaluation count sequence is inconsistent at episode {step}')
+        rows.append((episodes, successes - previous, detail))
         previous = successes
-    if len(matches) != expected or 'Data has been saved to ' not in clean:
-        raise ValueError(f'Expected a finished run with {expected} episodes. Found {len(matches)} counts')
-    return {'task_name': task, 'episodes': str(expected), 'successes': str(previous)}
+    saved = 'Data has been saved to ' in clean
+    complete = len(rows) == expected and saved
+    if not complete and (not allow_incomplete or saved or not 0 < len(rows) <= expected):
+        raise ValueError(f'Expected a finished run with {expected} episodes. Found {len(rows)} counts')
+    return rows, complete
+
+
+def eval_log_row(log, task, expected):
+    rows, _ = checked_progress(log, task, expected)
+    return {'task_name': task, 'episodes': str(expected), 'successes': str(sum(row[1] for row in rows))}
+
+
+def eval_log_episodes(log, task, expected, *, allow_incomplete=False):
+    rows, complete = checked_progress(log, task, expected, allow_incomplete=allow_incomplete)
+    episodes = []
+    previous_seed = -1
+    for index, success, detail in rows:
+        match = SCENE_SEED.search(detail)
+        if match is None or int(match[1]) <= previous_seed:
+            raise ValueError(f'Missing, repeated or out-of-order scene seed at episode {index}')
+        previous_seed = int(match[1])
+        episodes.append({'episode': index, 'scene_seed': previous_seed, 'success': success})
+    return episodes, complete
+
+
+def write_csv(path, fields, rows):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('x', encoding='utf-8', newline='') as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def aggregate(rows):
@@ -82,14 +113,26 @@ def main():
     inputs.add_argument('--log', type=Path, help='Complete locked RoboTwin eval stdout log')
     p.add_argument('--task', help='Task in the evaluation log')
     p.add_argument('--expected-episodes', type=int, help='Expected log count (default: 100)')
-    p.add_argument('--output', type=Path, required=True)
+    outputs = p.add_mutually_exclusive_group(required=True)
+    outputs.add_argument('--output', type=Path, help='Verified run summary CSV')
+    outputs.add_argument('--episode-output', type=Path, help='CSV with one row per valid episode')
+    p.add_argument('--allow-incomplete', action='store_true', help='Permit episode export while the evaluation is running')
     a = p.parse_args()
     try:
+        if (a.episode_output and not a.log) or (a.allow_incomplete and not a.episode_output):
+            raise ValueError('Episode export requires --log, and --allow-incomplete requires --episode-output')
         if a.log:
             if not a.task:
                 raise ValueError('--log requires --task')
             expected = 100 if a.expected_episodes is None else a.expected_episodes
-            report, skipped = aggregate([eval_log_row(a.log.read_text(encoding='utf-8'), a.task, expected)])
+            log = a.log.read_text(encoding='utf-8')
+            if a.episode_output:
+                episodes, completed = eval_log_episodes(log, a.task, expected, allow_incomplete=a.allow_incomplete)
+                write_csv(a.episode_output, ['episode', 'scene_seed', 'success'], episodes)
+                print(f'Evaluation {"complete" if completed else "in progress"}: {len(episodes)}/{expected} episodes')
+                print(f'Wrote: {a.episode_output}')
+                return
+            report, skipped = aggregate([eval_log_row(log, a.task, expected)])
         else:
             if a.task or a.expected_episodes is not None:
                 raise ValueError('--task and --expected-episodes are for --log')
@@ -99,11 +142,7 @@ def main():
                 if missing:
                     raise ValueError(f'CSV missing fields: {sorted(missing)}')
                 report, skipped = aggregate(reader)
-        a.output.parent.mkdir(parents=True, exist_ok=True)
-        with a.output.open('x', encoding='utf-8', newline='') as handle:
-            writer = csv.DictWriter(handle, fieldnames=['task_name', 'episodes', 'successes', 'success_rate_pct', 'records'])
-            writer.writeheader()
-            writer.writerows(report)
+        write_csv(a.output, ['task_name', 'episodes', 'successes', 'success_rate_pct', 'records'], report)
     except (OSError, ValueError) as error:
         p.error(str(error))
     if report:

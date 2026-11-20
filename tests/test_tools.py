@@ -14,7 +14,7 @@ from audit_urdf import compare_urdfs, inspect_urdf
 from discover_tasks import validate_config
 from make_eval_config import create_files, projection_config
 from make_training_config import write_config
-from summarize_eval import aggregate, eval_log_row
+from summarize_eval import aggregate, eval_log_episodes, eval_log_row
 from estimate_budget import estimate
 from estimate_storage import estimate_storage
 from create_cloud_runbook import runbook
@@ -119,6 +119,23 @@ class TestEval(unittest.TestCase):
         for invalid in (log.replace('1/2', '1/3'), log.replace('Data has been saved to ', '')):
             with self.subTest(log=invalid), self.assertRaises(ValueError):
                 eval_log_row(invalid, 'place_empty_cup', 2)
+
+    def test_export_evaluation_episodes_with_scene_seeds(self):
+        prefix = ('Task Name: place_empty_cup\nPolicy Name: sem_policy\n'
+                  'Success rate: \x1b[96m1/1\x1b[0m => 100%, current seed: 1000100001\n'
+                  'Success rate: 1/2 => 50%, current seed: 1000100003\n')
+        episodes, complete = eval_log_episodes(prefix, 'place_empty_cup', 2, allow_incomplete=True)
+        self.assertFalse(complete)
+        self.assertEqual(episodes, [
+            {'episode': 1, 'scene_seed': 1000100001, 'success': 1},
+            {'episode': 2, 'scene_seed': 1000100003, 'success': 0},
+        ])
+        ending = 'Data has been saved to path/_result.txt\n'
+        self.assertEqual(eval_log_episodes(prefix + ending, 'place_empty_cup', 2), (episodes, True))
+        for invalid in (prefix, prefix.replace('1000100003', '1000100001') + ending,
+                        prefix.replace(', current seed: 1000100003', '') + ending):
+            with self.subTest(log=invalid), self.assertRaises(ValueError):
+                eval_log_episodes(invalid, 'place_empty_cup', 2)
 
     def test_eval_stats_reject_mixed_checkpoint_and_repeated_seed(self):
         row = {'task_name': 'place_empty_cup', 'episodes': '100', 'successes': '80',
