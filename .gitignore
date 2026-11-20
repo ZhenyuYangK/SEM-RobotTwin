@@ -1,0 +1,40 @@
+# Python temporary
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Experiments and assets
+datasets/
+data/
+ckpt/
+checkpoints/
+weights/
+assets/
+runs/
+wandb/
+*.safetensors
+*.pth
+*.pt
+*.lmdb
+*.mp4
+*.h5
+*.hdf5
+
+# Generated configs / caches
+generated/
+.cache/
+*.log
+*.tmp
+
+# Personal access credentials
+.env
+.env.*
+*.pem
+*.key
+id_ed25519*
+
+# Keep scripts, templates, teacher_inputs and project configs versioned

@@ -1,0 +1,2 @@
+task_name,checkpoint,seed,task_config,episodes,successes,git_commit,notes
+place_empty_cup,,10000,demo_clean,,,,请填写真实结果。空数字字段不会计入统计

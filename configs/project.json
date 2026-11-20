@@ -1,0 +1,22 @@
+{
+  "project": "SEM-Tiny x RoboTwin 2.0",
+  "robotwin_commit": "e71140e9734e69686daa420a9be8b75a20ff4587",
+  "sem_repo": "https://github.com/HorizonRobotics/RoboOrchardLab.git",
+  "robotwin_repo": "https://github.com/RoboTwin-Platform/RoboTwin.git",
+  "model_variant": "SEM-GroundingDINO-Tiny",
+  "train_mode": "single_task",
+  "task_config": "demo_clean",
+  "eval_policy": "sem_policy",
+  "eval_seed": 10000,
+  "eval_instruction_type": "unseen",
+  "episodes_per_task_target": 100,
+  "eval_episodes_target": 100,
+  "train_steps_reference": 100000,
+  "hourly_price_cny": 1.98,
+  "cloud_gpu": "RTX 4090 24GB",
+  "local_gpu": "RTX 4060 8GB",
+  "tasks": [
+    {"name": "place_empty_cup", "status": "pending_source_validation", "include": true}
+  ],
+  "notes": "其余任务由锁定版RoboTwin源码发现后添加。任务数量目标5~10，不预设未经验证的任务名称。"
+}

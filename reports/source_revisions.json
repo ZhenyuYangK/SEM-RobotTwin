@@ -1,0 +1,42 @@
+{
+  "source_checkouts": {
+    "RoboOrchardLab": {
+      "exists": false,
+      "commit": null,
+      "missing_paths": [
+        "projects/sem/robotwin/README.md",
+        "projects/sem/robotwin/config_sem_robotwin.py",
+        "projects/sem/robotwin/train.py",
+        "projects/sem/robotwin/sem_policy/deploy_policy.py",
+        "projects/sem/robotwin/sem_policy/deploy_policy.yml",
+        "robo_orchard_lab/dataset/robotwin/robotwin_packer.py"
+      ]
+    },
+    "RoboTwin": {
+      "exists": false,
+      "commit": null,
+      "missing_paths": [
+        "collect_data.sh",
+        "script/eval_policy.py",
+        "envs",
+        "policy",
+        "task_config"
+      ]
+    }
+  },
+  "not_ready": [
+    "RoboOrchardLab: checkout not yet cloned",
+    "RoboTwin: checkout not yet cloned"
+  ],
+  "source_inspection_required": [
+    "Confirm RoboOrchardLab commit compatibility and required installation steps",
+    "Inspect the RoboTwin collect_data.sh CLI and depth-enabled YAML",
+    "Inspect robotwin_packer.py arguments and actual input HDF5 structure",
+    "Inspect train.py --config options and checkpoint/processor outputs",
+    "Read script/eval_policy.py and verify expert_data_num meaning and evaluation episode count",
+    "Inspect URDF vs robot embodiment, mesh path and kinematics indices"
+  ],
+  "interface_hints": {
+    "sem_config": {}
+  }
+}
