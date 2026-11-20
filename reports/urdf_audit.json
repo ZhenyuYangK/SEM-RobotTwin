@@ -49,6 +49,44 @@
   "root_links": [
     "footprint"
   ],
+  "cyclic_links": [],
+  "mesh_paths": [
+    "aloha_maniskill_sim/meshes/back_link7.STL",
+    "aloha_maniskill_sim/meshes/back_link7.dae",
+    "aloha_maniskill_sim/meshes/base_arm.STL",
+    "aloha_maniskill_sim/meshes/base_arm.dae",
+    "aloha_maniskill_sim/meshes/box1_Link.STL",
+    "aloha_maniskill_sim/meshes/box2_Link.dae",
+    "aloha_maniskill_sim/meshes/camera_base_link.STL",
+    "aloha_maniskill_sim/meshes/camera_link1.dae",
+    "aloha_maniskill_sim/meshes/camera_link2.dae",
+    "aloha_maniskill_sim/meshes/castor.dae",
+    "aloha_maniskill_sim/meshes/castor_joint.dae",
+    "aloha_maniskill_sim/meshes/d435.dae",
+    "aloha_maniskill_sim/meshes/link1.STL",
+    "aloha_maniskill_sim/meshes/link1.dae",
+    "aloha_maniskill_sim/meshes/link2.STL",
+    "aloha_maniskill_sim/meshes/link2.dae",
+    "aloha_maniskill_sim/meshes/link3.STL",
+    "aloha_maniskill_sim/meshes/link3.dae",
+    "aloha_maniskill_sim/meshes/link4.STL",
+    "aloha_maniskill_sim/meshes/link4.dae",
+    "aloha_maniskill_sim/meshes/link5.STL",
+    "aloha_maniskill_sim/meshes/link5.dae",
+    "aloha_maniskill_sim/meshes/link6.STL",
+    "aloha_maniskill_sim/meshes/link6.dae",
+    "aloha_maniskill_sim/meshes/link7.STL",
+    "aloha_maniskill_sim/meshes/link7.dae",
+    "aloha_maniskill_sim/meshes/link8.STL",
+    "aloha_maniskill_sim/meshes/link8.dae",
+    "aloha_maniskill_sim/meshes/tracer_base_link.dae",
+    "aloha_maniskill_sim/meshes/tracer_wheel.dae"
+  ],
   "notes": "This is a static XML check only. Kinematics, joint indices and SAPIEN loading need separate verification.",
-  "structural_valid": true
+  "structural_valid": true,
+  "robotwin_reference_inventory": {
+    "status": "no_local_asset_urdf",
+    "tracked_urdfs": [],
+    "local_asset_urdfs": []
+  }
 }
