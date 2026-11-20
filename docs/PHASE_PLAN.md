@@ -52,3 +52,5 @@ C4通过。`place_empty_cup`的10条成功示范已验证4路RGB-D、末端状�
 C5通过。LMDB和DataLoader已验收，1000步训练完成并保存Checkpoint。[短训练记录](../reports/cloud_preflight.md#c5打包与短训练)
 
 C6通过。已验证Checkpoint加载、有限的32×14动作序列、3次有效评估和3个视频。短训练模型结果为0/3。[缩量评估记录](../reports/cloud_preflight.md#c6策略加载与缩量评估)
+
+C7运行中。已启动首项`place_empty_cup`的正式示范采集。每项完成100次有效评估后写入汇总。[正式实验记录](../reports/cloud_preflight.md#c7正式实验启动)

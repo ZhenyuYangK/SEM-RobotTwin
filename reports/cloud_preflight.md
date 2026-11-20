@@ -65,3 +65,8 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 - 首次推理在投影矩阵乘法处遇到`float32`与`float64`混用。生成的评估配置在乘法前把相机内参、世界到相机矩阵和机器人基座矩阵统一为`float32`。同一Checkpoint复测通过，动作序列形状为`(32, 14)`，数值均为有限值。
 - 按`sem_policy`、`demo_clean`、`seed=10000`、`unseen`、`ckpt_setting=none`使用3个有效Episode验收，结果为0/3。日志、`_result.txt`、CSV计数和3个可读取的视频一致。实际评估耗时299.1秒，显存采样峰值5566MiB。
 - 证据保存在数据盘`runs/place_empty_cup-smoke/`的`eval_smoke_projection.log`、`eval_smoke_summary.csv`和`eval_result/`。
+
+## C7正式实验启动
+
+- 云端已启动`run_formal_experiments.py`。按固定顺序从`place_empty_cup`开始，每任务采集100条成功示范，使用`batch_size=2`独立训练100000步，再执行100个有效Episode的正式评估。
+- 结果目录为数据盘`runs/c7-formal/`，总控日志为`logs/c7-formal.log`。启动时可用容量约180GiB。按C5后段0.28秒/步估算，5项训练约38.9小时。按工程配置的1.98元/小时，训练部分约77元，采集和评估另计。
