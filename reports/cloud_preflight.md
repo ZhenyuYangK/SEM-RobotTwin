@@ -30,3 +30,10 @@ driver="$HOME/SEM-RoboTwin/.runtime/nvidia-vulkan-580.105.08"
 LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
   VK_ICD_FILENAMES="$driver/active-icd.json" "$driver/usr/bin/vulkaninfo" --summary
 ```
+
+## C2进度
+
+- 在云端数据盘`/root/sj-tmp/SEM-RoboTwin/venv`安装锁定RoboTwin所用的SAPIEN3.0.0b1。`pip check`通过。旧版SAPIEN导入时需要`pkg_resources`，隔离环境使用`setuptools==75.8.2`。安装包经临时目录转运，已清理。
+- 沿用锁定版RoboTwin的Engine、Renderer及`rt`着色器路径，渲染内置方块并读取64×48相机的RGB和Position缓冲。实测RGBA形状为`(48,64,4)`，RGB值域差为0.510，中心深度为1700.00mm，与设置的1.7m近表面距离一致。场景使用内置几何体。RoboTwin `script/test_render.py:56–77`、`envs/camera/camera.py:412–448`。
+- 为SAPIEN进程另设置`__EGL_VENDOR_LIBRARY_FILENAMES`为`$driver/usr/share/glvnd/egl_vendor.d/10_nvidia.json`，其中`$driver`与上一节相同。使用隔离库时，`LD_LIBRARY_PATH`、`VK_ICD_FILENAMES`和该变量需在启动Python前设置。
+- CuRobo待完成CUDA版PyTorch安装、扩展编译和GPU功能验收。计划采用Torch2.4.1、TorchVision0.19.1的CUDA12.1版本及CuRobo v0.7.8提交`d64c4b005459db10c5dd867d8b30a87d5bda9bdb`。[PyTorch历史版本](https://pytorch.org/get-started/previous-versions/#v241) · [CuRobo v0.7.8编译配置](https://raw.githubusercontent.com/NVlabs/curobo/v0.7.8/setup.py)

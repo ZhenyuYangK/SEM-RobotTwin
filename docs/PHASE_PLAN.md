@@ -43,4 +43,4 @@
 
 ## 云端进度
 
-C1已完成SSH、工程迁移、固定提交与老师原件核对。RTX4090、CUDA Driver API和数据盘读写通过。Vulkan实例创建返回`ERROR_INCOMPATIBLE_DRIVER`，C2待GPU图形驱动验收通过后启动。证据见[云端预检报告](../reports/cloud_preflight.md)。
+C1通过。SSH、工程迁移、提交及原件核对完成，RTX4090、CUDA Driver API、数据盘读写和无头Vulkan均通过。C2已完成锁定版SAPIEN的RGB-D最小场景验收，CuRobo的CUDA扩展安装、编译和功能验收待完成。证据见[云端预检报告](../reports/cloud_preflight.md)。
