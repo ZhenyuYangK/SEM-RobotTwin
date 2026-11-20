@@ -1,5 +1,4 @@
 import ast
-import csv
 import sys
 import tempfile
 import unittest
@@ -8,15 +7,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 
-from audit_urdf import inspect_urdf
-from audit_sources import config_constants
+from audit_urdf import compare_urdfs, inspect_urdf
 from discover_tasks import validate_config
 from make_eval_config import create_files
 from make_training_config import write_config
-from summarize_eval import aggregate
+from summarize_eval import aggregate, eval_log_row
 from estimate_budget import estimate
 from estimate_storage import estimate_storage
 from create_cloud_runbook import runbook
+from inspect_hdf5 import dataset_episodes, sem_schema_errors
+from prepare_collection import collection_config
 
 
 class TestURDF(unittest.TestCase):
@@ -33,6 +33,25 @@ class TestURDF(unittest.TestCase):
             path.write_text('<robot name="bad"><link name="a"/><joint name="j" type="fixed"><parent link="missing"/><child link="a"/></joint></robot>')
             r = inspect_urdf(path)
             self.assertFalse(r['structural_valid'])
+
+    def test_disconnected_urdf_tree_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / 'disconnected.urdf'
+            path.write_text('<robot name="bad"><link name="a"/><link name="b"/></robot>')
+            self.assertFalse(inspect_urdf(path)['structural_valid'])
+
+    def test_reports_same_joint_limit_change(self):
+        xml = ('<robot name="r"><link name="a"/><link name="b"/>'
+               '<joint name="j" type="revolute"><parent link="a"/><child link="b"/>'
+               '<limit lower="-1" upper="%s"/></joint></robot>')
+        with tempfile.TemporaryDirectory() as d:
+            teacher = Path(d) / 'teacher.urdf'
+            reference = Path(d) / 'reference.urdf'
+            teacher.write_text(xml % '1')
+            reference.write_text(xml % '2')
+            diff = compare_urdfs(teacher, reference)
+            limits = diff['common_joint_attribute_differences']['j']['limit']
+            self.assertEqual((limits['teacher']['upper'], limits['reference']['upper']), ('1', '2'))
 
 
 class TestEval(unittest.TestCase):
@@ -65,6 +84,22 @@ class TestEval(unittest.TestCase):
         with self.assertRaises(ValueError):
             create_files('t;rm -rf /', 'model.safetensors', 'config_sem_robotwin.py', 5, ROOT / 'templates')
 
+    def test_eval_log_requires_completed_count_sequence(self):
+        log = ('Task Name: place_empty_cup\nPolicy Name: sem_policy\n'
+               'Success rate: \x1b[96m1/1\x1b[0m => 100%\n'
+               'Success rate: 1/2 => 50%\nData has been saved to path/_result.txt\n')
+        self.assertEqual(eval_log_row(log, 'place_empty_cup', 2)['successes'], '1')
+        for invalid in (log.replace('1/2', '1/3'), log.replace('Data has been saved to ', '')):
+            with self.subTest(log=invalid), self.assertRaises(ValueError):
+                eval_log_row(invalid, 'place_empty_cup', 2)
+
+    def test_eval_stats_reject_mixed_checkpoint_and_repeated_seed(self):
+        row = {'task_name': 'place_empty_cup', 'episodes': '100', 'successes': '80',
+               'checkpoint': 'checkpoint-0', 'seed': '10000'}
+        for second in (row, dict(row, checkpoint='checkpoint-1', seed='10001')):
+            with self.subTest(row=second), self.assertRaises(ValueError):
+                aggregate([row, second])
+
 
 class TestTrainAndSource(unittest.TestCase):
     def test_config_patch(self):
@@ -90,7 +125,15 @@ class TestTrainAndSource(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             env = Path(d) / 'src/RoboTwin/envs'
             env.mkdir(parents=True)
-            (env / 'place_empty_cup.py').write_text('# stub')
+            (env / 'place_empty_cup.py').write_text(
+                'class place_empty_cup:\n'
+                '    def setup_demo(self): pass\n'
+                '    def play_once(self): pass\n'
+                '    def check_success(self): pass\n'
+            )
+            prompts = env.parent / 'description/task_instruction'
+            prompts.mkdir(parents=True)
+            (prompts / 'place_empty_cup.json').write_text('{"seen": ["x"], "unseen": ["y"]}')
             result, _, selected = validate_config(d, {'tasks': [{'name': 'place_empty_cup', 'status': 'verified_in_pinned_source', 'include': True}]})
             self.assertEqual(result, [])
             self.assertEqual(selected, 1)
@@ -117,6 +160,51 @@ class TestTrainAndSource(unittest.TestCase):
     def test_bad_budget(self):
         with self.assertRaises(ValueError):
             estimate(0, 1000, 10, 2)
+
+
+class TestCollection(unittest.TestCase):
+    def test_collection_config_enables_required_fields(self):
+        source = ('episode_num: 100\nsave_path: ./data\ncollect_data: true\ncamera:\n'
+                  '  collect_head_camera: true\ndata_type:\n  rgb: true\n'
+                  '  qpos: true\n  depth: false\n  endpose: false\n')
+        output = collection_config(source, 10)
+        for expected in ('episode_num: 10', 'save_path: ./data', '  depth: true', '  endpose: true'):
+            self.assertIn(expected, output.splitlines())
+        with self.assertRaises(ValueError):
+            collection_config(source.replace('./data', '/other/location'), 10)
+
+    def test_dataset_seed_and_episode_index(self):
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d) / 'place_empty_cup/demo_clean'
+            (base / 'data').mkdir(parents=True)
+            (base / 'seed.txt').write_text('6 42 ')
+            for index in range(2):
+                (base / 'data' / f'episode{index}.hdf5').touch()
+            self.assertEqual([seed for _, seed in dataset_episodes(Path(d), 'place_empty_cup', 2)], [6, 42])
+            (base / 'data/episode1.hdf5').rename(base / 'data/episode3.hdf5')
+            with self.assertRaises(ValueError):
+                dataset_episodes(Path(d), 'place_empty_cup', 2)
+
+    def test_sem_schema_requires_depth_and_aligned_frames(self):
+        nodes = []
+        def dataset(path, shape, kind='f'):
+            nodes.append({'path': path, 'kind': 'dataset', 'shape': shape,
+                          'dtype_kind': kind, 'dtype': kind})
+        dataset('endpose', [5, 14])
+        dataset('joint_action/vector', [5, 14])
+        for camera in ('head_camera', 'left_camera', 'right_camera'):
+            root = f'observation/{camera}'
+            nodes.append({'path': root, 'kind': 'group'})
+            dataset(f'{root}/rgb', [5], 'S')
+            dataset(f'{root}/intrinsic_cv', [5, 3, 3])
+            dataset(f'{root}/extrinsic_cv', [5, 3, 4])
+            dataset(f'{root}/depth', [5, 6, 8])
+        self.assertEqual(sem_schema_errors(nodes), [])
+        nodes[-2]['shape'] = [4, 3, 4]
+        nodes.pop()
+        errors = sem_schema_errors(nodes)
+        self.assertTrue(any('right_camera/depth' in error for error in errors))
+        self.assertTrue(any('right_camera/extrinsic_cv' in error for error in errors))
 
 
 if __name__ == '__main__':

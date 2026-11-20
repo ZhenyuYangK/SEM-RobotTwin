@@ -2,10 +2,14 @@
 """Generate a single-task SEM training config from pinned source, preserving its other code."""
 import argparse
 import ast
-import json
+import shlex
 from pathlib import Path
 
-from make_eval_config import SAFE_NAME
+from audit_sources import config_constants, require_locked_files
+from discover_tasks import require_locked_task
+
+CONFIG_PATH = 'projects/sem/robotwin/config_sem_robotwin.py'
+TRAIN_PATH = 'projects/sem/robotwin/train.py'
 
 
 def write_config(source, overrides):
@@ -42,27 +46,42 @@ def main():
     p.add_argument('--workspace', default='.')
     p.add_argument('--task', required=True)
     p.add_argument('--data-path', required=True, help='LMDB directory. Must be confirmed by packer')
-    p.add_argument('--urdf', required=True, help='Path to teacher URDF or verified copy on target machine')
+    p.add_argument('--urdf', type=Path, required=True, help='Verified kinematics URDF on the runtime machine')
+    p.add_argument('--pretrained-checkpoint', type=Path, help='Local renamed GroundingDINO checkpoint')
+    p.add_argument('--training-workspace', type=Path, help='Cloud output directory for train.py --workspace')
     p.add_argument('--max-step', type=int, default=1000)
-    p.add_argument('--out', required=True)
+    p.add_argument('--out', type=Path, required=True)
     a = p.parse_args()
-    if not SAFE_NAME.fullmatch(a.task) or a.max_step <= 0:
-        p.error('Invalid task or max-step')
-    source = Path(a.workspace) / 'src/RoboOrchardLab/projects/sem/robotwin/config_sem_robotwin.py'
-    if not source.is_file():
-        p.error(f'SEM source config missing: {source}. Clone the source first.')
-    target = Path(a.out)
-    if target.exists():
-        p.error(f'Refusing to overwrite {target}')
-    target.parent.mkdir(parents=True, exist_ok=True)
-    text = source.read_text(encoding='utf-8')
-    result = write_config(text, {
-        'task_names': [a.task], 'multi_task': False, 'max_step': a.max_step,
-        'data_path': a.data_path, 'urdf': a.urdf,
-    })
-    target.write_text(result, encoding='utf-8')
-    print(f'Generated review-required training config: {target}')
-    print('Check pretrained weights, robot joint mapping, depth, data path and actual train.py --config semantics.')
+    if a.max_step <= 0 or a.out.suffix != '.py':
+        p.error('Use positive max-step and an output ending in .py')
+    try:
+        robotwin = require_locked_task(a.workspace, a.task)
+        sem = require_locked_files(a.workspace, 'RoboOrchardLab', CONFIG_PATH, TRAIN_PATH)
+        target = a.out.resolve()
+        if any(target.is_relative_to(root) for root in (robotwin, sem)):
+            raise ValueError('Stage the config outside the upstream checkouts')
+        source = sem / CONFIG_PATH
+        defaults = config_constants(source)
+        overrides = {
+            'task_names': [a.task], 'multi_task': False, 'max_step': a.max_step,
+            'with_depth': True, 'with_depth_loss': True,
+            'save_step_freq': min(a.max_step, defaults['save_step_freq']),
+            'data_path': str(Path(a.data_path).resolve()), 'urdf': str(a.urdf.resolve()),
+        }
+        if a.pretrained_checkpoint:
+            overrides['checkpoint'] = str(a.pretrained_checkpoint.resolve())
+        result = write_config(source.read_text(encoding='utf-8'), overrides)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with target.open('x', encoding='utf-8') as handle:
+            handle.write(result)
+    except (OSError, ValueError) as error:
+        p.error(str(error))
+    print(f'Staged single-task configuration: {target}')
+    print('Check the real LMDB, URDF/joint mapping and pretrained checkpoint on the runtime machine.')
+    if a.training_workspace:
+        print('Cloud command from RoboOrchardLab/projects/sem/robotwin: ' + shlex.join([
+            'python3', 'train.py', '--workspace', str(a.training_workspace.resolve()), '--config', str(target),
+        ]))
 
 
 if __name__ == '__main__':

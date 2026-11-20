@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 老师给定的单任务评估入口；生成结果须再经RoboTwin锁定版代码检查。
+# 固定版RoboTwin单任务评估入口。上游每次正式评估使用100个有效Episode。
 set -euo pipefail
 policy_name=sem_policy
 task_name="@@TASK@@"
@@ -10,7 +10,11 @@ seed=10000
 gpu_id=0
 export CUDA_VISIBLE_DEVICES="${gpu_id}"
 export HYDRA_FULL_ERROR=1
-cd "$(dirname "$0")/../.."  # 只有放在RoboTwin/policy/sem_policy时路径才成立
+cd "$(dirname "$0")/../.."
+[[ -f script/eval_policy.py && -f "policy/${policy_name}/deploy_policy.yml" ]] || {
+  echo "Deploy this launcher under RoboTwin/policy/sem_policy before starting." >&2
+  exit 1
+}
 PYTHONWARNINGS=ignore::UserWarning python script/eval_policy.py \
   --config policy/${policy_name}/deploy_policy.yml --overrides \
   --task_name "${task_name}" --task_config "${task_config}" \

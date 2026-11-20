@@ -4,7 +4,7 @@
 
 | 顺序 | 源码任务 | 专家动作与成功判据 | 评估步长 |
 |---|---|---|---:|
-| 1 | `place_empty_cup` | 单臂抓取空杯并放到杯垫，按杯与垫的功能点间距和双夹爪打开判定。RoboTwin `envs/place_empty_cup.py:54–98` | 500 |
+| 1 | `place_empty_cup` | 单臂抓取空杯并放到杯垫，按杯与垫的功能点间距和双夹爪打开判定。RoboTwin `envs/place_empty_cup.py:54–97` | 500 |
 | 2 | `adjust_bottle` | 选择对应机械臂挪正瓶子，按功能点所在侧和高度判定。RoboTwin `envs/adjust_bottle.py:36–67` | 400 |
 | 3 | `beat_block_hammer` | 抓锤并接触方块，按锤与方块功能点水平对齐和接触判定。RoboTwin `envs/beat_block_hammer.py:56–87` | 400 |
 | 4 | `handover_block` | 两臂交接后放下方块，按放置误差和右夹爪打开判定。RoboTwin `envs/handover_block.py:49–116` | 800 |

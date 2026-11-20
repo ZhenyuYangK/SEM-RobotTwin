@@ -2,20 +2,33 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-echo '== 1/3 Python offline unit tests =='
+export PYTHONDONTWRITEBYTECODE=1
+
+echo '== 1/4 Verify teacher input hashes and run unit tests =='
+sha256sum -c reports/teacher_inputs_sha256.txt
 python3 -m unittest discover -s tests -v
-echo '== 2/3 Teacher URDF static structural audit =='
-python3 scripts/audit_urdf.py --urdf teacher_inputs/arx5_description_isaac.urdf --output reports/urdf_audit.json
-echo '== 3/3 Source availability (NOT a blocker for offline tests) =='
-python3 scripts/audit_sources.py --workspace "$ROOT" --output reports/source_revisions.json >/dev/null
-python3 - <<'PY'
+
+echo '== 2/4 Teacher URDF static structural audit =='
+python3 scripts/audit_urdf.py --urdf teacher_inputs/arx5_description_isaac.urdf \
+  --robotwin src/RoboTwin --output reports/urdf_audit.json
+
+echo '== 3/4 Locked source checkout audit =='
+python3 scripts/audit_sources.py --workspace . >/dev/null
+if python3 - <<'PY_SOURCE'
 import json
 from pathlib import Path
-r = json.loads(Path('reports/source_revisions.json').read_text(encoding='utf-8'))
-if r['not_ready']:
-    print('Source check NOT_READY (normal before explicit git clone):')
-    for issue in r['not_ready']: print(' -', issue)
-else:
-    print('Source paths present; manual API compatibility review still required')
-print('Local offline checks complete; this does NOT validate GPU training/simulation.')
-PY
+
+report = json.loads(Path('reports/source_revisions.json').read_text(encoding='utf-8'))
+for issue in report['not_ready']:
+    print(' -', issue)
+raise SystemExit(bool(report['not_ready']))
+PY_SOURCE
+then
+  echo '== 4/4 Selected task validation =='
+  if ! python3 scripts/discover_tasks.py --workspace . --validate; then
+    echo 'Task configuration needs review. Offline tests completed.' >&2
+    exit 1
+  fi
+else
+  echo 'Source check NOT_READY. Selected task validation skipped.'
+fi

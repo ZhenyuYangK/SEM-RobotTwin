@@ -76,7 +76,7 @@ def config_constants(file):
 
 def audit(workspace):
     workspace = Path(workspace).resolve()
-    report = {'source_checkouts': {}, 'not_ready': [], 'source_inspection_required': [], 'interface_hints': {}}
+    report = {'source_checkouts': {}, 'not_ready': [], 'cloud_validation_required': [], 'interface_hints': {}}
     for name, paths in REQUIRED.items():
         root = workspace / 'src' / name
         exists = root.is_dir()
@@ -101,13 +101,10 @@ def audit(workspace):
         cp = rob / 'collect_data.sh'
         if cp.is_file():
             report['interface_hints']['collect_data_sh_preview'] = cp.read_text(encoding='utf-8', errors='replace').splitlines()[:30]
-    report['source_inspection_required'] = [
-        'Confirm RoboOrchardLab commit compatibility and required installation steps',
-        'Inspect the RoboTwin collect_data.sh CLI and depth-enabled YAML',
-        'Inspect robotwin_packer.py arguments and actual input HDF5 structure',
-        'Inspect train.py --config options and checkpoint/processor outputs',
-        'Read script/eval_policy.py and verify expert_data_num meaning and evaluation episode count',
-        'Inspect URDF vs robot embodiment, mesh path and kinematics indices',
+    report['cloud_validation_required'] = [
+        'Validate Vulkan, SAPIEN, CuRobo, dependencies, embodiment and real mesh/URDF resources',
+        'Collect representative RGB-D data and verify HDF5, LMDB and DataLoader',
+        'Measure short training, inspect checkpoint artifacts, then load and evaluate SEM',
     ]
     return report
 

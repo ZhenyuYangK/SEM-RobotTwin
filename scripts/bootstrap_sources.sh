@@ -7,7 +7,10 @@ if [[ "$#" != 1 || "$1" != "--clone" ]]; then
 fi
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-PIN=e71140e9734e69686daa420a9be8b75a20ff4587
+read -r PIN SEM_PIN < <(
+  cd "$ROOT/scripts"
+  python3 -B -c 'from audit_sources import PIN, SEM_PIN; print(PIN, SEM_PIN)'
+)
 export GIT_LFS_SKIP_SMUDGE=1 GIT_TERMINAL_PROMPT=0
 mkdir -p "$ROOT/src" "$ROOT/reports"
 
@@ -56,5 +59,5 @@ PATTERNS
   git -C "$path" rev-parse HEAD
 }
 
-clone_source 'https://github.com/HorizonRobotics/RoboOrchardLab.git' "$ROOT/src/RoboOrchardLab" "${SEM_SOURCE_REVISION:-}"
+clone_source 'https://github.com/HorizonRobotics/RoboOrchardLab.git' "$ROOT/src/RoboOrchardLab" "$SEM_PIN"
 clone_source 'https://github.com/RoboTwin-Platform/RoboTwin.git' "$ROOT/src/RoboTwin" "$PIN"
