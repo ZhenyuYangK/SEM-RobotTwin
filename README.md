@@ -1,4 +1,4 @@
-# SEM-Tiny×RoboTwin2.0本地预开发工程包
+# SEM-Tiny×RoboTwin2.0
 
 本包用于在Ubuntu22.04上锁定并审计SEM和RoboTwin源码，准备任务配置、URDF报告、数据工具和云端启动清单。本地验收见[本地就绪报告](reports/local_readiness.md)。
 
