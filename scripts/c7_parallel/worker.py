@@ -22,7 +22,7 @@ PRETRAINED = BASE / "weights/groundingdino_swint_ogc_mmdet-822d7e9d-rename.pth"
 BERT = BASE / "weights/bert-base-uncased-86b5e0934494bd15c9632b12f734a8a67f723594"
 DEMOS = 100
 STEPS = 100000
-EPISODES = 100
+EPISODES = json.loads((REPO / "configs/project.json").read_text())["eval_episodes_target"]
 TASKS = ("place_empty_cup", "adjust_bottle", "beat_block_hammer", "handover_block", "place_container_plate")
 SOURCES = {
     "adjust_bottle": BASE / "runs/adjust_bottle-parallel-check/raw",
@@ -129,7 +129,8 @@ def evaluate(task):
         raise ValueError(f"Incomplete checkpoint artifacts for {task}")
     config = staged / "train_config.py"
     tool("make_eval_config", "--task", task, "--checkpoint", checkpoint, "--config-file", config,
-         "--align-projection-dtype", "--expert-data-num", str(DEMOS), "--out", staged / "sem_policy")
+         "--align-projection-dtype", "--expert-data-num", str(DEMOS), "--episodes", str(EPISODES),
+         "--out", staged / "sem_policy")
     policy = runtime / "policy/sem_policy"
     for name in ("eval.sh", "deploy_policy.yml"):
         shutil.copyfile(staged / "sem_policy" / name, policy / name)
@@ -147,7 +148,9 @@ def evaluate(task):
             or abs(float(result.read_text().splitlines()[-1]) - successes / EPISODES) > 1e-8
             or any(not (result.parent / f"episode{i}.mp4").stat().st_size for i in range(EPISODES))):
         raise ValueError(f"Incomplete evaluation results or videos for {task}")
-    tool("summarize_eval", "--log", eval_log, "--task", task, "--output", run_dir / "eval_summary.csv")
+    summary_args = ("--log", eval_log, "--task", task, "--expected-episodes", str(EPISODES))
+    tool("summarize_eval", *summary_args, "--output", run_dir / "eval_summary.csv")
+    tool("summarize_eval", *summary_args, "--episode-output", run_dir / "eval_episodes.csv")
     elapsed = json.loads((run_dir / "training_complete.json").read_text())["train_seconds"]
     outcome = dict(task=task, demos=DEMOS, steps=STEPS, episodes=EPISODES, successes=successes,
                    success_rate_pct=100 * successes / EPISODES, checkpoint=str(checkpoint),

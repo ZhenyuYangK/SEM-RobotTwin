@@ -103,7 +103,8 @@ def run_task(args, task, project, robotwin, orchard):
         raise ValueError(f'Incomplete checkpoint artifacts for {task}')
 
     tool('make_eval_config', '--task', task, '--checkpoint', checkpoint, '--config-file', config,
-         '--align-projection-dtype', '--expert-data-num', demos, '--out', staged / 'sem_policy')
+         '--align-projection-dtype', '--expert-data-num', demos, '--episodes', str(episodes),
+         '--out', staged / 'sem_policy')
     policy = robotwin / 'policy/sem_policy'
     for name in ('eval.sh', 'deploy_policy.yml'):
         shutil.copyfile(staged / 'sem_policy' / name, policy / name)
@@ -118,7 +119,9 @@ def run_task(args, task, project, robotwin, orchard):
             or abs(float(result.read_text().splitlines()[-1]) - successes / episodes) > 1e-8
             or any(not (result.parent / f'episode{index}.mp4').stat().st_size for index in range(episodes))):
         raise ValueError(f'Evaluation results or videos are incomplete for {task}')
-    tool('summarize_eval', '--log', eval_log, '--task', task, '--output', run_dir / 'eval_summary.csv')
+    summary_args = ('--log', eval_log, '--task', task, '--expected-episodes', str(episodes))
+    tool('summarize_eval', *summary_args, '--output', run_dir / 'eval_summary.csv')
+    tool('summarize_eval', *summary_args, '--episode-output', run_dir / 'eval_episodes.csv')
     return dict(task=task, demos=int(demos), steps=args.max_step, episodes=episodes, successes=successes,
                 success_rate_pct=100 * successes / episodes, checkpoint=str(checkpoint),
                 result=str(result), train_seconds=train_seconds, eval_seconds=eval_seconds)
@@ -142,8 +145,8 @@ def main():
     if problems or selected_count != 5:
         parser.error(f'Expected the five verified tasks: {problems}')
     selected = [entry['name'] for entry in project['tasks'] if entry['include']]
-    if project['eval_episodes_target'] != 100 or project['episodes_per_task_target'] != 100:
-        parser.error('The formal experiment requires 100 demonstrations and 100 valid evaluations per task')
+    if project['episodes_per_task_target'] != 100 or not 1 <= project['eval_episodes_target'] <= 100:
+        parser.error('The formal experiment requires 100 demonstrations and 1–100 valid evaluations per task')
     smoke_run = args.base / 'runs/place_empty_cup-smoke'
     if not any(re.search(r'^C6 passed ', log.read_text(), re.M) for log in smoke_run.glob('phase6*.log')):
         parser.error('Complete the three-episode cloud evaluation before starting formal experiments')

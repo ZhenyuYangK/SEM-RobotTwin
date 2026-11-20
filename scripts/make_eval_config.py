@@ -3,6 +3,7 @@
 import argparse
 import json
 import re
+import shlex
 from pathlib import Path
 
 from audit_sources import require_locked_files
@@ -32,11 +33,13 @@ def build_transforms(config, calibration=None):
 '''
 
 
-def create_files(task, checkpoint, config_file, expert_data_num, template_dir):
+def create_files(task, checkpoint, config_file, expert_data_num, template_dir, *, episodes=100):
     if not SAFE_NAME.fullmatch(task):
         raise ValueError('Unsafe task name')
     if expert_data_num < 1:
         raise ValueError('expert_data_num must be a positive integer')
+    if not 1 <= episodes <= 100:
+        raise ValueError('Evaluation must use 1–100 valid episodes')
     for label, value in [('checkpoint', checkpoint), ('config_file', config_file)]:
         if not value or any(ord(char) < 32 for char in value):
             raise ValueError(f'Invalid {label} string')
@@ -47,7 +50,11 @@ def create_files(task, checkpoint, config_file, expert_data_num, template_dir):
     values = {'@@CHECKPOINT@@': json.dumps(checkpoint, ensure_ascii=False),
               '@@CONFIG_FILE@@': json.dumps(config_file, ensure_ascii=False)}
     yml = re.sub(r'@@(?:CHECKPOINT|CONFIG_FILE)@@', lambda match: values[match[0]], yml)
-    sh = sh.replace('@@TASK@@', task).replace('@@EXPERT_DATA_NUM@@', str(expert_data_num))
+    workspace = template_dir.resolve().parent
+    values = {'TASK': task, 'EXPERT_DATA_NUM': str(expert_data_num), 'EPISODES': str(episodes),
+              'WORKSPACE': shlex.quote(str(workspace)),
+              'EVAL_RUNNER': shlex.quote(str(workspace / 'scripts/run_smoke_eval.py'))}
+    sh = re.sub(r'@@([A-Z_]+)@@', lambda match: values[match[1]], sh)
     return yml, sh
 
 
@@ -60,6 +67,7 @@ def main():
     p.add_argument('--align-projection-dtype', action='store_true',
                    help='Stage an evaluation config that casts projection matrices to float32 before multiplying')
     p.add_argument('--expert-data-num', type=int, required=True, help='Training demonstration count recorded by the evaluation workflow')
+    p.add_argument('--episodes', type=int, default=100, help='Number of valid evaluation episodes')
     p.add_argument('--out', required=True)
     a = p.parse_args()
     root = Path(__file__).resolve().parents[1]
@@ -79,7 +87,8 @@ def main():
                 raise ValueError('Projection dtype alignment needs an existing Python config')
             config_file = str(dest / 'eval_config.py')
             files.append(('eval_config.py', projection_config(source)))
-        yml, script = create_files(a.task, a.checkpoint, config_file, a.expert_data_num, root / 'templates')
+        yml, script = create_files(a.task, a.checkpoint, config_file, a.expert_data_num, root / 'templates',
+                                   episodes=a.episodes)
         files.extend([('deploy_policy.yml', yml), ('eval.sh', script)])
         dest.mkdir(parents=True, exist_ok=True)
         for name, content in files:
@@ -92,7 +101,7 @@ def main():
             path.unlink()
         p.error(str(error))
     print(f'Staged evaluation configuration and launcher in {dest}')
-    print('Apply after checking checkpoint, config and depth in the cloud. Fixed evaluation uses 100 valid episodes.')
+    print(f'Apply after checking checkpoint, config and depth in the cloud. Evaluation uses {a.episodes} valid episodes.')
 
 
 if __name__ == '__main__':

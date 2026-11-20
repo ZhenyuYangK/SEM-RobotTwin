@@ -13,10 +13,10 @@ def runbook(cfg):
     if not tasks:
         raise ValueError('Select at least one task with status verified_in_pinned_source after code inspection')
     seed = cfg['eval_seed']
-    if (cfg['train_mode'], cfg['eval_policy'], cfg['task_config'], seed,
-            cfg['eval_instruction_type'], cfg['eval_episodes_target']) != (
-                'single_task', 'sem_policy', 'demo_clean', 10000, 'unseen', 100):
-        raise ValueError('This runbook generator requires the fixed evaluation protocol and 100 evaluated episodes')
+    episodes = cfg['eval_episodes_target']
+    if (cfg['train_mode'], cfg['eval_policy'], cfg['task_config'], seed, cfg['eval_instruction_type']) != (
+            'single_task', 'sem_policy', 'demo_clean', 10000, 'unseen') or not 1 <= episodes <= 100:
+        raise ValueError('This runbook generator requires the fixed evaluation protocol and 1–100 valid episodes')
     sections = [
         '# 云端独立单任务启动清单',
         '',
@@ -31,8 +31,8 @@ def runbook(cfg):
             '2. 按脚本输出的固定版入口采集。核对成功示范、种子、视频与指令。用`inspect_hdf5.py --dataset-root`校验采集输出。',
             '3. 从RoboOrchardLab根目录使用审计中的打包入口写入新LMDB目录。检查depth、image、index、meta及首批DataLoader样本。',
             '4. 使用`make_training_config.py`生成单任务配置，按审计的`train.py`入口在200～1000 Step内验证显存、吞吐和Checkpoint。',
-            '5. 使用`make_eval_config.py`生成既定协议的YAML和启动器。核对Checkpoint、URDF、深度和14维动作。正式评估入口固定为100个有效Episode，缩量冒烟入口需另审。',
-            '6. 保留完整评估日志、`_result.txt`和视频。使用`summarize_eval.py`读取完成日志或已核对的CSV。',
+            f'5. 使用`make_eval_config.py --episodes {episodes}`生成YAML和启动器。核对Checkpoint、URDF、深度和14维动作。',
+            f'6. 保留评估日志、`_result.txt`和视频。使用`summarize_eval.py --expected-episodes {episodes}`读取完成日志。',
             '',
         ]
     return '\n'.join(sections)

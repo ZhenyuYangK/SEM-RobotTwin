@@ -47,7 +47,7 @@ python3 scripts/make_training_config.py --task place_empty_cup \
 
 1. 在远程RoboTwin运行环境按既定要求安装RoboOrchardLab，部署审查过的`sem_policy`到`policy/sem_policy/`，保持`demo_clean`的Depth开启。确认`CHECKPOINT`指向实际训练产物，`EVAL_CONFIG`指向可加载的SEM Python配置。
 2. 用刚实际参与训练的示范数量生成部署文件。核对YAML、路径和评估任务后应用到运行副本的策略目录。
-3. 用`run_smoke_eval.py`验证模型加载、观测输入和14维双臂动作。该入口校验运行副本和锁定源码中的评估脚本一致，在内存中替换Episode数，并检查策略动作形状和有限值。正式评估保留锁定版的100个有效Episode以及`seed=10000`、`sem_policy`、`demo_clean`、`unseen`和`ckpt_setting=none`。
+3. 用`run_smoke_eval.py`验证模型加载、观测输入和14维双臂动作。该入口校验运行副本和锁定源码中的评估脚本一致，在内存中替换Episode数，并检查策略动作形状和有限值。C7后续任务评估15个有效Episode，使用`seed=10000`、`sem_policy`、`demo_clean`、`unseen`和`ckpt_setting=none`。
 4. 保存训练和评估配置、Git提交、原始日志、`_result.txt`与视频。统计用完成日志中的成功数和有效Episode数，CSV汇总输入示例见`templates/evaluation_results_template.csv`。
 
 ```bash
@@ -72,7 +72,14 @@ python3 scripts/summarize_eval.py --log "$RUN_DIR/eval_smoke.log" --task place_e
   --expected-episodes 3 --output "$RUN_DIR/eval_smoke_summary.csv"
 ```
 
-正式入口为从已部署的`RoboTwin/policy/sem_policy/`运行`bash eval.sh`，将完整标准输出保留到`eval.log`。`summarize_eval.py --log`默认要求100条连续计数和结果保存标记。用`--input`可读取核对后的CSV。
+正式评估用`make_eval_config.py --episodes 15`生成启动器，从已部署的`RoboTwin/policy/sem_policy/`运行`bash eval.sh`，将完整标准输出保留到`eval.log`。用`summarize_eval.py --log --expected-episodes 15`核对15条连续计数和结果保存标记。用`--input`可读取核对后的CSV。
+
+验收用`--episode-output`导出每个有效回合的编号、场景种子和成败。场景种子来自评估日志中的`current seed`，评估启动参数仍为`seed=10000`。评估进行中可用`--allow-incomplete`导出进度，正式成绩以指定回合数完成后的汇总为准。
+
+```bash
+python3 scripts/summarize_eval.py --log "$RUN_DIR/eval.log" --task adjust_bottle \
+  --expected-episodes 15 --episode-output "$RUN_DIR/eval_episodes.csv"
+```
 
 ## C7五项正式实验
 
@@ -86,8 +93,10 @@ python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" --output "$OUTP
   --pretrained "$PRETRAINED" --bert "$BERT_CHECKPOINT"
 ```
 
-入口按`configs/project.json`的顺序采集、打包、训练和评估。每项使用100条成功示范独立训练，并按既定协议进行100个有效Episode的正式评估。任务目录保存Checkpoint、部署配置、训练和评估日志、`_result.txt`与视频。根目录的`results.csv`会在每项评估通过核验后追加一行。
+入口按`configs/project.json`的顺序采集、打包、训练和评估。每项使用100条成功示范独立训练，评估回合数读取`eval_episodes_target`。任务目录保存Checkpoint、部署配置、训练和评估日志、`_result.txt`与视频。根目录的`results.csv`会在每项评估通过核验后追加一行。
 
 本次云端运行采用[并行调度脚本](../scripts/c7_parallel)，最多同时运行3项独立实验。每项使用自己的RoboTwin运行副本，并独立保存训练与评估产物。调度状态记录在数据盘`runs/c7-parallel-control/queue.json`。
 
 `schedule.py --preflight`校验运行副本和权重。`--adopt`用于本次从串行入口交接首项训练，需要原入口及其训练和监控进程仍在运行，同时两个后续任务的工作进程已启动。交接会终止原串行入口进程，由并行调度继续跟踪其训练子进程。
+
+GitHub验收产物保留最终权重、模型与处理器配置、实际执行的训练和评估配置、结果汇总、逐回合CSV及少量代表视频。完整训练日志、原始视频和可续训状态在云端归档。保存本次运行的工程和上游提交号，便于从同一版本重新生成配置。`staged/`中的实测配置保留原运行路径，复现时用本节生成器写入本地路径。

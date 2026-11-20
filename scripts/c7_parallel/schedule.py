@@ -11,7 +11,7 @@ import sys
 import time
 from pathlib import Path
 
-from worker import BASE, CONTROL, OUTPUT, TASKS, write_json, state, verified_inputs
+from worker import BASE, CONTROL, DEMOS, EPISODES, OUTPUT, STEPS, TASKS, write_json, state, verified_inputs
 
 TASK_LIMIT = 3
 FIRST = TASKS[0]
@@ -72,7 +72,9 @@ def adopt(controller_pid, trainer_pid, monitor_pid):
 def save_completion(task):
     complete = OUTPUT / task / "completion.json"
     outcome = json.loads(complete.read_text())
-    if outcome["task"] != task or outcome["demos"] != 100 or outcome["steps"] != 100000 or outcome["episodes"] != 100:
+    allowed_episodes = {EPISODES, 100} if task == FIRST else {EPISODES}
+    if (outcome["task"] != task or outcome["demos"] != DEMOS or outcome["steps"] != STEPS
+            or outcome["episodes"] not in allowed_episodes):
         raise ValueError(f"Unexpected formal outcome for {task}")
     episodes, successes = outcome["episodes"], outcome["successes"]
     if not isinstance(successes, int) or not 0 <= successes <= episodes:
