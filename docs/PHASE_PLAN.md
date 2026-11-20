@@ -40,3 +40,7 @@
 | L6 | 22项最终单测通过。迁移和启动清单已写入`CLOUD_HANDOFF.md`。 |
 
 本地执行记录分别见`reports/local_readiness.md`、`reports/code_audit.md`、`reports/urdf_differences.md`与`reports/task_candidates.md`。C1至C7及P8按顺序进入后续验收。
+
+## 云端进度
+
+C1已完成SSH、工程迁移、固定提交与老师原件核对。RTX4090、CUDA Driver API和数据盘读写通过。Vulkan实例创建返回`ERROR_INCOMPATIBLE_DRIVER`，C2待GPU图形驱动验收通过后启动。证据见[云端预检报告](../reports/cloud_preflight.md)。
