@@ -53,3 +53,9 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 - `place_empty_cup`使用种子0～9生成10条成功示范，共1739帧，每条167～185帧。4路相机为前视、头部和双腕，深度分辨率为320×240。10条示范的RGB-D、相机参量、14维末端状态、14维关节动作和`seen`/`unseen`指令检查全部通过。10个视频已生成。
 - 采集耗时251.6秒，显存采样峰值5772MiB。HDF5共4365619317字节。数据与证据在云端数据盘`runs/place_empty_cup-smoke/`，其中`hdf5_check.json`记录每条示范的结构、种子和文件大小。
 - 首条示范的HDF5为447026974字节。对4路深度使用逐帧分块、`shuffle`和`gzip`级别1后，深度存储量从437452800字节降至57475873字节，读取后的数值和数据类型逐元素一致。据此估算首条压缩示范约67MB。正式采集入口在首次写入时启用该无损压缩。
+
+## C5打包与短训练
+
+- 10条示范已打包为148656393字节的LMDB。`image`、`depth`、`index`和`meta`均生成。DataLoader读到4路图像和深度，原始关节和末端状态为14维。变换后的动作训练输入包含`(1, 64, 14, 8)`的预测窗口。
+- SEM-Tiny以`batch_size=2`、4个DataLoader工作进程运行1000步。训练日志记录`GlobalStep[1000/1000]`，含启动和保存耗时315秒，训练后段约0.28秒/步，显存采样峰值2508MiB。最终Checkpoint文件为198329592字节。
+- 最终模型、处理器配置和训练日志保存在`runs/place_empty_cup-smoke/train-batch-2/`，Checkpoint为`checkpoints/checkpoint_1/model.safetensors`。C6已成功加载该Checkpoint。

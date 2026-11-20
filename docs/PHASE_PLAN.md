@@ -47,4 +47,6 @@ C1与C2通过。RTX4090、Vulkan、SAPIEN的RGB-D渲染、Torch的CUDA卷积和C
 
 C3通过。老师URDF与官方仿真URDF的SHA256一致。已验证Mesh加载、双臂关节映射和正运动学。[URDF验收报告](../reports/urdf_differences.md)
 
-C4通过。`place_empty_cup`的10条成功示范已验证4路RGB-D、末端状态、关节动作及指令，并生成10个视频。C5已进入LMDB与短训练验收。[示范采集记录](../reports/cloud_preflight.md#c4示范采集)
+C4通过。`place_empty_cup`的10条成功示范已验证4路RGB-D、末端状态、关节动作及指令，并生成10个视频。[示范采集记录](../reports/cloud_preflight.md#c4示范采集)
+
+C5通过。LMDB和DataLoader已验收，1000步训练完成并保存Checkpoint。C6已加载模型，正在修正评估投影矩阵的浮点类型。[短训练记录](../reports/cloud_preflight.md#c5打包与短训练)
