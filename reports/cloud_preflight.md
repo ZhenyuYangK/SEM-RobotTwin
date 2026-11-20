@@ -95,4 +95,4 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 - 首项运行的工程检出为`3a20e74`，上游为RoboTwin `e71140e`和RoboOrchardLab `4111276`。已核对运行副本的任务、训练、打包和评估入口，以及SEM部署策略文件，均与锁定源码一致。[实际训练入口](https://github.com/ZhenyuYangK/SEM-cloud/blob/3a20e74496401cd1f09f36b23b5e006bfbfe6384/scripts/run_formal_experiments.py) · [实际并行调度](../artifacts/sem-tiny/c7-parallel-control) · [RoboTwin源码](https://github.com/RoboTwin-Platform/RoboTwin/tree/e71140e9734e69686daa420a9be8b75a20ff4587) · [RoboOrchardLab源码](https://github.com/HorizonRobotics/RoboOrchardLab/tree/41112765f9904efb2374dd9c8946fb5af452861a)
 - 完整日志和可续训状态留在云端。先前的全量产物快照可按历史提交访问。[历史快照](https://github.com/ZhenyuYangK/SEM-cloud/tree/93e69994c7fb033d9e52de27e15b4fceadcd353f/artifacts/sem-tiny)
 
-后续新启动的工作流使用50000步训练目标。已有运行的验收以该任务实际保存的训练配置、完成日志和Checkpoint为准。[项目配置](../configs/project.json)
+11:03（太平洋时间）确认云端调度已加载50000步和15个有效评估回合的目标，排队的`place_container_plate`将使用这套配置。`adjust_bottle`和`beat_block_hammer`的训练进程以及`handover_block`的采集工作进程在交接后继续运行。三个已启动的工作流沿用100000步，验收使用各自的实际训练配置、完成日志和Checkpoint。[项目配置](../configs/project.json)

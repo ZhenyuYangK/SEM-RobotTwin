@@ -3,10 +3,10 @@
 ## 代码同步
 
 - [ ] 在本地运行`bash scripts/run_local_checks.sh`，确认5个任务、原件哈希与锁定提交。提交代码后运行`git push origin main`。
-- [ ] 云端首次检出后运行下列检查。以后在`/root/SEM-RoboTwin-git`执行`git pull --ff-only`同步代码。
+- [ ] 云端首次检出后运行下列检查。以后在`/root/SEM-RoboTwin-git`执行`GIT_LFS_SKIP_SMUDGE=1 git pull --ff-only`同步代码。需要验收权重时从`artifacts/sem-tiny/`单独下载。
 
 ```bash
-git clone --branch main https://github.com/ZhenyuYangK/SEM-cloud.git /root/SEM-RoboTwin-git
+GIT_LFS_SKIP_SMUDGE=1 git clone --branch main https://github.com/ZhenyuYangK/SEM-cloud.git /root/SEM-RoboTwin-git
 cd /root/SEM-RoboTwin-git
 sha256sum -c reports/teacher_inputs_sha256.txt
 bash scripts/bootstrap_sources.sh --clone
