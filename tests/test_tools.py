@@ -23,7 +23,7 @@ from prepare_collection import collection_config
 
 
 class TestURDF(unittest.TestCase):
-    def test_teacher_urdf_structure(self):
+    def test_source_urdf_structure(self):
         result = inspect_urdf(ROOT / 'teacher_inputs/arx5_description_isaac.urdf')
         self.assertTrue(result['structural_valid'])
         self.assertEqual(result['robot_name'], 'arx5_description')
@@ -48,13 +48,13 @@ class TestURDF(unittest.TestCase):
                '<joint name="j" type="revolute"><parent link="a"/><child link="b"/>'
                '<limit lower="-1" upper="%s"/></joint></robot>')
         with tempfile.TemporaryDirectory() as d:
-            teacher = Path(d) / 'teacher.urdf'
+            source = Path(d) / 'source.urdf'
             reference = Path(d) / 'reference.urdf'
-            teacher.write_text(xml % '1')
+            source.write_text(xml % '1')
             reference.write_text(xml % '2')
-            diff = compare_urdfs(teacher, reference)
+            diff = compare_urdfs(source, reference)
             limits = diff['common_joint_attribute_differences']['j']['limit']
-            self.assertEqual((limits['teacher']['upper'], limits['reference']['upper']), ('1', '2'))
+            self.assertEqual((limits['source']['upper'], limits['reference']['upper']), ('1', '2'))
 
 
 class TestEval(unittest.TestCase):
@@ -74,7 +74,7 @@ class TestEval(unittest.TestCase):
             with self.subTest(s=s), self.assertRaises(ValueError):
                 aggregate([{'task_name': 't', 'episodes': '100', 'successes': s}])
 
-    def test_eval_config_teacher_constraints(self):
+    def test_eval_config_fixed_constraints(self):
         yaml, script = create_files('place_empty_cup', 'checkpoints/place_empty_cup/model.safetensors',
                                     'config_sem_robotwin.py', 5, ROOT / 'templates')
         self.assertIn('policy_name: sem_policy', yaml)

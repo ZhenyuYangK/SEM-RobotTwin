@@ -4,11 +4,11 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 export PYTHONDONTWRITEBYTECODE=1
 
-echo '== 1/4 Verify teacher input hashes and run unit tests =='
+echo '== 1/4 Verify input hashes and run unit tests =='
 sha256sum -c reports/teacher_inputs_sha256.txt
 python3 -m unittest discover -s tests -v
 
-echo '== 2/4 Teacher URDF static structural audit =='
+echo '== 2/4 Source URDF static structural audit =='
 python3 scripts/audit_urdf.py --urdf teacher_inputs/arx5_description_isaac.urdf \
   --robotwin src/RoboTwin --output reports/urdf_audit.json
 

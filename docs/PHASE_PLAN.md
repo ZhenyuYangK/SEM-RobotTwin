@@ -2,7 +2,7 @@
 
 | 阶段 | 设备 | 工作 | 必须输出/验收 | 允许付费云GPU？ |
 |---|---|---|---|---|
-| L0 | 本地 | 解压、校验老师资料、运行单测 | `reports/local_readiness.md` | 否 |
+| L0 | 本地 | 解压、校验原始资料、运行单测 | `reports/local_readiness.md` | 否 |
 | L1 | 本地 | 获取Git源码并固定RoboTwin提交 | `reports/source_revisions.json` | 否 |
 | L2 | 本地 | 审计SEM模型和RoboTwin采集/评估接口 | `reports/code_audit.md` | 否 |
 | L3 | 本地 | URDF结构、关节、Mesh差异检查 | `reports/urdf_audit.json` | 否 |
@@ -11,7 +11,7 @@
 | L6 | 本地 | 统计工具、预算与云端迁移准备 | 单测通过，云端就绪清单 | 否 |
 | C1 | 云端 | GPU/CUDA/驱动/Vulkan/磁盘检查 | `vulkaninfo`识别4090；数据盘已挂载 | 需要 |
 | C2 | 云端 | 安装精确软件依赖、SAPIEN/CuRobo小场景 | 官方依赖功能通过 | 需要 |
-| C3 | 云端 | 核对老师URDF与机械臂映射 | 正运动学、配置和Mesh能加载 | 需要 |
+| C3 | 云端 | 核对原始URDF与机械臂映射 | 正运动学、配置和Mesh能加载 | 需要 |
 | C4 | 云端 | `place_empty_cup`的10条成功示范采集 | RGB-D+状态+动作完整 | 需要 |
 | C5 | 云端 | HDF5→LMDB打包、加载数据、200~1000Step短训练 | LMDB的image/depth/index/meta存在；显存/速度已测 | 需要 |
 | C6 | 云端 | 审核缩量入口并少量评估，核对日志统计 | 成功次数/有效Episode/视频目录 | 需要 |
@@ -34,7 +34,7 @@
 | L0 | Ubuntu22.04.5上核对两份原件哈希，基线15项单测通过。 |
 | L1 | 两个Git源码检出完成，提交已记录。 |
 | L2 | 完成SEM、采集、打包与评估接口逐项审计。 |
-| L3 | 老师URDF静态结构通过。固定提交和本地资产目录均无参照URDF，实物差异对比纳入C3。 |
+| L3 | 原始URDF静态结构通过。固定提交和本地资产目录均无参照URDF，实物差异对比纳入C3。 |
 | L4 | 从50个真实源码任务中确认5个，保存所定顺序并验证配置。 |
 | L5 | 工具的本地格式、配置和锁定版参数解析验证通过。 |
 | L6 | 22项最终单测通过。迁移和启动清单已写入`CLOUD_HANDOFF.md`。 |
@@ -45,7 +45,7 @@
 
 C1与C2通过。RTX4090、Vulkan、SAPIEN的RGB-D渲染、Torch的CUDA卷积和CuRobo的GPU轨迹规划已验收。[云端预检报告](../reports/cloud_preflight.md)
 
-C3通过。老师URDF与官方仿真URDF的SHA256一致。已验证Mesh加载、双臂关节映射和正运动学。[URDF验收报告](../reports/urdf_differences.md)
+C3通过。原始URDF与官方仿真URDF的SHA256一致。已验证Mesh加载、双臂关节映射和正运动学。[URDF验收报告](../reports/urdf_differences.md)
 
 C4通过。`place_empty_cup`的10条成功示范已验证4路RGB-D、末端状态、关节动作及指令，并生成10个视频。[示范采集记录](../reports/cloud_preflight.md#c4示范采集)
 

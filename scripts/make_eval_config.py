@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate teacher-style evaluation configuration drafts; never launches evaluation."""
+"""Generate evaluation configuration drafts for the fixed SEM protocol; never launches evaluation."""
 import argparse
 import json
 import re
@@ -59,7 +59,7 @@ def main():
     p.add_argument('--config-file', default='config_sem_robotwin.py')
     p.add_argument('--align-projection-dtype', action='store_true',
                    help='Stage an evaluation config that casts projection matrices to float32 before multiplying')
-    p.add_argument('--expert-data-num', type=int, required=True, help='Training demonstration count recorded by the teacher workflow')
+    p.add_argument('--expert-data-num', type=int, required=True, help='Training demonstration count recorded by the evaluation workflow')
     p.add_argument('--out', required=True)
     a = p.parse_args()
     root = Path(__file__).resolve().parents[1]

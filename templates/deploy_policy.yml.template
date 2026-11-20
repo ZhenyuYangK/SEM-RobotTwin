@@ -1,4 +1,4 @@
-# 依据老师SEM评估流程；生成器会替换ckpt_path与config_file。
+# 依据SEM评估流程；生成器会替换ckpt_path与config_file。
 policy_name: sem_policy
 setting: null
 ckpt_path: @@CHECKPOINT@@

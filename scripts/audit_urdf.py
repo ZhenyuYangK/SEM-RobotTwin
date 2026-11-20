@@ -76,7 +76,7 @@ def inspect_urdf(path, asset_roots=None):
     return result
 
 
-def compare_urdfs(teacher, reference, asset_roots=None):
+def compare_urdfs(source, reference, asset_roots=None):
     def details(path):
         root = ET.parse(path).getroot()
         links = {link.attrib['name'] for link in root.findall('link')}
@@ -90,19 +90,19 @@ def compare_urdfs(teacher, reference, asset_roots=None):
         }
         return links, joints
 
-    teacher_links, teacher_joints = details(teacher)
+    source_links, source_joints = details(source)
     ref_links, ref_joints = details(reference)
     return {
         'reference': inspect_urdf(reference, asset_roots),
-        'links_only_teacher': sorted(teacher_links - ref_links),
-        'links_only_reference': sorted(ref_links - teacher_links),
-        'joints_only_teacher': sorted(teacher_joints.keys() - ref_joints.keys()),
-        'joints_only_reference': sorted(ref_joints.keys() - teacher_joints.keys()),
+        'links_only_source': sorted(source_links - ref_links),
+        'links_only_reference': sorted(ref_links - source_links),
+        'joints_only_source': sorted(source_joints.keys() - ref_joints.keys()),
+        'joints_only_reference': sorted(ref_joints.keys() - source_joints.keys()),
         'common_joint_attribute_differences': {
-            name: {key: {'teacher': value, 'reference': ref_joints[name][key]}
-                   for key, value in teacher_joints[name].items() if value != ref_joints[name][key]}
-            for name in sorted(teacher_joints.keys() & ref_joints.keys())
-            if teacher_joints[name] != ref_joints[name]
+            name: {key: {'source': value, 'reference': ref_joints[name][key]}
+                   for key, value in source_joints[name].items() if value != ref_joints[name][key]}
+            for name in sorted(source_joints.keys() & ref_joints.keys())
+            if source_joints[name] != ref_joints[name]
         },
     }
 
@@ -136,7 +136,7 @@ def main():
         report['comparison'] = compare_urdfs(args.urdf, args.compare, args.asset_root)
         reference = report['comparison']['reference']
         report['comparison']['same_hash'] = report['sha256'] == reference['sha256']
-        report['comparison']['meshes_only_teacher'] = sorted(set(report['mesh_paths']) - set(reference['mesh_paths']))
+        report['comparison']['meshes_only_source'] = sorted(set(report['mesh_paths']) - set(reference['mesh_paths']))
         report['comparison']['meshes_only_reference'] = sorted(set(reference['mesh_paths']) - set(report['mesh_paths']))
     out = Path(args.output)
     inputs = [Path(args.urdf)] + ([Path(args.compare)] if args.compare else [])

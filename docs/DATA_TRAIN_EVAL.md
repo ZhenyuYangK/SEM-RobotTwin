@@ -45,7 +45,7 @@ python3 scripts/make_training_config.py --task place_empty_cup \
 
 ## 评估与统计
 
-1. 在远程RoboTwin运行环境按老师要求安装RoboOrchardLab，部署审查过的`sem_policy`到`policy/sem_policy/`，保持`demo_clean`的Depth开启。确认`CHECKPOINT`指向实际训练产物，`EVAL_CONFIG`指向可加载的SEM Python配置。
+1. 在远程RoboTwin运行环境按既定要求安装RoboOrchardLab，部署审查过的`sem_policy`到`policy/sem_policy/`，保持`demo_clean`的Depth开启。确认`CHECKPOINT`指向实际训练产物，`EVAL_CONFIG`指向可加载的SEM Python配置。
 2. 用刚实际参与训练的示范数量生成部署文件。核对YAML、路径和评估任务后应用到运行副本的策略目录。
 3. 用`run_smoke_eval.py`验证模型加载、观测输入和14维双臂动作。该入口校验运行副本和锁定源码中的评估脚本一致，在内存中替换Episode数，并检查策略动作形状和有限值。正式评估保留锁定版的100个有效Episode以及`seed=10000`、`sem_policy`、`demo_clean`、`unseen`和`ckpt_setting=none`。
 4. 保存训练和评估配置、Git提交、原始日志、`_result.txt`与视频。统计用完成日志中的成功数和有效Episode数，CSV汇总输入示例见`templates/evaluation_results_template.csv`。
@@ -86,4 +86,4 @@ python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" --output "$OUTP
   --pretrained "$PRETRAINED" --bert "$BERT_CHECKPOINT"
 ```
 
-入口按`configs/project.json`的顺序采集、打包、训练和评估。每项使用100条成功示范独立训练，并按老师协议进行100个有效Episode的正式评估。任务目录保存Checkpoint、部署配置、训练和评估日志、`_result.txt`与视频。根目录的`results.csv`会在每项评估通过核验后追加一行。
+入口按`configs/project.json`的顺序采集、打包、训练和评估。每项使用100条成功示范独立训练，并按既定协议进行100个有效Episode的正式评估。任务目录保存Checkpoint、部署配置、训练和评估日志、`_result.txt`与视频。根目录的`results.csv`会在每项评估通过核验后追加一行。

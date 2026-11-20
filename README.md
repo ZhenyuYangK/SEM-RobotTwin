@@ -19,7 +19,7 @@ python3 scripts/discover_tasks.py --workspace . --list
 python3 scripts/discover_tasks.py --workspace . --validate
 ```
 
-RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定首次实际检出并审计的`41112765f9904efb2374dd9c8946fb5af452861a`。两份老师原件位于`teacher_inputs/`，哈希清单见`reports/teacher_inputs_sha256.txt`。
+RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定首次实际检出并审计的`41112765f9904efb2374dd9c8946fb5af452861a`。两份原始资料位于`teacher_inputs/`，哈希清单见`reports/teacher_inputs_sha256.txt`。
 
 ## 训练任务与工具
 
@@ -27,12 +27,12 @@ RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定�
 
 | 工具 | 用途 |
 |---|---|
-| `audit_urdf.py` | 检查老师URDF结构及当前资源，支持对本地参照URDF输出差异报告。 |
+| `audit_urdf.py` | 检查原始URDF结构及当前资源，支持对本地参照URDF输出差异报告。 |
 | `prepare_collection.py` | 生成云端暂存`demo_clean.yml`，开启Depth和Endpose并设置示范条数。 |
 | `run_compressed_collection.py` | 运行锁定采集器，以无损压缩写入相机深度。 |
 | `inspect_hdf5.py` | 检查真实单个HDF5文件，或按任务核验SEM采集目录、种子及数据键。 |
 | `make_training_config.py` | 基于锁定SEM配置生成独立单任务Python配置。 |
-| `make_eval_config.py` | 生成老师协议的部署YAML和启动器，`--expert-data-num`显式记录训练示范数。 |
+| `make_eval_config.py` | 生成既定协议的部署YAML和启动器，`--expert-data-num`显式记录训练示范数。 |
 | `run_smoke_eval.py` | 用锁定评估入口执行C6的缩量验证，在内存中调整Episode数。 |
 | `summarize_eval.py` | 从完成日志或经核对的CSV统计有效Episode和成功数。 |
 | `create_cloud_runbook.py` | 依据已确认任务生成云端逐项执行清单。 |

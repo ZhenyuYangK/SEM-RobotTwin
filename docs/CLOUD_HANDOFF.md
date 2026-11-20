@@ -24,7 +24,7 @@ bash scripts/run_local_checks.sh
 | 1 | 核对驱动、GPU、显存、CUDA和Vulkan。项目目标为RTX4090 24GB与CUDA12.1.1镜像。 | `nvidia-smi`、`vulkaninfo --summary`、Python和PyTorch版本及PyTorch实际CUDA。Vulkan输出应枚举NVIDIA物理设备。 |
 | 2 | 核对数据盘的真实挂载点。把RoboTwin运行副本的`data/`映射到数据盘，确保LMDB、训练目录、评估日志和视频也落盘。 | `lsblk -f`、`df -hT`、实际目录与可用容量。取得第一批真实示范和LMDB后再估算正式容量。 |
 | 3 | 对照锁定源码和上游指南审核依赖安装计划，验收SAPIEN最小场景、CuRobo、FFmpeg及可编辑的RoboOrchardLab安装。 | 运行环境依赖清单、最小场景、GPU渲染、规划及视频编码输出。 |
-| 4 | 在获准的云端阶段准备所需权重、场景与机械臂资产。对比老师URDF和实际资产，确认仿真加载URDF和SEM运动学URDF各自的路径和用途。 | 原件与参照SHA256、`audit_urdf.py --compare`报告、Mesh加载、关节索引、夹爪约定和正运动学核对结果。 |
+| 4 | 在获准的云端阶段准备所需权重、场景与机械臂资产。对比原始URDF和实际资产，确认仿真加载URDF和SEM运动学URDF各自的路径和用途。 | 原件与参照SHA256、`audit_urdf.py --compare`报告、Mesh加载、关节索引、夹爪约定和正运动学核对结果。 |
 | 5 | 先执行`place_empty_cup`的10条冒烟采集、HDF5校验、LMDB打包与DataLoader读取，再按200～1000 Step短训练。 | 数据目录、种子、示范数量、路径和形状报告、显存峰值、Step吞吐、Checkpoint及processor导出。 |
 | 6 | 完成策略加载与推理。对少量仿真评估审核独立入口或测试副本。正式评估沿用固定版100个有效Episode。 | 训练产物加载、14维动作、`unseen`指令、有效Episode和成功计数、日志、`_result.txt`与视频。 |
 | 7 | 首任务闭环后，按固定的5个任务清单逐项推进其余4个独立任务。 | 每任务配置、Git提交、原始数据清单、Checkpoint、时间及实际统计。 |
