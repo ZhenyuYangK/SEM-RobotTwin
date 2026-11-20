@@ -11,7 +11,7 @@
   "eval_instruction_type": "unseen",
   "episodes_per_task_target": 100,
   "eval_episodes_target": 15,
-  "train_steps_reference": 100000,
+  "train_steps_reference": 50000,
   "hourly_price_cny": 1.98,
   "cloud_gpu": "RTX 4090 24GB",
   "local_gpu": "RTX 4060 8GB",

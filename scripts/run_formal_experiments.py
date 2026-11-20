@@ -12,12 +12,31 @@ import subprocess
 import sys
 import time
 
-from audit_sources import require_locked_files
+from audit_sources import config_constants, require_locked_files
 from discover_tasks import require_locked_task, validate_config
 from summarize_eval import eval_log_row
 
 
 WORKSPACE = Path(__file__).resolve().parents[1]
+
+
+def training_steps_target():
+    steps = json.loads((WORKSPACE / 'configs/project.json').read_text())['train_steps_reference']
+    if type(steps) is not int or steps <= 0:
+        raise ValueError('train_steps_reference must be a positive integer')
+    return steps
+
+
+def completed_training_steps(run_dir):
+    target = config_constants(run_dir / 'staged/train_config.py').get('max_step')
+    if type(target) is not int or target <= 0:
+        raise ValueError(f'Missing a positive max_step in the staged training config for {run_dir.name}')
+    log = (run_dir / 'train.log').read_text()
+    progress = list(re.finditer(r'GlobalStep\[(\d+)/(\d+)\]', log))
+    if (not progress or tuple(map(int, progress[-1].groups())) != (target, target)
+            or log.rfind('FINISH TRAINING') < progress[-1].end()):
+        raise ValueError(f'Missing completed {target}-step training evidence for {run_dir.name}')
+    return target
 
 
 def run_logged(command, cwd, log_path, monitor_gpu=False):
@@ -131,7 +150,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--base', type=Path, required=True, help='Data disk project root from the cloud preparation')
     parser.add_argument('--output', type=Path, required=True, help='New results directory under the data disk project')
-    parser.add_argument('--max-step', type=int, required=True)
+    parser.add_argument('--max-step', type=int, default=training_steps_target(),
+                        help='Training steps (default: %(default)s from configs/project.json)')
     parser.add_argument('--batch-size', type=int, required=True)
     parser.add_argument('--pretrained', type=Path, required=True)
     parser.add_argument('--bert', type=Path, required=True)

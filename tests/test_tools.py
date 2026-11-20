@@ -14,6 +14,7 @@ from audit_urdf import compare_urdfs, inspect_urdf
 from discover_tasks import validate_config
 from make_eval_config import create_files, projection_config
 from make_training_config import write_config
+from run_formal_experiments import completed_training_steps
 from summarize_eval import aggregate, eval_log_episodes, eval_log_row
 from estimate_budget import estimate
 from estimate_storage import estimate_storage
@@ -146,6 +147,24 @@ class TestEval(unittest.TestCase):
 
 
 class TestTrainAndSource(unittest.TestCase):
+    def test_training_completion_checks_the_saved_run_target(self):
+        with tempfile.TemporaryDirectory() as directory:
+            run = Path(directory)
+            staged = run / 'staged'
+            staged.mkdir()
+            log = run / 'train.log'
+            for steps in (50000, 100000):
+                with self.subTest(steps=steps):
+                    (staged / 'train_config.py').write_text(f'config = dict(max_step={steps})\n')
+                    log.write_text(f'GlobalStep[{steps}/{steps}]\nFINISH TRAINING\n')
+                    self.assertEqual(completed_training_steps(run), steps)
+                    log.write_text(f'FINISH TRAINING\nGlobalStep[{steps}/{steps}]\n')
+                    with self.assertRaises(ValueError):
+                        completed_training_steps(run)
+                    log.write_text(f'GlobalStep[{steps - 25}/{steps}]\nFINISH TRAINING\n')
+                    with self.assertRaises(ValueError):
+                        completed_training_steps(run)
+
     def test_config_patch(self):
         src = '# 中文注释\nconfig = dict(task_names=["old"], multi_task=True, max_step=100000, data_path="x", urdf="y")\ndef build_model(x):\n    return x\n'
         patched = write_config(src, {'task_names': ['place_empty_cup'], 'multi_task': False, 'max_step': 1000, 'data_path': '/data/lmdb', 'urdf': '/path/to.urdf'})

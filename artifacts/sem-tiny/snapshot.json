@@ -1,0 +1,207 @@
+{
+  "captured_at_utc": "2026-11-20T18:51:44+00:00",
+  "tasks": {
+    "place_empty_cup": {
+      "phase": "stopped",
+      "evaluation_stopped_at_utc": "2026-11-20T18:50:19+00:00",
+      "train_step": 100000,
+      "target_steps": 100000,
+      "train_seconds": 33227.34,
+      "training_completed": true,
+      "checkpoint": "c7-formal/place_empty_cup/train/checkpoints/checkpoint_25/model.safetensors",
+      "checkpoint_sha256": "631d5fa364db57834b47a5c936586e342fb16214c862e0343ba69ed2e9097d8d",
+      "checkpoint_bytes": 198329592,
+      "stop_reason": "manual_stop",
+      "evaluated_episodes": 94,
+      "successes": 86,
+      "target_eval_episodes": 100,
+      "success_rate_pct": 91.4894,
+      "formal_result": false,
+      "train_metrics": "c7-formal/place_empty_cup/train_metrics.csv",
+      "loss_at_final_logged_step": 0.0146,
+      "representative_videos": [
+        {
+          "path": "c7-formal/place_empty_cup/videos/episode_001.mp4",
+          "episode": 1,
+          "scene_seed": 1000100001,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/place_empty_cup/videos/episode_021.mp4",
+          "episode": 21,
+          "scene_seed": 1000100025,
+          "success": 0
+        },
+        {
+          "path": "c7-formal/place_empty_cup/videos/episode_086.mp4",
+          "episode": 86,
+          "scene_seed": 1000100098,
+          "success": 0
+        },
+        {
+          "path": "c7-formal/place_empty_cup/videos/episode_094.mp4",
+          "episode": 94,
+          "scene_seed": 1000100109,
+          "success": 1
+        }
+      ]
+    },
+    "adjust_bottle": {
+      "phase": "train",
+      "train_step": 41825,
+      "target_steps": 100000
+    },
+    "beat_block_hammer": {
+      "phase": "train",
+      "train_step": 44400,
+      "target_steps": 100000
+    },
+    "handover_block": {
+      "phase": "queued"
+    },
+    "place_container_plate": {
+      "phase": "queued"
+    }
+  },
+  "implementation": {
+    "sem_cloud_runtime_commit": "3a20e74496401cd1f09f36b23b5e006bfbfe6384",
+    "robotwin_commit": "e71140e9734e69686daa420a9be8b75a20ff4587",
+    "robo_orchard_lab_commit": "41112765f9904efb2374dd9c8946fb5af452861a",
+    "cloud_scheduler_sha256": "cec4d49999ea983973cb2e2e1dcddeaf1bddd79d321dde8bec107a920bd26f09",
+    "cloud_worker_sha256": "bd210884304e112bae8cf0e189eef46ac1f11584579b1569701e1b2c4d556965",
+    "deployed_files": [
+      "c7-parallel-control/schedule.py",
+      "c7-parallel-control/worker.py"
+    ],
+    "maintained_paths": [
+      "scripts/run_formal_experiments.py",
+      "scripts/c7_parallel",
+      "scripts/summarize_eval.py",
+      "configs/project.json"
+    ]
+  },
+  "evaluation_protocol": {
+    "expected_valid_episodes": 100,
+    "policy": "sem_policy",
+    "task_config": "demo_clean",
+    "base_seed": 10000,
+    "instruction_type": "unseen",
+    "ckpt_setting": "none"
+  },
+  "files": [
+    {
+      "path": "c7-formal/place_empty_cup/eval_episodes.csv",
+      "bytes": 1617,
+      "sha256": "d73cd8c0254ec76123a2d34a8b0aa0ce0d0323610b019bd3ec835e4b750a7277",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/eval_evidence.txt",
+      "bytes": 5234,
+      "sha256": "60fbd40fea7c2ee7cfbb728c6213b8274fb23937970c9c1b30b642474fab7d48",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/staged/demo_clean.yml",
+      "bytes": 726,
+      "sha256": "cfc4e4006de3e368ca2338318b9d0d823db18da5697e25cefcdb23ef986d9730",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/staged/sem_policy/deploy_policy.yml",
+      "bytes": 454,
+      "sha256": "c4ed110c6515efd8a9ad5dd982f90e3348607d1ee9a67c6719e7d0c83af49d5d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/staged/sem_policy/eval.sh",
+      "bytes": 859,
+      "sha256": "f2c13479b81cfc5c7b0442c645f85339383d3463266cd451660af4d115313d96",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/staged/sem_policy/eval_config.py",
+      "bytes": 757,
+      "sha256": "15b3102d05d66cd8aa33c43b0f5fe592e830b605a295dcb14ddd09c287e02046",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/staged/train_config.py",
+      "bytes": 22790,
+      "sha256": "7e388633ae3d538319919bc9b59b2259c652969c5a1ecf1949ee80b64f6f2dd7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/staged/train_kwargs.json",
+      "bytes": 36,
+      "sha256": "81746e149496ea423b6858043139702a9514ecc1af61ce48509959b168604e27",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/train/checkpoints/checkpoint_25/model.config.json",
+      "bytes": 15920,
+      "sha256": "cb371304c9a7fdb84e0796141f6b5a722316d1513af97a5265770ee660c67b5f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/train/checkpoints/checkpoint_25/model.safetensors",
+      "bytes": 198329592,
+      "sha256": "631d5fa364db57834b47a5c936586e342fb16214c862e0343ba69ed2e9097d8d",
+      "lfs": true
+    },
+    {
+      "path": "c7-formal/place_empty_cup/train/robotwin2_0_processor.json",
+      "bytes": 5081,
+      "sha256": "5584e494445d64f55148d8793a54107df180dea437fe618a9fdbc567fb549c11",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/train_metrics.csv",
+      "bytes": 135614,
+      "sha256": "461cfd15d36ca59592983b9b9170d1736910a90e5b4b319ac126ee6138aa5487",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/videos/episode_001.mp4",
+      "bytes": 100175,
+      "sha256": "96e73dc2e2bbbe09fb6489e364c3ae39dedeeaa8df8e91c089e7135e90d10fe6",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/videos/episode_021.mp4",
+      "bytes": 358338,
+      "sha256": "3f84ac59bd2db53914e023887863b2c560a3fa0d7a8604798c6beb7deac7d90f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/videos/episode_086.mp4",
+      "bytes": 385054,
+      "sha256": "04eff38a0cb7b3c52974c7536e8c28b64efe0b1444255feaac8ad07daf555617",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/videos/episode_094.mp4",
+      "bytes": 107884,
+      "sha256": "491305b08d9c4a8a5eef516c41400c2ee48803273425d2bdb325f93c93e2c574",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/results.csv",
+      "bytes": 441,
+      "sha256": "dace5990537ea65585431fcd596edbc6e794559f5d28a78af0e9245137f89bfd",
+      "lfs": false
+    },
+    {
+      "path": "c7-parallel-control/schedule.py",
+      "bytes": 7534,
+      "sha256": "cec4d49999ea983973cb2e2e1dcddeaf1bddd79d321dde8bec107a920bd26f09",
+      "lfs": false
+    },
+    {
+      "path": "c7-parallel-control/worker.py",
+      "bytes": 8732,
+      "sha256": "bd210884304e112bae8cf0e189eef46ac1f11584579b1569701e1b2c4d556965",
+      "lfs": false
+    }
+  ]
+}

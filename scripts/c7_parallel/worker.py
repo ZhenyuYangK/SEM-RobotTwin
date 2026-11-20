@@ -21,7 +21,6 @@ URDF = ROBOTWIN / "assets/embodiments/aloha-agilex/urdf/arx5_description_isaac.u
 PRETRAINED = BASE / "weights/groundingdino_swint_ogc_mmdet-822d7e9d-rename.pth"
 BERT = BASE / "weights/bert-base-uncased-86b5e0934494bd15c9632b12f734a8a67f723594"
 DEMOS = 100
-STEPS = 100000
 EPISODES = json.loads((REPO / "configs/project.json").read_text())["eval_episodes_target"]
 TASKS = ("place_empty_cup", "adjust_bottle", "beat_block_hammer", "handover_block", "place_container_plate")
 SOURCES = {
@@ -29,7 +28,7 @@ SOURCES = {
     "beat_block_hammer": BASE / "runs/beat_block_hammer-parallel-check/raw",
 }
 sys.path.insert(0, str(REPO / "scripts"))
-from run_formal_experiments import run_logged
+from run_formal_experiments import completed_training_steps, run_logged, training_steps_target
 from summarize_eval import eval_log_row
 
 def tool(name, *args):
@@ -106,11 +105,12 @@ def train_task(task):
     if not all((lmdb / name / "data.mdb").stat().st_size for name in ("image", "depth", "index", "meta")):
         raise ValueError(f"Incomplete LMDB for {task}")
     config = staged / "train_config.py"
+    steps = training_steps_target()
     tool("make_training_config", "--task", task, "--data-path", lmdb, "--urdf", URDF,
-         "--pretrained-checkpoint", PRETRAINED, "--bert-checkpoint", BERT, "--max-step", str(STEPS), "--out", config)
+         "--pretrained-checkpoint", PRETRAINED, "--bert-checkpoint", BERT, "--max-step", str(steps), "--out", config)
     kwargs = staged / "train_kwargs.json"
     write_json(kwargs, {"batch_size": 2, "num_workers": 4})
-    state(task, "train")
+    state(task, "train", target_steps=steps)
     elapsed = run_logged([sys.executable, "train.py", "--config", config, "--workspace", training,
                           "--kwargs", kwargs], TRAIN_DIR, run_dir / "train.log", monitor_gpu=True)
     write_json(run_dir / "training_complete.json", {"train_seconds": elapsed})
@@ -120,9 +120,7 @@ def evaluate(task):
     run_dir, runtime = layout(task)
     raw, staged, training, videos = (run_dir / key for key in ("raw", "staged", "train", "eval_result"))
     shutil.copyfile(staged / "demo_clean.yml", runtime / "task_config/demo_clean.yml")
-    log = (run_dir / "train.log").read_text()
-    if f"GlobalStep[{STEPS}/{STEPS}]" not in log or "FINISH TRAINING" not in log:
-        raise ValueError(f"Missing completed formal training evidence for {task}")
+    steps = completed_training_steps(run_dir)
     checkpoint = max(training.glob("checkpoints/checkpoint_*/model.safetensors"),
                      key=lambda path: int(path.parent.name.rsplit("_", 1)[-1]))
     if not checkpoint.stat().st_size or not (training / "robotwin2_0_processor.json").stat().st_size:
@@ -152,7 +150,7 @@ def evaluate(task):
     tool("summarize_eval", *summary_args, "--output", run_dir / "eval_summary.csv")
     tool("summarize_eval", *summary_args, "--episode-output", run_dir / "eval_episodes.csv")
     elapsed = json.loads((run_dir / "training_complete.json").read_text())["train_seconds"]
-    outcome = dict(task=task, demos=DEMOS, steps=STEPS, episodes=EPISODES, successes=successes,
+    outcome = dict(task=task, demos=DEMOS, steps=steps, episodes=EPISODES, successes=successes,
                    success_rate_pct=100 * successes / EPISODES, checkpoint=str(checkpoint),
                    result=str(result), train_seconds=elapsed, eval_seconds=eval_seconds)
     write_json(run_dir / "completion.json", outcome)

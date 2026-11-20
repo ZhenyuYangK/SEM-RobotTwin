@@ -23,7 +23,7 @@
 ## 特别说明
 
 - 本轮固定为5个任务，均采用**独立单任务SEM-Tiny**训练。
-- 默认训练100000 Step是官方配置参考；实际需要经过1000 Step测速和用户批准。
+- 上游参考为100000步。后续新启动的训练默认50000步，用1000步短训练测量吞吐。
 - `expert_data_num`记录训练示范数量。项目通过`eval_episodes_target`指定评估回合数。
 - 在实测第一批10个Episode磁盘占用前，数据盘200GB仅作**初期规划值**，而非总空间保证。
 
@@ -53,4 +53,4 @@ C5通过。LMDB和DataLoader已验收，1000步训练完成并保存Checkpoint�
 
 C6通过。已验证Checkpoint加载、有限的32×14动作序列、3次有效评估和3个视频。短训练模型结果为0/3。[缩量评估记录](../reports/cloud_preflight.md#c6策略加载与缩量评估)
 
-C7运行中。`place_empty_cup`已完成100000步训练，评估停在94次、成功86次，云端实验目录保留15条精选视频。`adjust_bottle`与`beat_block_hammer`继续训练，`handover_block`开始采集，`place_container_plate`排队。后续任务各完成15次有效评估后写入汇总。[正式实验进展](../reports/cloud_preflight.md#c7正式实验进展)
+C7运行中。`place_empty_cup`已完成100000步训练，评估停在94次、成功86次，验收产物已合入`main`，云端实验目录保留15条精选视频。`adjust_bottle`与`beat_block_hammer`继续训练，`handover_block`开始采集，`place_container_plate`排队。后续新启动的工作流采用50000步训练目标，各完成15次有效评估后写入汇总。[正式实验进展](../reports/cloud_preflight.md#c7正式实验进展)

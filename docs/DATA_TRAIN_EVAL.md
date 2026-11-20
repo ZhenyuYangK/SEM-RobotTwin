@@ -83,21 +83,21 @@ python3 scripts/summarize_eval.py --log "$RUN_DIR/eval.log" --task adjust_bottle
 
 ## C7五项正式实验
 
-在已验收的云端环境中，`CLOUD_BASE`指向数据盘工程目录。用C5实测选择`TRAIN_STEPS`和`BATCH_SIZE`。`OUTPUT`是数据盘下新建的结果目录。
+在已验收的云端环境中，`CLOUD_BASE`指向数据盘工程目录。`OUTPUT`是数据盘下新建的结果目录。`BATCH_SIZE`按C5实测选择。新启动的训练默认读取`configs/project.json`中的`train_steps_reference=50000`，串行入口支持用`--max-step`显式指定。
 
 ```bash
 cd "$PREP"
 source "$CLOUD_BASE/runtime/env.sh"
 python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" --output "$OUTPUT" \
-  --max-step "$TRAIN_STEPS" --batch-size "$BATCH_SIZE" \
+  --batch-size "$BATCH_SIZE" \
   --pretrained "$PRETRAINED" --bert "$BERT_CHECKPOINT"
 ```
 
-入口按`configs/project.json`的顺序采集、打包、训练和评估。每项使用100条成功示范独立训练，评估回合数读取`eval_episodes_target`。任务目录保存Checkpoint、部署配置、训练和评估日志、`_result.txt`与视频。根目录的`results.csv`会在每项评估通过核验后追加一行。
+入口按`configs/project.json`的顺序采集、打包、训练和评估。每项使用100条成功示范独立训练，评估回合数读取`eval_episodes_target`。任务目录保存Checkpoint、部署配置、训练和评估日志、`_result.txt`与视频。根目录的`results.csv`记录各任务实际完成的训练步数。并行调度用每项实验保存的训练配置和完成日志核对已启动任务。
 
 本次云端运行采用[并行调度脚本](../scripts/c7_parallel)，最多同时运行3项独立实验。每项使用自己的RoboTwin运行副本，并独立保存训练与评估产物。调度状态记录在数据盘`runs/c7-parallel-control/queue.json`。
 
-`schedule.py --preflight`校验运行副本和权重。`--adopt`用于本次从串行入口交接首项训练，需要原入口及其训练和监控进程仍在运行，同时两个后续任务的工作进程已启动。交接会终止原串行入口进程，由并行调度继续跟踪其训练子进程。
+`schedule.py --preflight`校验运行副本和权重。`--adopt`用于本次从串行入口交接首项训练，需要原入口及其训练和监控进程仍在运行，同时两个后续任务的工作进程已启动。交接会终止原串行入口进程，由并行调度继续跟踪其训练子进程。`--check-resume`可先校验续接快照中的进程和排队任务。
 
 `schedule.py --resume`可从云端控制目录里的交接快照接管正在运行的训练。快照记录训练PID、显存监控PID、开始时间和待运行任务。接管后的评估按当前项目配置执行。
 

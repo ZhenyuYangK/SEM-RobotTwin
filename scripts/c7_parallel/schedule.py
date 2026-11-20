@@ -11,7 +11,8 @@ import sys
 import time
 from pathlib import Path
 
-from worker import BASE, CONTROL, DEMOS, EPISODES, OUTPUT, STEPS, TASKS, write_json, state, verified_inputs
+from worker import (BASE, CONTROL, DEMOS, EPISODES, OUTPUT, TASKS, completed_training_steps,
+                    state, training_steps_target, verified_inputs, write_json)
 
 TASK_LIMIT = 3
 FIRST = TASKS[0]
@@ -73,7 +74,8 @@ def save_completion(task):
     complete = OUTPUT / task / "completion.json"
     outcome = json.loads(complete.read_text())
     allowed_episodes = {EPISODES, 100} if task == FIRST else {EPISODES}
-    if (outcome["task"] != task or outcome["demos"] != DEMOS or outcome["steps"] != STEPS
+    if (outcome["task"] != task or outcome["demos"] != DEMOS
+            or outcome["steps"] != completed_training_steps(OUTPUT / task)
             or outcome["episodes"] not in allowed_episodes):
         raise ValueError(f"Unexpected formal outcome for {task}")
     episodes, successes = outcome["episodes"], outcome["successes"]
@@ -111,13 +113,14 @@ def schedule(adopted, external, waiting, stopped=()):
             del adopted[task]
             if process(monitor, "nvidia-smi --query-gpu=timestamp,memory.used,utilization.gpu"):
                 os.kill(monitor, signal.SIGTERM)
-            log = (run / "train.log").read_text()
-            if f"GlobalStep[{STEPS}/{STEPS}]" in log and "FINISH TRAINING" in log:
+            try:
+                completed_training_steps(run)
+            except ValueError as error:
+                state(task, "failed", error=str(error))
+                failed.add(task)
+            else:
                 write_json(run / "training_complete.json", {"train_seconds": round(time.time() - start_time, 2)})
                 workers[task] = start(task, "eval")
-            else:
-                state(task, "failed", error="Adopted training exited before formal completion")
-                failed.add(task)
         for task, pid in list(external.items()):
             if not process(pid, f"worker.py full {task}"):
                 del external[task]
@@ -142,18 +145,20 @@ def schedule(adopted, external, waiting, stopped=()):
         write_json(CONTROL / "queue.json",
                    {"max_active": TASK_LIMIT, "active": active, "waiting": waiting,
                     "complete": sorted(finished), "failed": sorted(failed), "stopped": list(stopped),
-                    "eval_episodes_target": EPISODES})
+                    "eval_episodes_target": EPISODES, "train_steps_target": training_steps_target()})
         if not active:
             break
         time.sleep(10)
     if failed:
         raise RuntimeError(f"Formal tasks requiring recovery: {', '.join(sorted(failed))}")
 
-def resume(snapshot):
+def resume(snapshot, *, check_only=False):
     verified_inputs()
     data = json.loads(snapshot.read_text())
     adopted, waiting, stopped = (data[key] for key in ("adopted", "waiting", "stopped"))
-    if sorted([*adopted, *waiting, *stopped]) != sorted(TASKS) or len(adopted) > TASK_LIMIT:
+    external = data.get("external", {})
+    if (sorted([*adopted, *external, *waiting, *stopped]) != sorted(TASKS)
+            or len(adopted) + len(external) > TASK_LIMIT):
         raise ValueError("Resume snapshot must cover each C7 task once and fit the worker limit")
     if any(phase_for(task) != "stopped" for task in stopped):
         raise ValueError("Resume snapshot includes a task without a recorded stop")
@@ -166,8 +171,16 @@ def resume(snapshot):
         if (Path(f"/proc/{trainer}/fd/1").resolve() != run / "train.log"
                 or Path(f"/proc/{monitor}/fd/1").resolve() != run / "train.gpu.csv"):
             raise ValueError(f"Trainer or telemetry log does not match {task}")
-    print(f"Resuming C7 with {EPISODES} evaluation episodes per task", flush=True)
-    schedule(adopted, {}, waiting, stopped)
+    for task, pid in external.items():
+        if (not process(pid, f"worker.py full {task}")
+                or Path(f"/proc/{pid}/fd/1").resolve() != CONTROL / f"{task}.worker.log"):
+            raise ValueError(f"Worker or worker log does not match {task}")
+    if check_only:
+        print("C7 resume snapshot passed verification", flush=True)
+        return
+    print(f"Resuming C7 with {training_steps_target()} steps for new runs and {EPISODES} evaluation episodes",
+          flush=True)
+    schedule(adopted, external, waiting, stopped)
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -176,8 +189,13 @@ def main():
     mode.add_argument("--adopt", type=int, nargs=3, metavar=("CONTROLLER_PID", "TRAINER_PID", "MONITOR_PID"),
                       help="Perform the one-time handoff from the original serial run")
     mode.add_argument("--resume", type=Path, metavar="SNAPSHOT",
-                      help="Resume dispatch from a snapshot of active trainers, queued tasks and stopped tasks")
+                      help="Resume dispatch from a snapshot of active workflows, queued tasks and stopped tasks")
+    mode.add_argument("--check-resume", type=Path, metavar="SNAPSHOT",
+                      help="Verify a resume snapshot without starting a scheduler")
     args = parser.parse_args()
+    if args.check_resume is not None:
+        resume(args.check_resume, check_only=True)
+        return
     if args.adopt is None and args.resume is None:
         verified_inputs()
         print("C7 coordinator preflight passed")
