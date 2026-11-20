@@ -38,3 +38,6 @@ generated/
 id_ed25519*
 
 # Keep scripts, templates, teacher_inputs and project configs versioned
+
+# Local upstream source checkouts
+/src/
