@@ -8,6 +8,8 @@ import subprocess
 from pathlib import Path
 
 PIN = 'e71140e9734e69686daa420a9be8b75a20ff4587'
+SEM_PIN = '41112765f9904efb2374dd9c8946fb5af452861a'
+REVISIONS = {'RoboTwin': PIN, 'RoboOrchardLab': SEM_PIN}
 REQUIRED = {
     'RoboOrchardLab': [
         'projects/sem/robotwin/README.md',
@@ -28,6 +30,30 @@ def git_rev(root):
     return result.stdout.strip() if result.returncode == 0 else None
 
 
+def require_locked_files(workspace, project, *paths):
+    root = Path(workspace).resolve() / 'src' / project
+    expected = REVISIONS[project]
+    if git_rev(root) != expected:
+        raise ValueError(f'{project} must be checked out at {expected}')
+    for path in paths:
+        if not (root / path).is_file():
+            raise ValueError(f'Missing {project} source: {path}')
+    result = subprocess.run(
+        ['git', '-C', str(root), 'status', '--porcelain', '--untracked-files=all', '--', *paths],
+        capture_output=True, text=True, check=True,
+    )
+    for path in paths:
+        versioned = subprocess.run(
+            ['git', '-C', str(root), 'ls-files', '--error-unmatch', '--', path],
+            capture_output=True, check=False,
+        )
+        if versioned.returncode:
+            raise ValueError(f'Untracked {project} source: {path}')
+    if result.stdout:
+        raise ValueError(f'{project} source differs from the checked-out revision: {result.stdout.strip()}')
+    return root
+
+
 def config_constants(file):
     if not file.is_file():
         return {}
@@ -39,7 +65,7 @@ def config_constants(file):
         if not isinstance(node.value, ast.Call) or not isinstance(node.value.func, ast.Name) or node.value.func.id != 'dict':
             continue
         for kw in node.value.keywords:
-            if kw.arg not in {'batch_size', 'max_step', 'multi_task', 'task_names', 'with_depth', 'with_depth_loss', 'checkpoint', 'urdf'}:
+            if kw.arg not in {'batch_size', 'max_step', 'multi_task', 'task_names', 'with_depth', 'with_depth_loss', 'checkpoint', 'bert_checkpoint', 'data_path', 'save_step_freq', 'urdf'}:
                 continue
             try:
                 vals[kw.arg] = ast.literal_eval(kw.value)
@@ -59,15 +85,14 @@ def audit(workspace):
         report['source_checkouts'][name] = {'exists': exists, 'commit': rev, 'missing_paths': missing}
         if not exists:
             report['not_ready'].append(f'{name}: checkout not yet cloned')
+        elif rev != REVISIONS[name]:
+            report['not_ready'].append(f'{name} commit mismatch: {rev} != {REVISIONS[name]}')
         elif missing:
             report['not_ready'].append(f'{name}: {len(missing)} expected paths absent; inspect selected version')
     sem = workspace / 'src/RoboOrchardLab'
     rob = workspace / 'src/RoboTwin'
     report['interface_hints']['sem_config'] = config_constants(sem / 'projects/sem/robotwin/config_sem_robotwin.py')
     if rob.is_dir():
-        rev = report['source_checkouts']['RoboTwin']['commit']
-        if rev != PIN:
-            report['not_ready'].append(f'RoboTwin commit mismatch: {rev} != {PIN}')
         ep = rob / 'script/eval_policy.py'
         if ep.is_file():
             src = ep.read_text(encoding='utf-8', errors='replace')
@@ -101,7 +126,7 @@ def main():
     if r['not_ready']:
         print('STATUS: NOT_READY (source checkout/inspection needs attention)')
     else:
-        print('STATUS: Source paths present; manual compatibility inspection is still required')
+        print('STATUS: Locked source paths present. See reports/code_audit.md for the interface audit.')
 
 
 if __name__ == '__main__':

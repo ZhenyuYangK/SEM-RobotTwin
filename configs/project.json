@@ -16,7 +16,31 @@
   "cloud_gpu": "RTX 4090 24GB",
   "local_gpu": "RTX 4060 8GB",
   "tasks": [
-    {"name": "place_empty_cup", "status": "pending_source_validation", "include": true}
+    {
+      "name": "place_empty_cup",
+      "status": "verified_in_pinned_source",
+      "include": true
+    },
+    {
+      "name": "adjust_bottle",
+      "status": "verified_in_pinned_source",
+      "include": true
+    },
+    {
+      "name": "beat_block_hammer",
+      "status": "verified_in_pinned_source",
+      "include": true
+    },
+    {
+      "name": "handover_block",
+      "status": "verified_in_pinned_source",
+      "include": true
+    },
+    {
+      "name": "place_container_plate",
+      "status": "verified_in_pinned_source",
+      "include": true
+    }
   ],
-  "notes": "其余任务由锁定版RoboTwin源码发现后添加。任务数量目标5~10，不预设未经验证的任务名称。"
+  "notes": "用户已确认首批5任务和顺序。先以place_empty_cup完成云端单任务验证，再逐项推进。"
 }

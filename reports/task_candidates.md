@@ -1,6 +1,6 @@
 # 首批5个RoboTwin任务候选
 
-在RoboTwin提交`e71140e9734e69686daa420a9be8b75a20ff4587`执行`python3 scripts/discover_tasks.py --workspace . --list`，发现50个任务模块。下列五项均有同名任务类、专家轨迹、成功判据、seen/unseen指令模板和评估步长，均对应上游SEM结果表中的任务类别。待确认后写入`configs/project.json`，首轮按顺序从`place_empty_cup`开始，每项独立训练。
+在RoboTwin提交`e71140e9734e69686daa420a9be8b75a20ff4587`执行`python3 scripts/discover_tasks.py --workspace . --list`，发现50个任务模块。下列五项均有同名任务类、专家轨迹、成功判据、seen/unseen指令模板和评估步长，均对应上游SEM结果表中的任务类别。经用户确认后已写入`configs/project.json`，首轮按顺序从`place_empty_cup`开始，每项独立训练。
 
 | 顺序 | 源码任务 | 专家动作与成功判据 | 评估步长 |
 |---|---|---|---:|

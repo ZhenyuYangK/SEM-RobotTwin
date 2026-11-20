@@ -26,7 +26,10 @@
       "with_depth_loss": true,
       "batch_size": 8,
       "max_step": "int(100000.0)",
+      "save_step_freq": 4000,
       "checkpoint": "./ckpt/groundingdino_swint_ogc_mmdet-822d7e9d-rename.pth",
+      "bert_checkpoint": "./ckpt/bert-base-uncased",
+      "data_path": "./data/lmdb",
       "urdf": "./urdf/arx5/arx5_description_isaac.urdf",
       "multi_task": false,
       "task_names": [
