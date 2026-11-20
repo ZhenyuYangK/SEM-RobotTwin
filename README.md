@@ -36,5 +36,6 @@ RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定�
 | `run_smoke_eval.py` | 用锁定评估入口执行C6的缩量验证，在内存中调整Episode数。 |
 | `summarize_eval.py` | 从完成日志或经核对的CSV统计有效Episode和成功数。 |
 | `create_cloud_runbook.py` | 依据已确认任务生成云端逐项执行清单。 |
+| `run_formal_experiments.py` | 通过C6后，按配置顺序运行5项正式实验并核对各项训练和评估产物。 |
 
 云端步骤见[采集与训练评估](docs/DATA_TRAIN_EVAL.md)和[迁移与启动清单](docs/CLOUD_HANDOFF.md)。阶段验收见[阶段计划](docs/PHASE_PLAN.md)。

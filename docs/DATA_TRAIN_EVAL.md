@@ -54,6 +54,7 @@ python3 scripts/make_training_config.py --task place_empty_cup \
 cd "$PREP"
 python3 scripts/make_eval_config.py --task place_empty_cup \
   --checkpoint "$CHECKPOINT" --config-file "$EVAL_CONFIG" \
+  --align-projection-dtype \
   --expert-data-num 10 --out "$RUN_DIR/staged/sem_policy"
 python3 scripts/summarize_eval.py --log "$RUN_DIR/eval.log" --task place_empty_cup \
   --output "$RUN_DIR/eval_summary.csv"
@@ -72,3 +73,17 @@ python3 scripts/summarize_eval.py --log "$RUN_DIR/eval_smoke.log" --task place_e
 ```
 
 正式入口为从已部署的`RoboTwin/policy/sem_policy/`运行`bash eval.sh`，将完整标准输出保留到`eval.log`。`summarize_eval.py --log`默认要求100条连续计数和结果保存标记。用`--input`可读取核对后的CSV。
+
+## C7五项正式实验
+
+在已验收的云端环境中，`CLOUD_BASE`指向数据盘工程目录。用C5实测选择`TRAIN_STEPS`和`BATCH_SIZE`。`OUTPUT`是数据盘下新建的结果目录。
+
+```bash
+cd "$PREP"
+source "$CLOUD_BASE/runtime/env.sh"
+python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" --output "$OUTPUT" \
+  --max-step "$TRAIN_STEPS" --batch-size "$BATCH_SIZE" \
+  --pretrained "$PRETRAINED" --bert "$BERT_CHECKPOINT"
+```
+
+入口按`configs/project.json`的顺序采集、打包、训练和评估。每项使用100条成功示范独立训练，并按老师协议进行100个有效Episode的正式评估。任务目录保存Checkpoint、部署配置、训练和评估日志、`_result.txt`与视频。根目录的`results.csv`会在每项评估通过核验后追加一行。

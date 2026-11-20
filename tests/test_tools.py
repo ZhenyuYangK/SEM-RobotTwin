@@ -1,15 +1,18 @@
 import ast
+import runpy
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from types import ModuleType
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 
 from audit_urdf import compare_urdfs, inspect_urdf
 from discover_tasks import validate_config
-from make_eval_config import create_files
+from make_eval_config import create_files, projection_config
 from make_training_config import write_config
 from summarize_eval import aggregate, eval_log_row
 from estimate_budget import estimate
@@ -83,6 +86,30 @@ class TestEval(unittest.TestCase):
     def test_eval_task_injection_rejected(self):
         with self.assertRaises(ValueError):
             create_files('t;rm -rf /', 'model.safetensors', 'config_sem_robotwin.py', 5, ROOT / 'templates')
+
+    def test_eval_projection_cast_precedes_matrix_multiplication(self):
+        transforms = 'robo_orchard_lab.dataset.robotwin.transforms'
+        module = ModuleType(transforms)
+        module.ConvertDataType = object()
+        module.GetProjectionMat = object()
+        with tempfile.TemporaryDirectory() as directory, patch.dict(sys.modules, {transforms: module}):
+            original = Path(directory) / 'train config.py'
+            original.write_text(
+                f'from {transforms} import GetProjectionMat\n'
+                'config = {}\n'
+                'def build_model(config): return config\n'
+                'def build_transforms(config, calibration=None):\n'
+                '    return ["train"], [{"type": GetProjectionMat}]\n'
+            )
+            wrapper = Path(directory) / 'eval_config.py'
+            wrapper.write_text(projection_config(original))
+            train, validation = runpy.run_path(wrapper)['build_transforms']({})
+        self.assertEqual(train, ['train'])
+        self.assertIs(validation[0]['type'], module.ConvertDataType)
+        self.assertIs(validation[1]['type'], module.GetProjectionMat)
+        self.assertEqual(validation[0]['convert_map'], dict.fromkeys(
+            ('intrinsic', 'T_world2cam', 'T_base2world'), 'float32',
+        ))
 
     def test_eval_log_requires_completed_count_sequence(self):
         log = ('Task Name: place_empty_cup\nPolicy Name: sem_policy\n'
