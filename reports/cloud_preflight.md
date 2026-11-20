@@ -59,3 +59,9 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 - 10条示范已打包为148656393字节的LMDB。`image`、`depth`、`index`和`meta`均生成。DataLoader读到4路图像和深度，原始关节和末端状态为14维。变换后的动作训练输入包含`(1, 64, 14, 8)`的预测窗口。
 - SEM-Tiny以`batch_size=2`、4个DataLoader工作进程运行1000步。训练日志记录`GlobalStep[1000/1000]`，含启动和保存耗时315秒，训练后段约0.28秒/步，显存采样峰值2508MiB。最终Checkpoint文件为198329592字节。
 - 最终模型、处理器配置和训练日志保存在`runs/place_empty_cup-smoke/train-batch-2/`，Checkpoint为`checkpoints/checkpoint_1/model.safetensors`。C6已成功加载该Checkpoint。
+
+## C6策略加载与缩量评估
+
+- 首次推理在投影矩阵乘法处遇到`float32`与`float64`混用。生成的评估配置在乘法前把相机内参、世界到相机矩阵和机器人基座矩阵统一为`float32`。同一Checkpoint复测通过，动作序列形状为`(32, 14)`，数值均为有限值。
+- 按`sem_policy`、`demo_clean`、`seed=10000`、`unseen`、`ckpt_setting=none`使用3个有效Episode验收，结果为0/3。日志、`_result.txt`、CSV计数和3个可读取的视频一致。实际评估耗时299.1秒，显存采样峰值5566MiB。
+- 证据保存在数据盘`runs/place_empty_cup-smoke/`的`eval_smoke_projection.log`、`eval_smoke_summary.csv`和`eval_result/`。

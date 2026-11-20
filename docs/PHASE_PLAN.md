@@ -49,4 +49,6 @@ C3通过。老师URDF与官方仿真URDF的SHA256一致。已验证Mesh加载、
 
 C4通过。`place_empty_cup`的10条成功示范已验证4路RGB-D、末端状态、关节动作及指令，并生成10个视频。[示范采集记录](../reports/cloud_preflight.md#c4示范采集)
 
-C5通过。LMDB和DataLoader已验收，1000步训练完成并保存Checkpoint。C6已加载模型，正在修正评估投影矩阵的浮点类型。[短训练记录](../reports/cloud_preflight.md#c5打包与短训练)
+C5通过。LMDB和DataLoader已验收，1000步训练完成并保存Checkpoint。[短训练记录](../reports/cloud_preflight.md#c5打包与短训练)
+
+C6通过。已验证Checkpoint加载、有限的32×14动作序列、3次有效评估和3个视频。短训练模型结果为0/3。[缩量评估记录](../reports/cloud_preflight.md#c6策略加载与缩量评估)
