@@ -30,13 +30,14 @@ python robo_orchard_lab/dataset/robotwin/robotwin_packer.py \
   --task_names place_empty_cup --config_name demo_clean
 ```
 
-在本包运行配置生成器，`KINEMATICS_URDF`和`PRETRAINED`由云端URDF与预训练权重验收提供。初次训练设置200～1000 Step，记录显存、吞吐、训练配置、`robotwin2_0_processor.json`和Checkpoint路径。生成器打印从SEM项目目录执行的训练入口。
+在本包运行配置生成器，`KINEMATICS_URDF`、`PRETRAINED`和`BERT_CHECKPOINT`由云端URDF与预训练权重验收提供。初次训练设置200～1000 Step，记录显存、吞吐、训练配置、`robotwin2_0_processor.json`和Checkpoint路径。生成器打印从SEM项目目录执行的训练入口。
 
 ```bash
 cd "$PREP"
 python3 scripts/make_training_config.py --task place_empty_cup \
   --data-path "$RUN_DIR/lmdb" --urdf "$KINEMATICS_URDF" \
-  --pretrained-checkpoint "$PRETRAINED" --max-step 1000 \
+  --pretrained-checkpoint "$PRETRAINED" --bert-checkpoint "$BERT_CHECKPOINT" \
+  --max-step 1000 \
   --training-workspace "$RUN_DIR/train" --out "$RUN_DIR/staged/train_config.py"
 ```
 
@@ -44,7 +45,7 @@ python3 scripts/make_training_config.py --task place_empty_cup \
 
 1. 在远程RoboTwin运行环境按老师要求安装RoboOrchardLab，部署审查过的`sem_policy`到`policy/sem_policy/`，保持`demo_clean`的Depth开启。确认`CHECKPOINT`指向实际训练产物，`EVAL_CONFIG`指向可加载的SEM Python配置。
 2. 用刚实际参与训练的示范数量生成部署文件。核对YAML、路径和评估任务后应用到运行副本的策略目录。
-3. 先检查模型能加载、观测能进入策略和输出符合14维双臂约定，再开展独立少量冒烟。固定版正式评估写死100个有效Episode，少量评估需要审核单独入口或隔离测试副本。正式版本保留`seed=10000`、`sem_policy`、`demo_clean`、`unseen`和`ckpt_setting=none`。
+3. 用`run_smoke_eval.py`验证模型加载、观测输入和14维双臂动作。该入口校验运行副本和锁定源码中的评估脚本一致，在内存中替换Episode数，并检查策略动作形状和有限值。正式评估保留锁定版的100个有效Episode以及`seed=10000`、`sem_policy`、`demo_clean`、`unseen`和`ckpt_setting=none`。
 4. 保存训练和评估配置、Git提交、原始日志、`_result.txt`与视频。统计用完成日志中的成功数和有效Episode数，CSV汇总输入示例见`templates/evaluation_results_template.csv`。
 
 ```bash
@@ -54,6 +55,18 @@ python3 scripts/make_eval_config.py --task place_empty_cup \
   --expert-data-num 10 --out "$RUN_DIR/staged/sem_policy"
 python3 scripts/summarize_eval.py --log "$RUN_DIR/eval.log" --task place_empty_cup \
   --output "$RUN_DIR/eval_summary.csv"
+```
+
+部署后可以从本包运行3个有效Episode的缩量评估，并用相同的Episode数统计。日志存放在此次冒烟运行的独立目录`RUN_DIR`。
+
+```bash
+cd "$PREP"
+set -o pipefail
+python -u scripts/run_smoke_eval.py --runtime "$ROBOTWIN" --task place_empty_cup \
+  --episodes 3 --expert-data-num 10 --config "$RUN_DIR/staged/sem_policy/deploy_policy.yml" \
+  2>&1 | tee "$RUN_DIR/eval_smoke.log"
+python3 scripts/summarize_eval.py --log "$RUN_DIR/eval_smoke.log" --task place_empty_cup \
+  --expected-episodes 3 --output "$RUN_DIR/eval_smoke_summary.csv"
 ```
 
 正式入口为从已部署的`RoboTwin/policy/sem_policy/`运行`bash eval.sh`，将完整标准输出保留到`eval.log`。`summarize_eval.py --log`默认要求100条连续计数和结果保存标记。用`--input`可读取核对后的CSV。

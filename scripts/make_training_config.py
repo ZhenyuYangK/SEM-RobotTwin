@@ -48,6 +48,7 @@ def main():
     p.add_argument('--data-path', required=True, help='LMDB directory. Must be confirmed by packer')
     p.add_argument('--urdf', type=Path, required=True, help='Verified kinematics URDF on the runtime machine')
     p.add_argument('--pretrained-checkpoint', type=Path, help='Local renamed GroundingDINO checkpoint')
+    p.add_argument('--bert-checkpoint', type=Path, help='Local BERT model and tokenizer directory')
     p.add_argument('--training-workspace', type=Path, help='Cloud output directory for train.py --workspace')
     p.add_argument('--max-step', type=int, default=1000)
     p.add_argument('--out', type=Path, required=True)
@@ -70,6 +71,8 @@ def main():
         }
         if a.pretrained_checkpoint:
             overrides['checkpoint'] = str(a.pretrained_checkpoint.resolve())
+        if a.bert_checkpoint:
+            overrides['bert_checkpoint'] = str(a.bert_checkpoint.resolve())
         result = write_config(source.read_text(encoding='utf-8'), overrides)
         target.parent.mkdir(parents=True, exist_ok=True)
         with target.open('x', encoding='utf-8') as handle:
