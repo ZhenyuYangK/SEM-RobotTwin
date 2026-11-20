@@ -17,7 +17,7 @@
 8. 修改后运行`bash scripts/run_local_checks.sh`；更新`reports/`下结果与`docs/PHASE_PLAN.md`的进度，不用虚构实验结果。
 9. 产生临时文件使用`tempfile`/系统临时目录；每次交付前清理可再生缓存；不要删原始数据和正式训练产物。
 10. 不将云端IP、SSH私钥、API key、Token和凭据写入仓库或日志。
-11. 每一阶段执行完毕同步进度表述，并进行阶段git提交
+11. 每一阶段执行完毕同步进度表述，并进行阶段git提交，并推送到main
 
 ## 本地与云端的Git同步
 
