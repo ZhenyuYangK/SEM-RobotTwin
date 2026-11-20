@@ -87,7 +87,7 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 
 ### 验收文件与代码
 
-- 本地已将后续任务的评估目标改为每项15个有效Episode。首项继续保留已有评估记录和视频。云端运行中的进程需要单独切换并核验。
+- `place_empty_cup`按要求停止评估，日志记录94个有效Episode，成功86次。原始评估日志和视频留存。另在任务目录的`review_videos/`保留14条成功视频和1条失败视频，合计4分37秒，`selection.csv`记录原始回合与场景种子。
 
 - `place_empty_cup`的最终权重、模型与处理器配置、实测训练和评估配置、逐回合CSV、评估计数记录及4段代表视频已发布。逐回合CSV记录场景种子和成败，4段视频覆盖成功与失败。权重通过Git LFS下载，清单提供每个文件的SHA-256。[验收文件](https://github.com/ZhenyuYangK/SEM-cloud/tree/training-results/artifacts/sem-tiny/c7-formal/place_empty_cup) · [逐回合结果](https://github.com/ZhenyuYangK/SEM-cloud/blob/training-results/artifacts/sem-tiny/c7-formal/place_empty_cup/eval_episodes.csv) · [校验清单](https://github.com/ZhenyuYangK/SEM-cloud/blob/training-results/artifacts/sem-tiny/snapshot.json)
 - 本次云端工程检出为`3a20e74`，上游为RoboTwin `e71140e`和RoboOrchardLab `4111276`。已核对运行副本的任务、训练、打包和评估入口，以及SEM部署策略文件，均与锁定源码一致。[实际训练入口](https://github.com/ZhenyuYangK/SEM-cloud/blob/3a20e74496401cd1f09f36b23b5e006bfbfe6384/scripts/run_formal_experiments.py) · [实际并行调度](https://github.com/ZhenyuYangK/SEM-cloud/tree/training-results/artifacts/sem-tiny/c7-parallel-control) · [RoboTwin源码](https://github.com/RoboTwin-Platform/RoboTwin/tree/e71140e9734e69686daa420a9be8b75a20ff4587) · [RoboOrchardLab源码](https://github.com/HorizonRobotics/RoboOrchardLab/tree/41112765f9904efb2374dd9c8946fb5af452861a)

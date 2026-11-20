@@ -1,4 +1,4 @@
-"""Hand off the first C7 run from the serial controller to the parallel queue."""
+"""Schedule C7 tasks and take over training processes that are already running."""
 
 import argparse
 import csv
@@ -43,7 +43,7 @@ def phase_for(task):
 
 def start(task, operation):
     log = CONTROL / f"{task}.worker.log"
-    mode = "ab" if task == FIRST else "xb"
+    mode = "ab" if operation == "eval" else "xb"
     with log.open(mode) as stream:
         job = subprocess.Popen([sys.executable, "-u", WORKER_SCRIPT, operation, task],
                                cwd=CONTROL, stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.STDOUT)
@@ -99,25 +99,25 @@ def save_completion(task):
     write_json(OUTBOX / f"{task}.json", public)
     print(f"{task}: verified result ready for Git push", flush=True)
 
-def schedule(trainer, monitor, start_time):
+def schedule(adopted, external, waiting, stopped=()):
     workers = {}
-    external = {task: pid_for(task) for task in TASKS[1:3]}
-    waiting = list(TASKS[3:])
     finished = set()
     failed = set()
-    adopted = True
-    while len(finished) + len(failed) < len(TASKS):
-        if adopted and not process(trainer, str(OUTPUT / FIRST / "staged/train_config.py")):
-            adopted = False
+    while True:
+        for task, (trainer, monitor, start_time) in list(adopted.items()):
+            run = OUTPUT / task
+            if process(trainer, str(run / "staged/train_config.py")):
+                continue
+            del adopted[task]
             if process(monitor, "nvidia-smi --query-gpu=timestamp,memory.used,utilization.gpu"):
                 os.kill(monitor, signal.SIGTERM)
-            log = (OUTPUT / FIRST / "train.log").read_text()
-            if "GlobalStep[100000/100000]" in log and "FINISH TRAINING" in log:
-                write_json(OUTPUT / FIRST / "training_complete.json", {"train_seconds": round(time.time() - start_time, 2)})
-                workers[FIRST] = start(FIRST, "eval")
+            log = (run / "train.log").read_text()
+            if f"GlobalStep[{STEPS}/{STEPS}]" in log and "FINISH TRAINING" in log:
+                write_json(run / "training_complete.json", {"train_seconds": round(time.time() - start_time, 2)})
+                workers[task] = start(task, "eval")
             else:
-                state(FIRST, "failed", error="Adopted training exited before formal completion")
-                failed.add(FIRST)
+                state(task, "failed", error="Adopted training exited before formal completion")
+                failed.add(task)
         for task, pid in list(external.items()):
             if not process(pid, f"worker.py full {task}"):
                 del external[task]
@@ -135,16 +135,39 @@ def schedule(trainer, monitor, start_time):
                     finished.add(task)
                 else:
                     failed.add(task)
-        while waiting and len(external) + len(workers) + int(adopted) < TASK_LIMIT:
+        while waiting and len(adopted) + len(external) + len(workers) < TASK_LIMIT:
             task = waiting.pop(0)
             workers[task] = start(task, "full")
+        active = list(adopted) + list(external) + list(workers)
         write_json(CONTROL / "queue.json",
-                   {"max_active": TASK_LIMIT, "active": ([FIRST] if adopted else []) + list(external) + list(workers),
-                    "waiting": waiting, "complete": sorted(finished), "failed": sorted(failed)})
-        if len(finished) + len(failed) < len(TASKS):
-            time.sleep(10)
+                   {"max_active": TASK_LIMIT, "active": active, "waiting": waiting,
+                    "complete": sorted(finished), "failed": sorted(failed), "stopped": list(stopped),
+                    "eval_episodes_target": EPISODES})
+        if not active:
+            break
+        time.sleep(10)
     if failed:
         raise RuntimeError(f"Formal tasks requiring recovery: {', '.join(sorted(failed))}")
+
+def resume(snapshot):
+    verified_inputs()
+    data = json.loads(snapshot.read_text())
+    adopted, waiting, stopped = (data[key] for key in ("adopted", "waiting", "stopped"))
+    if sorted([*adopted, *waiting, *stopped]) != sorted(TASKS) or len(adopted) > TASK_LIMIT:
+        raise ValueError("Resume snapshot must cover each C7 task once and fit the worker limit")
+    if any(phase_for(task) != "stopped" for task in stopped):
+        raise ValueError("Resume snapshot includes a task without a recorded stop")
+    if any((OUTPUT / task).exists() for task in waiting):
+        raise ValueError("Resume snapshot includes an already started task in its waiting list")
+    for task, (trainer, monitor, _) in adopted.items():
+        run = OUTPUT / task
+        if not process(trainer, str(run / "staged/train_config.py")):
+            raise ValueError(f"Expected a running trainer for {task}")
+        if (Path(f"/proc/{trainer}/fd/1").resolve() != run / "train.log"
+                or Path(f"/proc/{monitor}/fd/1").resolve() != run / "train.gpu.csv"):
+            raise ValueError(f"Trainer or telemetry log does not match {task}")
+    print(f"Resuming C7 with {EPISODES} evaluation episodes per task", flush=True)
+    schedule(adopted, {}, waiting, stopped)
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -152,21 +175,28 @@ def main():
     mode.add_argument("--preflight", action="store_true", help="Only verify the cloud inputs (default)")
     mode.add_argument("--adopt", type=int, nargs=3, metavar=("CONTROLLER_PID", "TRAINER_PID", "MONITOR_PID"),
                       help="Perform the one-time handoff from the original serial run")
+    mode.add_argument("--resume", type=Path, metavar="SNAPSHOT",
+                      help="Resume dispatch from a snapshot of active trainers, queued tasks and stopped tasks")
     args = parser.parse_args()
-    if args.adopt is None:
+    if args.adopt is None and args.resume is None:
         verified_inputs()
         print("C7 coordinator preflight passed")
         return
-    if any(pid <= 0 for pid in args.adopt):
+    if args.adopt and any(pid <= 0 for pid in args.adopt):
         parser.error("Process IDs must be positive")
     with (CONTROL / "schedule.lock").open("a") as supervisor_lock:
         fcntl.flock(supervisor_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         OUTBOX.mkdir(exist_ok=True)
-        trainer, monitor, start_time = adopt(*args.adopt)
+        if args.adopt:
+            training = adopt(*args.adopt)
         with (BASE / "runs/formal.lock").open("a") as formal_lock:
             fcntl.flock(formal_lock, fcntl.LOCK_EX)
-            print(f"Adopted running training PID {trainer}; at most {TASK_LIMIT} active C7 workflows", flush=True)
-            schedule(trainer, monitor, start_time)
+            if args.resume:
+                resume(args.resume)
+            else:
+                print(f"Adopted running training PID {training[0]}; at most {TASK_LIMIT} active C7 workflows", flush=True)
+                external = {task: pid_for(task) for task in TASKS[1:3]}
+                schedule({FIRST: training}, external, list(TASKS[3:]))
 
 if __name__ == "__main__":
     main()
