@@ -139,6 +139,10 @@ def main():
         report['comparison']['meshes_only_teacher'] = sorted(set(report['mesh_paths']) - set(reference['mesh_paths']))
         report['comparison']['meshes_only_reference'] = sorted(set(reference['mesh_paths']) - set(report['mesh_paths']))
     out = Path(args.output)
+    inputs = [Path(args.urdf)] + ([Path(args.compare)] if args.compare else [])
+    if any(out.resolve() == path.resolve()
+           or (out.exists() and out.samefile(path)) for path in inputs):
+        p.error('The report path must differ from both input URDFs')
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(f"URDF={report['robot_name']}; links={report['links']}; joints={report['joints']}; unresolved mesh paths={len(report['unresolved_meshes'])}")
