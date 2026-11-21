@@ -114,3 +114,5 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 2026-11-21，`place_empty_cup`沿用100000步Checkpoint和原评估设置，从候选种子`1000100110`开始续评6个有效回合。新增成功5次，耗时337.10秒，合并结果为91/100（91%）。已逐条核对原94回合及合并后的100个唯一场景种子。新增6段视频保存在云端续评目录。[逐回合结果](../artifacts/sem-tiny/c7-formal/place_empty_cup/eval_100/eval_episodes.csv) · [评估摘要](../artifacts/sem-tiny/c7-formal/place_empty_cup/eval_100/summary.json)
 
 2026-11-21，`place_shoe`列入C7正式任务。锁定源码与本地配置生成已核对，待采集100条成功示范、训练50000步并评估100个有效回合。[任务清单](task_candidates.md)
+
+2026-11-21，`place_shoe`已开始50000步训练。`place_container_plate`的最终模型`checkpoint_12`已补传。GitHub可下载4个已完成任务的最终权重，每个文件198329592字节，SHA-256均与云端对应Checkpoint一致。[C7验收文件](../artifacts/sem-tiny/c7-formal) · [发布脚本](../scripts/c7_parallel/publish.py)
