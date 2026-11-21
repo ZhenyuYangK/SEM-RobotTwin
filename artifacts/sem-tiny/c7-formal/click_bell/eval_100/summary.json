@@ -1,0 +1,15 @@
+{
+  "task": "click_bell",
+  "training_steps": 50000,
+  "evaluated_episodes": 100,
+  "successes": 55,
+  "success_rate_pct": 55.0,
+  "method": "single_run",
+  "segment_episode_counts": [
+    100
+  ],
+  "video_count": 100,
+  "eval_seconds": 5594.91,
+  "complete_recorded_at_utc": "2026-11-21T21:28:39.211009+00:00",
+  "checkpoint_sha256": "14ef0d30bbd99af7c649c66c928ce9d9d808808e9d2585a17af4e015a68db5d5"
+}

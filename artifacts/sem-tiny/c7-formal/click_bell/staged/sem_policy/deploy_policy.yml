@@ -1,0 +1,11 @@
+# 依据SEM评估流程；生成器会替换ckpt_path与config_file。
+policy_name: sem_policy
+setting: null
+ckpt_path: "/root/sj-tmp/SEM-RoboTwin/runs/c7-formal/click_bell/train/checkpoints/checkpoint_12/model.safetensors"
+config_file: "/root/sj-tmp/SEM-RoboTwin/runs/c7-formal/click_bell/staged/sem_policy/eval_config.py"
+ckpt_setting: null
+task_name: null
+seed: null
+instruction_type: unseen
+expert_data_num: null
+checkpoint_num: null

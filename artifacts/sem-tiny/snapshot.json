@@ -445,6 +445,34 @@
         "results": "c7-formal/place_shoe/eval_100/eval_episodes.csv",
         "video_directory": "c7-formal/place_shoe/eval_100/videos"
       }
+    },
+    "click_bell": {
+      "training_completed": true,
+      "train_step": 50000,
+      "target_steps": 50000,
+      "train_seconds": 20659.19,
+      "checkpoint": "c7-formal/click_bell/train/checkpoints/checkpoint_12/model.safetensors",
+      "checkpoint_bytes": 198329592,
+      "checkpoint_sha256": "14ef0d30bbd99af7c649c66c928ce9d9d808808e9d2585a17af4e015a68db5d5",
+      "phase": "complete",
+      "evaluation_100": {
+        "task": "click_bell",
+        "training_steps": 50000,
+        "evaluated_episodes": 100,
+        "successes": 55,
+        "success_rate_pct": 55.0,
+        "method": "single_run",
+        "segment_episode_counts": [
+          100
+        ],
+        "video_count": 100,
+        "eval_seconds": 5594.91,
+        "complete_recorded_at_utc": "2026-11-21T21:28:39.211009+00:00",
+        "checkpoint_sha256": "14ef0d30bbd99af7c649c66c928ce9d9d808808e9d2585a17af4e015a68db5d5",
+        "summary": "c7-formal/click_bell/eval_100/summary.json",
+        "results": "c7-formal/click_bell/eval_100/eval_episodes.csv",
+        "video_directory": "c7-formal/click_bell/eval_100/videos"
+      }
     }
   },
   "implementation": {
@@ -2057,9 +2085,681 @@
       "lfs": false
     },
     {
+      "path": "c7-formal/click_bell/eval_100/_result.txt",
+      "bytes": 62,
+      "sha256": "b0d05f8d45d36e01e071dbf77e593fe2a4264a89942de0f013645e690c537ed1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/eval_episodes.csv",
+      "bytes": 4026,
+      "sha256": "f19472aa91c54001c27531a06da234464a1f67750d5f5316819bded7e41a5202",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/summary.json",
+      "bytes": 405,
+      "sha256": "3369b930c75d91a5a84ed5ed01bc1e696e82011f25b5b5a0f7c9a22b8a8b573c",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_001.mp4",
+      "bytes": 108778,
+      "sha256": "2936f57b55aef4f28613c6871610b6d89f489082f64d1d70ac5901434a95a1c7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_002.mp4",
+      "bytes": 201728,
+      "sha256": "4f01606312955469fbb05eb74d8b0638632318a83ad533d9fa609a36dca6f358",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_003.mp4",
+      "bytes": 208844,
+      "sha256": "a793e2d0d0db0d3291b22490396e7efc5c6ec44386fa22257a332e5be9948739",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_004.mp4",
+      "bytes": 285876,
+      "sha256": "3c278aea330535a84896cb0e54a8532e7a791548b7f54f2e95d430b9abe93ba2",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_005.mp4",
+      "bytes": 295481,
+      "sha256": "139dfc4fc109d08b589ed851d42c875924e60be0d07210439f13090e5b61d4f2",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_006.mp4",
+      "bytes": 59277,
+      "sha256": "d6712862c25871b728c6775f88b946e80be10d5c2b1211e0509ae884012e2a3e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_007.mp4",
+      "bytes": 323803,
+      "sha256": "ae9b66aa2b19da74f5b61ebd7eae3637ffc8aa822c02612fbe67c3a400ff54ae",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_008.mp4",
+      "bytes": 263219,
+      "sha256": "e924b2c52c16d26f1cecb66bb26fde27da327278e714730c54d28b7e6c4a0256",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_009.mp4",
+      "bytes": 123835,
+      "sha256": "2b116c064cfb73362a913029ff1c8d4b5428ad1031ed47a145bd23ed210c5ae6",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_010.mp4",
+      "bytes": 241120,
+      "sha256": "d215fa9211fe6473a396fedc9a70a18e5c58e2bf0dd737aa1dc1acf77845ad09",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_011.mp4",
+      "bytes": 78476,
+      "sha256": "3ac45b71f6177464cd7db0d720a6192615c74d850d74b8bc84f97fdddf9d6046",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_012.mp4",
+      "bytes": 62934,
+      "sha256": "d846ee47073b32a3dcd35037b18777bb8427ec69ac19aeb55652e69e6717dd18",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_013.mp4",
+      "bytes": 221023,
+      "sha256": "571f7a08d3f88ea10fdd36d706fe40b033a636801dc8bca9bf91d73970aa651b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_014.mp4",
+      "bytes": 78335,
+      "sha256": "3b37803f746a162212114fb774db9b49091f6d5d7e29501546266886a352c45e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_015.mp4",
+      "bytes": 305911,
+      "sha256": "661a46ae9f600658ab85f27a435c87db357f81120d598a0de2192d452f592c46",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_016.mp4",
+      "bytes": 233106,
+      "sha256": "fec27f611c0a2b8ad1ba2c9730435cab543b7e13c57fd4021f170a5080834bfd",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_017.mp4",
+      "bytes": 289972,
+      "sha256": "f85d60d563d9c7be213338cde2dff1b4ad19b88019d5e186ea8fe9d41a62f1c7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_018.mp4",
+      "bytes": 58382,
+      "sha256": "4d51c7cf2f9ae2054f586a92af98e3da1c25c0dadc2be61407082667d9ecdba7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_019.mp4",
+      "bytes": 232508,
+      "sha256": "7ab66865ba427d99dc63b169a5e79840c694cf220efe1461bb6eed6e1a43a6fa",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_020.mp4",
+      "bytes": 220458,
+      "sha256": "9f54a02a29ac0689648aaf7ac23cb63628accb22b9c3339579a7575d467d3642",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_021.mp4",
+      "bytes": 68659,
+      "sha256": "95f783b67ca893ea8db02e64098ad8cbc982b676c54b87d865fa2e2c48b11cb5",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_022.mp4",
+      "bytes": 196986,
+      "sha256": "9dd8592c75a86e3d101f67cb2787927708be27da9cf73d0edca4c3ca19a0139a",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_023.mp4",
+      "bytes": 177500,
+      "sha256": "e17ea46e656caa2103ed59f6a1949cd6e76fd9c464dc594a4dc4b163dd4535cb",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_024.mp4",
+      "bytes": 70635,
+      "sha256": "b03d485751a40600a806432707f25dd1779dcaaa5ddc116eb61eeb6c5f43ee0e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_025.mp4",
+      "bytes": 130627,
+      "sha256": "7de89c6109e7fa9d78e253ac4f2f7fcefd4658ce21f8752743f8bd54021d4da0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_026.mp4",
+      "bytes": 243104,
+      "sha256": "5d9a7fbe63fc7d2d002a34f06aa864c406973fb94500655daf8169ae4e04b293",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_027.mp4",
+      "bytes": 45888,
+      "sha256": "2f49f687cd06777476aad3d52321e894df0596870d5d4270488d323f55297f33",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_028.mp4",
+      "bytes": 46938,
+      "sha256": "2a8733a20f972fc016e1b95b12b5c79766f49692351678adf537d73eea62da93",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_029.mp4",
+      "bytes": 54039,
+      "sha256": "e798fd5ce7c34da297a2ec75e72dc5733a2eab2aedfc31c71c7b422ea938271f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_030.mp4",
+      "bytes": 54056,
+      "sha256": "10b500f22a3cc86d4e9243b06bc67568a330b7a71e80a05a63976987ebfcc2fe",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_031.mp4",
+      "bytes": 65793,
+      "sha256": "0922a6ddaa193cd66475dd62930a71304885dc1c983528d63b8b1038a3019931",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_032.mp4",
+      "bytes": 170295,
+      "sha256": "f75335a3fea051f8acc946cb5b24990bcaa6096818b57adee738cb43e94d5b64",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_033.mp4",
+      "bytes": 63532,
+      "sha256": "b47d51132af87cabfda5afc58161683d1d0bf82d9497b622f8d3be40ef36dbf1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_034.mp4",
+      "bytes": 263101,
+      "sha256": "35d2f6a4c5c4e4f7c9b395f0fe2c0238ff1ecc52eed9653e1c23caf744fb96b0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_035.mp4",
+      "bytes": 306058,
+      "sha256": "5cb67a6177b01b9f30add626804bdf19dcd8daf5f1e881a0fd203266cef14b53",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_036.mp4",
+      "bytes": 58104,
+      "sha256": "9ae93d9311f0e22e5683f6b8b253df1af81bfe780116d1a5dd01fb2c99bcaa09",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_037.mp4",
+      "bytes": 62563,
+      "sha256": "0b13849b620dc4ef376bbcc477d5319a5e3158faed573786233a591b312150e4",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_038.mp4",
+      "bytes": 76846,
+      "sha256": "61596ad2f7ce4d4da52da4098a4a48e1353d465788c9279360a1a3dfc0e0deb1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_039.mp4",
+      "bytes": 334732,
+      "sha256": "c8870693b9068d245ec5f0e259fc11271cc9b120c6bf2cffedc7499d9dcac9ed",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_040.mp4",
+      "bytes": 306981,
+      "sha256": "03c0b307195da96847821c074739523eb581b913ae077637341fdae17ef2aac8",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_041.mp4",
+      "bytes": 53514,
+      "sha256": "781225eb356a0ab110b921ffa0d53a1c435ab4f506b0806ca8fefbffe046e7d6",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_042.mp4",
+      "bytes": 53367,
+      "sha256": "0d414986821b30cf29db8215a90ddac6614cac0a77e51e278b4061a8db76cb58",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_043.mp4",
+      "bytes": 67574,
+      "sha256": "afa31896a7503484097fa28cebcb9d1cd71cb40d2b37e70bc1ac7ec321b64361",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_044.mp4",
+      "bytes": 258761,
+      "sha256": "83eda946ed7c857308cd24bd2261925a623ed87255acc7878216c32d64c3f3b0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_045.mp4",
+      "bytes": 59344,
+      "sha256": "98d45df5782c70408bcdf930921e5d0b5d4b9e4b7ba63912403a54ae2b86f225",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_046.mp4",
+      "bytes": 176739,
+      "sha256": "862ece7cf4d89a1e212010204e160229f6d8ad79e2492da992ebd9fcc746993e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_047.mp4",
+      "bytes": 245189,
+      "sha256": "120d53baf28043ca68c9d0f43020b7c5c51b7b757ab71b150efc2e077433a6aa",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_048.mp4",
+      "bytes": 279137,
+      "sha256": "dda66f2373e35dc19f72732ba2c2acf5fa93b36849c286116c2419c68154b0d0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_049.mp4",
+      "bytes": 58520,
+      "sha256": "c32e2d30c54aed2adc31941215eea4236d5ecda7d3e958d6e69e2eb5cc5c2b8e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_050.mp4",
+      "bytes": 58564,
+      "sha256": "005cda231874266cc51abe74bb5e12617b60bdba1a3aad02efebad84b62c9e08",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_051.mp4",
+      "bytes": 217357,
+      "sha256": "7a168d083a3a22e68f93fa43f4937532c1e028f48a689b2ad15600beaf90ddf7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_052.mp4",
+      "bytes": 74350,
+      "sha256": "eb4d7600f8aa60978741b507357d772531ebe5ec68b770ddf1e8d80c6c001334",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_053.mp4",
+      "bytes": 242521,
+      "sha256": "6ef3fe4f7292c3731b37817aea7dd223758577d6b0c397956e4034b8bfb21cc4",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_054.mp4",
+      "bytes": 86868,
+      "sha256": "65f294be95b56d6c74d9e37922021220dc936184ee3c460241c9b760cf7ad8b0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_055.mp4",
+      "bytes": 300522,
+      "sha256": "ac532a69f52ac452f0406c391145b42ad7a0f71718f4a81bad202d89fddaf4f3",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_056.mp4",
+      "bytes": 95364,
+      "sha256": "26d092eb9c4f94412873370134aa0fc9af7dc9b569a54e0eecc1d00b4fca344d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_057.mp4",
+      "bytes": 300096,
+      "sha256": "ddfde54ae470d7dab3ea817b84c88a726b3469bdd9d1e036f212b538c892d4aa",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_058.mp4",
+      "bytes": 61097,
+      "sha256": "73a0d2c454ca61a7bfe62beac162d04741e3745df21ab3854214191acdde4692",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_059.mp4",
+      "bytes": 69224,
+      "sha256": "2c9f9afa105607c5f00ed98e2ede86d9b93db4ac407309ffccc9485717fa0b0f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_060.mp4",
+      "bytes": 61163,
+      "sha256": "faa99fafa87a00cf4bee6bb687d24e46ea1b350f3eb993ba7b7ae71412db6a93",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_061.mp4",
+      "bytes": 69509,
+      "sha256": "70c201a9c41d213dc029de3391ea9cce826f7d38883a00e32d820ee790b7d950",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_062.mp4",
+      "bytes": 281672,
+      "sha256": "e6f6854bffb6a852d6411c8452700859671fb150f454fbfcc114a74ed7d13dbd",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_063.mp4",
+      "bytes": 57457,
+      "sha256": "d55615b9e72fa95a18aefadc24dde60823abf782c5bc9553c68bf497c9a53b6b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_064.mp4",
+      "bytes": 67757,
+      "sha256": "86f887395e8be789940176879a7234326d9e9651e9b43bd23c15c10db2c20ca0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_065.mp4",
+      "bytes": 250483,
+      "sha256": "f82957d2a2f92aa0f12ce00aaa1e6d83c8d1724b1a961dfd1292fb47ee9dc66b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_066.mp4",
+      "bytes": 55595,
+      "sha256": "d55d65e773c15cfaaeec0a990442de1d3f6197e0d1c24efe8e8d159352d02e1f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_067.mp4",
+      "bytes": 276150,
+      "sha256": "5d3ff3efb01b4acae4fceaa9b77e39ddd397af97c603cdb8b4143658d233a79f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_068.mp4",
+      "bytes": 306263,
+      "sha256": "2afa7a830668a4364f024398f757678808a11946c0b1ff61b1cd3cd489938030",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_069.mp4",
+      "bytes": 79650,
+      "sha256": "804e716a50bff147d21e37f749436cbdcb6abca473bea1910ef1b03562b2ef32",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_070.mp4",
+      "bytes": 153632,
+      "sha256": "9bdd60928f17bdf88f781a40b45ccb114a27dba3b72d0d95206bfdab5f70bad0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_071.mp4",
+      "bytes": 309692,
+      "sha256": "6ccf85f7b6f0ec13921280f979985b52a58af7c5a7f8879be3019ca95292f3bd",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_072.mp4",
+      "bytes": 59954,
+      "sha256": "bc7155b42f97c32d283bd8e4ae947bb7efc3243cb56c8f9146cf64f2c00778c7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_073.mp4",
+      "bytes": 62848,
+      "sha256": "15e9373afce8783ad3e4574e36ac5ef99715751b3bd97ac25c8e5eeffa2fa03d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_074.mp4",
+      "bytes": 78663,
+      "sha256": "86b191f78307fd41595d5b3f00b7979343c9d4b2523b3f88be1ff378ea883c9f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_075.mp4",
+      "bytes": 297805,
+      "sha256": "53e4d203c208dc41ad2d58575af26661e4fa990179a9eafcf740af3baac82837",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_076.mp4",
+      "bytes": 355341,
+      "sha256": "a371f7682d70e153c56f6c4d8e59fb90088f23fb2a8579ccaf76407bfae7d5a8",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_077.mp4",
+      "bytes": 83921,
+      "sha256": "b863131114620fa34146121c7e45c5730d8e9281db9b13d921fc638c35dd0c23",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_078.mp4",
+      "bytes": 295332,
+      "sha256": "a0218b3baf108eac6fec2da5bd655eb696c1d99124fcfa69c158b8fcec7649f2",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_079.mp4",
+      "bytes": 58713,
+      "sha256": "e3993faa9c01bf1e85e54217a01667c1ff404c67ace41f7368f3a6de462b5cae",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_080.mp4",
+      "bytes": 306747,
+      "sha256": "2e20e61e08d068b583ad595f444a0a4268a8b4634603b1867c9fd664723459d7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_081.mp4",
+      "bytes": 298971,
+      "sha256": "558cbc65e9a286d153e3610c12bfcd846ff3037cd90896c91ec2c2252bd0ec0b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_082.mp4",
+      "bytes": 71245,
+      "sha256": "b90fad484dabbecb372751f28e29187184f5182da1e949d37f8913f3accbb309",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_083.mp4",
+      "bytes": 54801,
+      "sha256": "c84adec8f5058cac69a9102d62a9b4651ae536db62cacea4e5a02bf971993f4d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_084.mp4",
+      "bytes": 68032,
+      "sha256": "60b3ba1a761550051a010060b95e617ac478d5cad6b3d591d1ef2f0f8735a987",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_085.mp4",
+      "bytes": 243487,
+      "sha256": "15972c487851dbaa5703586a576fde7d915ff0de38cad11f48ceacbf2c9d2d5c",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_086.mp4",
+      "bytes": 177609,
+      "sha256": "958534ebee5622a5a757b1308533e5e3c00a0f978f01b0ecc7d4615cafcea1bc",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_087.mp4",
+      "bytes": 83750,
+      "sha256": "467ae647c283d4d84e29bf3ef03933f36f3ead1ac8776ca16162b822c4c69d0f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_088.mp4",
+      "bytes": 50384,
+      "sha256": "065a23f6c9c95b03de062525143e3ccb00ddf37ca0a4e24aca931505a08136e5",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_089.mp4",
+      "bytes": 59247,
+      "sha256": "0930433e7b5f154497f6490e87112fafe8c64d5ccd8ed3b1ff53d9fd0a53dfe9",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_090.mp4",
+      "bytes": 58933,
+      "sha256": "d48c441b4889bc0030dd3a238b05bbbd735271bff1c825a0c6421f0d080036a2",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_091.mp4",
+      "bytes": 259614,
+      "sha256": "970f44a7bfef1db3dc8af024337cdd767ad7cc186674d52b932dd0afbece899f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_092.mp4",
+      "bytes": 275723,
+      "sha256": "d63be1de4585d77ad8ece2aaf5dde25af9fb4ed61d3d203a957d8f4f3ca86afb",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_093.mp4",
+      "bytes": 319898,
+      "sha256": "1ccafb23bce4605867b3aa5f421fb0bc2c07559c5ce9edea4be6c261158be098",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_094.mp4",
+      "bytes": 53356,
+      "sha256": "9706db3cc3b6c1cdfee63ca56ddcdd53489861c4844cec5c80cfdb433f762671",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_095.mp4",
+      "bytes": 59069,
+      "sha256": "f01d1cd596b3376b6fdcbbdb104c5564ad739f233072d4ac6a127adad9c103d8",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_096.mp4",
+      "bytes": 70540,
+      "sha256": "e9fb67109218fe24aa1965b82ce04e21513e0f0525b901ff9d1b0c8867a43ec8",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_097.mp4",
+      "bytes": 111561,
+      "sha256": "3f7a9caf02c7ef20fb79bf42ab5544cf70f91ae88ba754b91f9fa9a317c47f6a",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_098.mp4",
+      "bytes": 45621,
+      "sha256": "b5fe7d16845099706641f0bbbee8687e141a35ceb5d769ce81ec42ea87ffeaf4",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_099.mp4",
+      "bytes": 252172,
+      "sha256": "2d3ee5048f455a3ccc682989827ae0851d79cc57b791ac657486384b53d9138e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/eval_100/videos/episode_100.mp4",
+      "bytes": 57254,
+      "sha256": "c92074f60f83bab62faa00fcd1511b7755e88727bd19bd9be678143aa6b4784e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/staged/demo_clean.yml",
+      "bytes": 726,
+      "sha256": "cfc4e4006de3e368ca2338318b9d0d823db18da5697e25cefcdb23ef986d9730",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/staged/sem_policy/deploy_policy.yml",
+      "bytes": 438,
+      "sha256": "fced3a85acb87c53b0b92b1063d8a3d14024c6abde092fbf45f0e2c499cdf4ed",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/staged/sem_policy/eval.sh",
+      "bytes": 1126,
+      "sha256": "6407ca2ac39e2998c07dae50463191a70aba5165f601c51b4ba5aee85d992655",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/staged/sem_policy/eval_config.py",
+      "bytes": 752,
+      "sha256": "6105139632a3b05ced1cb57ed6be648893c7a4f416291d735ceea7276f0ddb33",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/staged/train_config.py",
+      "bytes": 22779,
+      "sha256": "61c1d425d3885250c5eaa57c25513049c245d9f0789f2caa6f94c1981c00dfc3",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/staged/train_kwargs.json",
+      "bytes": 42,
+      "sha256": "9e478b0927895990f0b9b14fef0d62acb9538423e149740cb811d36ce0026dde",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/train/checkpoints/checkpoint_12/model.config.json",
+      "bytes": 15920,
+      "sha256": "cb371304c9a7fdb84e0796141f6b5a722316d1513af97a5265770ee660c67b5f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/click_bell/train/checkpoints/checkpoint_12/model.safetensors",
+      "bytes": 198329592,
+      "sha256": "14ef0d30bbd99af7c649c66c928ce9d9d808808e9d2585a17af4e015a68db5d5",
+      "lfs": true
+    },
+    {
+      "path": "c7-formal/click_bell/train/robotwin2_0_processor.json",
+      "bytes": 5081,
+      "sha256": "5584e494445d64f55148d8793a54107df180dea437fe618a9fdbc567fb549c11",
+      "lfs": false
+    },
+    {
       "path": "c7-formal/evaluation_100.csv",
-      "bytes": 811,
-      "sha256": "687b29f0a8cbead91c294d9066613f3af8ccdb2974f892215c8d16b222f44a39",
+      "bytes": 941,
+      "sha256": "01b753dcaeee14823f93cb9fce51b4fd5a40308d252b9adf54225d39c8c6c8f7",
       "lfs": false
     },
     {

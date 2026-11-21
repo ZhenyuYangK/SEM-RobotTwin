@@ -1,0 +1,650 @@
+{
+    "__config_type__": "robo_orchard_lab.models.bip3d.structure:BIP3DConfig",
+    "class_type": "robo_orchard_lab.models.bip3d.structure:BIP3D",
+    "backbone": {
+        "type": "robo_orchard_lab.models.modules.swin_transformer:SwinTransformer",
+        "embed_dims": 96,
+        "depths": [
+            2,
+            2,
+            6,
+            2
+        ],
+        "num_heads": [
+            3,
+            6,
+            12,
+            24
+        ],
+        "window_size": 7,
+        "mlp_ratio": 4,
+        "qkv_bias": true,
+        "qk_scale": null,
+        "drop_rate": 0.0,
+        "attn_drop_rate": 0.0,
+        "out_indices": [
+            1,
+            2,
+            3
+        ],
+        "with_cp": true,
+        "convert_weights": false
+    },
+    "decoder": {
+        "type": "robo_orchard_lab.models.sem_modules.action_decoder:SEMActionDecoder",
+        "img_cross_attn": {
+            "type": "robo_orchard_lab.models.sem_modules.layers:RotaryAttention",
+            "embed_dims": 256,
+            "num_heads": 8,
+            "max_position_embeddings": 32
+        },
+        "norm_layer": {
+            "type": "torch.nn.modules.normalization:RMSNorm",
+            "normalized_shape": 256
+        },
+        "ffn": {
+            "type": "robo_orchard_lab.models.layers.transformer_layers:FFN",
+            "embed_dims": 256,
+            "feedforward_channels": 2048,
+            "act_cfg": {
+                "type": "torch.nn.modules.activation:SiLU",
+                "inplace": true
+            }
+        },
+        "head": {
+            "type": "robo_orchard_lab.models.sem_modules.layers:UpsampleHead",
+            "upsample_sizes": [
+                16,
+                32,
+                64
+            ],
+            "input_dim": 256,
+            "dims": [
+                128,
+                64,
+                8
+            ],
+            "norm": {
+                "type": "torch.nn.modules.normalization:RMSNorm",
+                "normalized_shape": 256
+            },
+            "act": {
+                "type": "torch.nn.modules.activation:SiLU",
+                "inplace": true
+            },
+            "norm_act_idx": [
+                0,
+                1,
+                2
+            ]
+        },
+        "training_noise_scheduler": {
+            "type": "diffusers.schedulers.scheduling_ddpm:DDPMScheduler",
+            "num_train_timesteps": 1000,
+            "beta_schedule": "squaredcos_cap_v2",
+            "prediction_type": "sample",
+            "clip_sample": false
+        },
+        "test_noise_scheduler": {
+            "type": "diffusers.schedulers.scheduling_dpmsolver_multistep:DPMSolverMultistepScheduler",
+            "num_train_timesteps": 1000,
+            "beta_schedule": "squaredcos_cap_v2",
+            "prediction_type": "sample"
+        },
+        "num_inference_timesteps": 10,
+        "joint_self_attn": {
+            "type": "robo_orchard_lab.models.sem_modules.layers:JointGraphAttention",
+            "embed_dims": 256,
+            "num_heads": 8
+        },
+        "temp_cross_attn": {
+            "type": "robo_orchard_lab.models.sem_modules.layers:RotaryAttention",
+            "embed_dims": 256,
+            "num_heads": 8,
+            "max_position_embeddings": 32
+        },
+        "text_cross_attn": {
+            "type": "robo_orchard_lab.models.sem_modules.layers:RotaryAttention",
+            "embed_dims": 256,
+            "num_heads": 8,
+            "max_position_embeddings": 256
+        },
+        "pred_steps": 64,
+        "timestep_norm_layer": {
+            "type": "robo_orchard_lab.models.sem_modules.layers:AdaRMSNorm",
+            "normalized_shape": 256,
+            "condition_dims": 256,
+            "zero": true
+        },
+        "operation_order": [
+            "t_norm",
+            "joint_self_attn",
+            "gate_msa",
+            "norm",
+            "temp_cross_attn",
+            "norm",
+            "img_cross_attn",
+            "norm",
+            null,
+            null,
+            "scale_shift",
+            "ffn",
+            "gate_mlp",
+            "t_norm",
+            "joint_self_attn",
+            "gate_msa",
+            "norm",
+            "temp_cross_attn",
+            "norm",
+            "img_cross_attn",
+            "norm",
+            null,
+            null,
+            "scale_shift",
+            "ffn",
+            "gate_mlp",
+            "t_norm",
+            "joint_self_attn",
+            "gate_msa",
+            "norm",
+            "temp_cross_attn",
+            "norm",
+            "img_cross_attn",
+            "norm",
+            null,
+            null,
+            "scale_shift",
+            "ffn",
+            "gate_mlp",
+            "t_norm",
+            "joint_self_attn",
+            "gate_msa",
+            "norm",
+            "temp_cross_attn",
+            "norm",
+            "img_cross_attn",
+            "norm",
+            null,
+            null,
+            "scale_shift",
+            "ffn",
+            "gate_mlp",
+            "t_norm",
+            "joint_self_attn",
+            "gate_msa",
+            "norm",
+            "temp_cross_attn",
+            "norm",
+            "img_cross_attn",
+            "norm",
+            null,
+            null,
+            "scale_shift",
+            "ffn",
+            "gate_mlp",
+            "t_norm",
+            "joint_self_attn",
+            "gate_msa",
+            "norm",
+            "temp_cross_attn",
+            "norm",
+            "img_cross_attn",
+            "norm",
+            null,
+            null,
+            "scale_shift",
+            "ffn",
+            "gate_mlp"
+        ],
+        "feature_level": [
+            1,
+            2
+        ],
+        "act_cfg": {
+            "type": "torch.nn.modules.activation:SiLU",
+            "inplace": true
+        },
+        "robot_encoder": {
+            "type": "robo_orchard_lab.models.sem_modules.robot_state_encoder:SEMRobotStateEncoder",
+            "embed_dims": 256,
+            "chunk_size": 1,
+            "joint_self_attn": {
+                "type": "robo_orchard_lab.models.sem_modules.layers:JointGraphAttention",
+                "embed_dims": 256,
+                "num_heads": 8
+            },
+            "norm_layer": {
+                "type": "torch.nn.modules.normalization:RMSNorm",
+                "normalized_shape": 256
+            },
+            "ffn": {
+                "type": "robo_orchard_lab.models.layers.transformer_layers:FFN",
+                "embed_dims": 256,
+                "feedforward_channels": 2048,
+                "act_cfg": {
+                    "type": "torch.nn.modules.activation:SiLU",
+                    "inplace": true
+                }
+            },
+            "temp_self_attn": {
+                "type": "robo_orchard_lab.models.sem_modules.layers:RotaryAttention",
+                "embed_dims": 256,
+                "num_heads": 8,
+                "max_position_embeddings": 32
+            },
+            "act_cfg": {
+                "type": "torch.nn.modules.activation:SiLU",
+                "inplace": true
+            },
+            "operation_order": [
+                "norm",
+                "joint_self_attn",
+                null,
+                null,
+                "norm",
+                "ffn",
+                "norm",
+                "joint_self_attn",
+                null,
+                null,
+                "norm",
+                "ffn",
+                "norm",
+                "joint_self_attn",
+                null,
+                null,
+                "norm",
+                "ffn",
+                "norm",
+                "joint_self_attn",
+                null,
+                null,
+                "norm",
+                "ffn",
+                "norm"
+            ],
+            "state_dims": 8
+        },
+        "state_loss_weights": [
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                2.0,
+                2.0,
+                2.0,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                2.0,
+                2.0,
+                2.0,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+            ]
+        ],
+        "fk_loss_weight": [
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                2.0,
+                2.0,
+                2.0,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ],
+            [
+                1.0,
+                2.0,
+                2.0,
+                2.0,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+            ]
+        ],
+        "state_dims": 8
+    },
+    "neck": {
+        "type": "robo_orchard_lab.models.modules.channel_mapper:ChannelMapper",
+        "in_channels": [
+            192,
+            384,
+            768
+        ],
+        "kernel_size": 1,
+        "out_channels": 256,
+        "act_cfg": null,
+        "bias": true,
+        "norm_cfg": {
+            "type": "torch.nn.modules.normalization:GroupNorm",
+            "num_groups": 32
+        },
+        "num_outs": 3
+    },
+    "text_encoder": null,
+    "feature_enhancer": null,
+    "spatial_enhancer": {
+        "type": "robo_orchard_lab.models.bip3d.spatial_enhancer:DepthFusionSpatialEnhancer",
+        "embed_dims": 256,
+        "feature_3d_dim": 32,
+        "num_depth_layers": 2,
+        "min_depth": 0.01,
+        "max_depth": 1.2,
+        "num_depth": 128,
+        "with_feature_3d": true,
+        "loss_depth_weight": 1.0
+    },
+    "data_preprocessor": {
+        "type": "robo_orchard_lab.models.layers.data_preprocessors:BaseDataPreprocessor",
+        "mean": [
+            123.675,
+            116.28,
+            103.53
+        ],
+        "std": [
+            58.395,
+            57.12,
+            57.375
+        ],
+        "channel_flip": false,
+        "unsqueeze_depth_channel": true,
+        "batch_transforms": [
+            {
+                "type": "robo_orchard_lab.models.bip3d.spatial_enhancer:BatchDepthProbGTGenerator",
+                "min_depth": 0.01,
+                "max_depth": 1.2,
+                "num_depth": 128,
+                "origin_stride": 2,
+                "valid_threshold": 0.5,
+                "stride": [
+                    8,
+                    16,
+                    32
+                ]
+            }
+        ]
+    },
+    "backbone_3d": {
+        "type": "robo_orchard_lab.models.modules.resnet:ResNet",
+        "depth": 34,
+        "in_channels": 1,
+        "base_channels": 4,
+        "num_stages": 4,
+        "out_indices": [
+            1,
+            2,
+            3
+        ],
+        "bn_eval": true,
+        "with_cp": true,
+        "style": "pytorch"
+    },
+    "neck_3d": {
+        "type": "robo_orchard_lab.models.modules.channel_mapper:ChannelMapper",
+        "in_channels": [
+            8,
+            16,
+            32
+        ],
+        "kernel_size": 1,
+        "out_channels": 32,
+        "act_cfg": null,
+        "bias": true,
+        "norm_cfg": {
+            "type": "torch.nn.modules.normalization:GroupNorm",
+            "num_groups": 4
+        },
+        "num_outs": 3
+    },
+    "input_2d": "imgs",
+    "input_3d": "depths",
+    "embed_dims": 256,
+    "pre_spatial_enhancer": false
+}
