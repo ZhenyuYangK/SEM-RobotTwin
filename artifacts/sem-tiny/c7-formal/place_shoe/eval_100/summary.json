@@ -1,0 +1,15 @@
+{
+  "task": "place_shoe",
+  "training_steps": 50000,
+  "evaluated_episodes": 100,
+  "successes": 75,
+  "success_rate_pct": 75.0,
+  "method": "single_run",
+  "segment_episode_counts": [
+    100
+  ],
+  "video_count": 100,
+  "eval_seconds": 6277.99,
+  "complete_recorded_at_utc": "2026-11-21T22:03:20.500937+00:00",
+  "checkpoint_sha256": "508ab3049b8bbf83c6edae1f1035039e5450b4dfa3a1623fd40bd847ba185380"
+}

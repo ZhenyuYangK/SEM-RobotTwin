@@ -417,6 +417,34 @@
       "checkpoint": "c7-formal/place_container_plate/train/checkpoints/checkpoint_12/model.safetensors",
       "checkpoint_bytes": 198329592,
       "checkpoint_sha256": "2e675beca1b24681972aa9507a066d73b946df144f227a940e5eb7b67a280ff4"
+    },
+    "place_shoe": {
+      "training_completed": true,
+      "train_step": 50000,
+      "target_steps": 50000,
+      "train_seconds": 20598.34,
+      "checkpoint": "c7-formal/place_shoe/train/checkpoints/checkpoint_12/model.safetensors",
+      "checkpoint_bytes": 198329592,
+      "checkpoint_sha256": "508ab3049b8bbf83c6edae1f1035039e5450b4dfa3a1623fd40bd847ba185380",
+      "phase": "complete",
+      "evaluation_100": {
+        "task": "place_shoe",
+        "training_steps": 50000,
+        "evaluated_episodes": 100,
+        "successes": 75,
+        "success_rate_pct": 75.0,
+        "method": "single_run",
+        "segment_episode_counts": [
+          100
+        ],
+        "video_count": 100,
+        "eval_seconds": 6277.99,
+        "complete_recorded_at_utc": "2026-11-21T22:03:20.500937+00:00",
+        "checkpoint_sha256": "508ab3049b8bbf83c6edae1f1035039e5450b4dfa3a1623fd40bd847ba185380",
+        "summary": "c7-formal/place_shoe/eval_100/summary.json",
+        "results": "c7-formal/place_shoe/eval_100/eval_episodes.csv",
+        "video_directory": "c7-formal/place_shoe/eval_100/videos"
+      }
     }
   },
   "implementation": {
@@ -2030,8 +2058,8 @@
     },
     {
       "path": "c7-formal/evaluation_100.csv",
-      "bytes": 676,
-      "sha256": "85681e51cfaa72d59690b5cc62043e2d5b0e45fe875749f45712663b569cd1c2",
+      "bytes": 811,
+      "sha256": "687b29f0a8cbead91c294d9066613f3af8ccdb2974f892215c8d16b222f44a39",
       "lfs": false
     },
     {
@@ -2824,6 +2852,678 @@
       "path": "c7-formal/place_empty_cup/videos/episode_094.mp4",
       "bytes": 107884,
       "sha256": "491305b08d9c4a8a5eef516c41400c2ee48803273425d2bdb325f93c93e2c574",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/_result.txt",
+      "bytes": 62,
+      "sha256": "ec4f3b1863e34aba33c18412fdb4d3b2d77b967efb2081efcb5b64bed3a9f179",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/eval_episodes.csv",
+      "bytes": 4026,
+      "sha256": "4fc284583b42c53aa4f77238a0f7cc775afdc57198369915ddf635af5ab4f71b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/summary.json",
+      "bytes": 405,
+      "sha256": "98ceafe212359ffd50823a702dbf8a49e25d0516525e99de6a1a57450d42e6a0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_001.mp4",
+      "bytes": 525768,
+      "sha256": "a9e645aa71760b23bc71a5952b9f580b0e710410a46261d51fb84506e5fd05b0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_002.mp4",
+      "bytes": 153229,
+      "sha256": "214abe6ddc1c6cc1d16a7f70bf377611016b3d678812ec3c2b541b7bc2508ae7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_003.mp4",
+      "bytes": 152285,
+      "sha256": "b33448b4289650bd75c2949da5b8c77021df4d42f37b3fe02b175978b31fdc56",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_004.mp4",
+      "bytes": 155985,
+      "sha256": "286c9d7f00c1bc43c7eb91d82dea6c3764aa0c7613cc1a62058c9abd68e7756a",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_005.mp4",
+      "bytes": 167005,
+      "sha256": "debc2fa61623a05f5d1c303ef85714c3c66cfacc9ea26fd84d0b228eccafd0b8",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_006.mp4",
+      "bytes": 563138,
+      "sha256": "b327946be18b23acb83fcba024774462dffbab586e2aa7a07a7994a950364e6c",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_007.mp4",
+      "bytes": 190002,
+      "sha256": "df4ab9ccd3b71f47a564a05afc8caa341855ae9f58bd534cf7529f5ebfdd086c",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_008.mp4",
+      "bytes": 219154,
+      "sha256": "272e754c69a2df52f60de815ad759e986ebce9e1b78d413031a733f242a434d1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_009.mp4",
+      "bytes": 151085,
+      "sha256": "d2805cd3f58339f572b481eab98f03427c389df9f0e03db9912aba497338f0a2",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_010.mp4",
+      "bytes": 156471,
+      "sha256": "05eb34239754359c044451304971a91f3312ceb015a09f695f58922eb725d170",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_011.mp4",
+      "bytes": 486737,
+      "sha256": "e804d056357fea8ab8427381bf91d8a064a4756057e1b473913622d4f04eb950",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_012.mp4",
+      "bytes": 541168,
+      "sha256": "a45f509d52042ae0b4392970cb06b712c4b6d5dc8cc7855f33a607be6733a0e4",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_013.mp4",
+      "bytes": 585218,
+      "sha256": "216c8f9d591db06ba07284500c2c3115e5e233eaf3acb43667b023f3fb3ceef4",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_014.mp4",
+      "bytes": 153121,
+      "sha256": "492794db4a24be8a17b6ba2b06c6da6784724ff162cef2db9172f09e7f59039d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_015.mp4",
+      "bytes": 156457,
+      "sha256": "0d370c5fcc9661955363f8b3d4550b824502e12930251686ecb82460ca0482c1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_016.mp4",
+      "bytes": 221268,
+      "sha256": "3ebbff4df7aad9e33094c3162e3c295769faf35650a88b7068d2d2cf419db436",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_017.mp4",
+      "bytes": 146984,
+      "sha256": "fe23e68740b34d32d35ec0fc80524794fde0e328cde6e6488d068c3df113a4f7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_018.mp4",
+      "bytes": 516315,
+      "sha256": "2372b58d4c8cb05a4fda24043d1095fc38528035d96f3876b2ac8f5840a842e1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_019.mp4",
+      "bytes": 191610,
+      "sha256": "7d11f16e013957dd0d028bdc32d63d325455df53d19a6cd9b9d17504dbdc6521",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_020.mp4",
+      "bytes": 498011,
+      "sha256": "2c1014fe16b5c786a1312dccdb50baec35713364fa91af3a25d8b5417974b9de",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_021.mp4",
+      "bytes": 182389,
+      "sha256": "bf9b3264ade9b53b4d751345245d7bd4ad75cf796a45ac27734afd98ca4e0f9d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_022.mp4",
+      "bytes": 170685,
+      "sha256": "dec1146a8f5ef1d3e21a23735388dd0a7d2bf4af9a2e0fabfbbe368fce827a15",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_023.mp4",
+      "bytes": 181773,
+      "sha256": "62078ac9f10fade2ed4d3ed5f854d3fd3dcc05a71959993a789d801b004de3a5",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_024.mp4",
+      "bytes": 514042,
+      "sha256": "9659fcfc1aa569251d3355cf650df6933313023ebafa7370d150355a06f2dceb",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_025.mp4",
+      "bytes": 188245,
+      "sha256": "f6dbe70da2adc688203bc9c69ef0c0611c5b66e4a4afd1a8ba799238eea2c2c5",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_026.mp4",
+      "bytes": 184819,
+      "sha256": "a4742d02978c85c4621ee8cca3e213015e92b06b255a3c78061bcf436795a98d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_027.mp4",
+      "bytes": 595876,
+      "sha256": "a48839873bead89fb61fb4344c9552ca83ab19e4b64158f2d646a4ae0898486d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_028.mp4",
+      "bytes": 160195,
+      "sha256": "3c593486a54dcfb80b85d14a4b119e05344526103e8a531dbb4f4058bfb5f8d9",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_029.mp4",
+      "bytes": 157501,
+      "sha256": "a08fb24ec8d334bcfd177e69493f87cb545e556066d6fac012a724752b8c0078",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_030.mp4",
+      "bytes": 623085,
+      "sha256": "5968c07ea14daa90d7aaabf6121e2fa7217ebededec9ba0099e6bf4c5f4cec77",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_031.mp4",
+      "bytes": 212664,
+      "sha256": "da288eca99e7a422c541562db2a55a4f55e6bb888fe9b703c43674f9ac51afd1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_032.mp4",
+      "bytes": 166646,
+      "sha256": "26fb4e95390e0abb18975ac43897ec445235304aa431d437cc76b6847f907321",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_033.mp4",
+      "bytes": 184297,
+      "sha256": "67b3cf8f262cc9266b2e892ffb67b2d9b29771b2c5739e4605c2c6677cd63e6e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_034.mp4",
+      "bytes": 170749,
+      "sha256": "1ceca1540dbf14870dd59325aed58400e1ad7f569324dc7cfc08731a34383aed",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_035.mp4",
+      "bytes": 185487,
+      "sha256": "284fb3d7e37454888f6b65a3b82c6b7f4ac165df6bba4588ab7f9b891acde34e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_036.mp4",
+      "bytes": 152890,
+      "sha256": "d3a848b01638008a0d7bb3e1351bdcc4e167822ee500d1223151a5ad1237c423",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_037.mp4",
+      "bytes": 166144,
+      "sha256": "5cf2014a8a669b6cda83ddb2fa1bc664628eb3ef09b8f159ec5738912a70ed66",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_038.mp4",
+      "bytes": 537174,
+      "sha256": "d8278a36f354fbe1f143c3fb1d874e2ee36a6a0f88d85d77f1b25d7d2ced1db1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_039.mp4",
+      "bytes": 162622,
+      "sha256": "370c0fca1d5eee009e71d12096bbf64adff82a6b6f595fbed6def18230566615",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_040.mp4",
+      "bytes": 493219,
+      "sha256": "0ec9edc2d261a6e0ec1be0fa0b36497b119ea38c0792bff9af0a5a1ae1404691",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_041.mp4",
+      "bytes": 184806,
+      "sha256": "1471efd3e8f8db4a4e6345b24ace2aa0ee94418cc9ef12d32f2664daf4a6f982",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_042.mp4",
+      "bytes": 157598,
+      "sha256": "6fa66b650c73524aa2154821c12e6278692b71120e9dd9fce0d64c9b6609b735",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_043.mp4",
+      "bytes": 141261,
+      "sha256": "67ab07afb0de9cbed95a2440470f1e298e8f749c2f0da9ecae0c1d5cb01c0abf",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_044.mp4",
+      "bytes": 189178,
+      "sha256": "6f791711cd8eae847da8ff4109652e80a748d89025f997b529e4242161cf0720",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_045.mp4",
+      "bytes": 149544,
+      "sha256": "5b858305e08fe18127b04eab01145425190499b4fb991e0bd3f8854f2f8450a8",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_046.mp4",
+      "bytes": 175486,
+      "sha256": "9dfa6b504066c441cc8d34c18af1fbc08f823506ffb8e3ee6de8ee0b38e8d9e1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_047.mp4",
+      "bytes": 140778,
+      "sha256": "f43699ce74234f8485e0d55fffca3a7f0b2ac76c8b95f49b8ecc91d2d8e6f2e7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_048.mp4",
+      "bytes": 180915,
+      "sha256": "477117d64f1d2addf04584264fe7c021bf348d4bc7ccde6742fc00ba2b700ffd",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_049.mp4",
+      "bytes": 524970,
+      "sha256": "c9a8e563f0303ac603110a7dd16bb09fdcf36f956d47aa911c127b7c4a45be10",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_050.mp4",
+      "bytes": 176487,
+      "sha256": "dbd8c8f791156c85a5a6383d33064b5c5b144952e87868c6b671144101902303",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_051.mp4",
+      "bytes": 152170,
+      "sha256": "a82c8b022e015ef83e74902c7b893350a53a72fbf47dad43cd8e475e0096d6e1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_052.mp4",
+      "bytes": 189407,
+      "sha256": "e9232435ec77ed744d56ce6a205c5f1f2cee07342d521663ee8472095f43b41d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_053.mp4",
+      "bytes": 169288,
+      "sha256": "ba96936a12a81da0598ecf4cbd1d0ce8efb836e260984265346354e762e61710",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_054.mp4",
+      "bytes": 141887,
+      "sha256": "39eef1b48f5aca5ce448a35110d8c341caa8972a1d475a11d3187d8cbfbba313",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_055.mp4",
+      "bytes": 170002,
+      "sha256": "b76dfcbbbff958df69d6c0cf317f115349385993f65737bd385fce8a5b7f263f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_056.mp4",
+      "bytes": 581657,
+      "sha256": "a70f409c57cd350a91a8710af12d2215dca931883e1db69b9bf3899eb6e9b2cc",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_057.mp4",
+      "bytes": 155702,
+      "sha256": "5afb50d888c891c62071446d93834634084178e63e13395b780aaecdd389dc6d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_058.mp4",
+      "bytes": 179348,
+      "sha256": "059b51dffd4e7aeefeff577975ed7da408ca879c737f1dee6f722244a7d5dfbb",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_059.mp4",
+      "bytes": 181395,
+      "sha256": "3a9c44f9db9b5e4c95a167f32a8e745fac8e87abd881083160cd23f7c2f19947",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_060.mp4",
+      "bytes": 583823,
+      "sha256": "23e31a658698431b71a20cea633281dba84897e65ac6e8006f98c797f6ab217f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_061.mp4",
+      "bytes": 166817,
+      "sha256": "78e597d561f86793f37eb1e4470a81985750701a05b6e62ce02cd35ce54a1d4b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_062.mp4",
+      "bytes": 182736,
+      "sha256": "02372328c320f02ee363c0c613cb9e2e66b1387f250b753c51d0d467e81b5ab9",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_063.mp4",
+      "bytes": 452204,
+      "sha256": "bab731480f1617b46e054ddc7309f03bd6949f442badea2ed1302c0f73c9d775",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_064.mp4",
+      "bytes": 594661,
+      "sha256": "ed5a372efae3289cc80d6209c3df3e4e89594060f57e0d144b8d67225fe3fe87",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_065.mp4",
+      "bytes": 154065,
+      "sha256": "2e1e2e20f67c5f5ccbc9992d1334df8f6831b9dc65d49ef7b528a99b7cf0c0b4",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_066.mp4",
+      "bytes": 538706,
+      "sha256": "f141d384f146c83df5203ff835f3891562ea6400a4d38b5f56f62ca6443e3238",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_067.mp4",
+      "bytes": 178037,
+      "sha256": "baf9ab1bac9d1b2e469d1579ba12a94101f7efbcc401605fc28c787986aa6b3f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_068.mp4",
+      "bytes": 171593,
+      "sha256": "694659556a3fe863c96992bc7d1adfb550292a1f76ae3b933b901bf53878f152",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_069.mp4",
+      "bytes": 186741,
+      "sha256": "45f15c92dccfd11c08814df7515576bf6f38ef6515c2c8cf0ceed97e67816eb8",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_070.mp4",
+      "bytes": 148426,
+      "sha256": "c2189ad0fbd0c81183ba6d2ed81b6089693f6c54fdbedc7b4a1761970729fd79",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_071.mp4",
+      "bytes": 151390,
+      "sha256": "6648a01d6ea4f52b9ed7aecb389ab3f28642bbf2448fbc035379073010dc64fb",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_072.mp4",
+      "bytes": 161168,
+      "sha256": "80c348a8c86987d39f73d79db37dacbbac57c3a5dcedcfd746692d9ecf8ad131",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_073.mp4",
+      "bytes": 156462,
+      "sha256": "1d420afc14846e48a67eb90b164470cd5e5884088343e8db743a2040ccb807b7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_074.mp4",
+      "bytes": 164403,
+      "sha256": "ae63fc5d9529a2666cc30cf88f88178d4911e060d08f6e4bfd240ba6bbb077ac",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_075.mp4",
+      "bytes": 174078,
+      "sha256": "e367c179ecf7eb6bd11da88f5e1c470518f8d789de52eb4da51b9f67349e3bb7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_076.mp4",
+      "bytes": 159791,
+      "sha256": "7d90fe720ad2724fdcd37e6ad3e4382039d9977298cc519775cd3c85574d0de7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_077.mp4",
+      "bytes": 174198,
+      "sha256": "c77395e3b8cc5054caa14c7754ca885b6edc6b0fee8aa23cf2cb8232230764b2",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_078.mp4",
+      "bytes": 552463,
+      "sha256": "7c5514fade1d5986fe99bfa73c6de6ea7ddbbb697b3aa1e7c4ec53cdd2ef3cb3",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_079.mp4",
+      "bytes": 184704,
+      "sha256": "922efa3264730eacf8476d355cc6d8b31c520c22d73157028487e3cdc24a944f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_080.mp4",
+      "bytes": 142664,
+      "sha256": "fd778c4d086616a1cb6494f3993ad178aa4a4c82afd13c072d01a6cf27288dc1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_081.mp4",
+      "bytes": 160667,
+      "sha256": "4236e13986cc67134f9992f93639f922ebb5a36cf1681090cae69355b52854f0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_082.mp4",
+      "bytes": 534267,
+      "sha256": "7d58e0c03a9eb14bdb627d4725bfc40a87c7466d8e6fb3c11ae2d0988e0aed0e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_083.mp4",
+      "bytes": 550598,
+      "sha256": "954200d8c81bacd5176217b76535c32366c1b278ba739510a7e2a31bd7057c39",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_084.mp4",
+      "bytes": 173996,
+      "sha256": "4fb19a18dd2662620eae2e91d083a80a1cecf3812f4df0f439c70ef6c525e8ab",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_085.mp4",
+      "bytes": 185261,
+      "sha256": "c2cce1339bcf2a8854c492f33d62e6cb829dfa96e739479e0c2377eebfb9e4c0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_086.mp4",
+      "bytes": 186516,
+      "sha256": "ce2fb30d9895e0d87e77fa7d47bc5445ab0737b9d5dc8d4b45447eca1a4ee751",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_087.mp4",
+      "bytes": 557445,
+      "sha256": "c8e5cd30ba7ae3f1fbb45a4c06e66f4d5604f7aa6378a1343a18d74c3a222bae",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_088.mp4",
+      "bytes": 572249,
+      "sha256": "e7a505b9fa2a9cd52355a4913e03af9ffc80ad5530b1d5ca5665a1aca4a3ef05",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_089.mp4",
+      "bytes": 195146,
+      "sha256": "e7ef9edd7e97858304e16f94d49ce410331445d51ebf18a5d655968c5754c106",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_090.mp4",
+      "bytes": 623728,
+      "sha256": "4e76864a1279707e8cbf8063c5699f2942601fb3cf6f9aa88ad4459589526efd",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_091.mp4",
+      "bytes": 175639,
+      "sha256": "80fac58c692f341e2c449dc55d6aa5ed29f5ba5e600005404ff67556ca7358d6",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_092.mp4",
+      "bytes": 164192,
+      "sha256": "5f4f11bb5016bd477a59f58849c4cd7909c6a121d36b9d034eb3d28ce5f60b8b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_093.mp4",
+      "bytes": 516032,
+      "sha256": "ca27d2811a24dddb8d3568fbd60b80173cbd1fbacfe074a7d00332b8a5620bda",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_094.mp4",
+      "bytes": 170950,
+      "sha256": "121b8e2aa5d6cf2b8f2e31ef1a2c3e287d0ddac92813f171a668a5c955d43545",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_095.mp4",
+      "bytes": 168203,
+      "sha256": "f26987d8f91cc513d52feb655d58779eb2ad8db4b8df2629fb6a2964f991ef6b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_096.mp4",
+      "bytes": 186931,
+      "sha256": "63d688527601109f5c7f8a76e7984f36110baeaeee0d6b43b1e60345085e9bed",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_097.mp4",
+      "bytes": 147638,
+      "sha256": "4d3210e0f80587548506d32c9119b4a1d53e9171d50df126050bfeefd5e0768b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_098.mp4",
+      "bytes": 197021,
+      "sha256": "a6e17ef2602739d93d42d1f25e16117ee8fec9c58adb3371b1f61356f8a67753",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_099.mp4",
+      "bytes": 196012,
+      "sha256": "5f2766e83bf35e72787cdf6f01c91161c1d86959511b54835b90183f0c772608",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/eval_100/videos/episode_100.mp4",
+      "bytes": 193303,
+      "sha256": "67aa44be730488673f4d5e55e7636f4a5fa5362cf554fd0fc6b93263268f17fa",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/staged/demo_clean.yml",
+      "bytes": 726,
+      "sha256": "cfc4e4006de3e368ca2338318b9d0d823db18da5697e25cefcdb23ef986d9730",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/staged/sem_policy/deploy_policy.yml",
+      "bytes": 438,
+      "sha256": "0933911c5b2e49ebdf92b68d87e1c08eae173fc08b9fedafa047de96f4326897",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/staged/sem_policy/eval.sh",
+      "bytes": 1126,
+      "sha256": "325f5a138a3a410ad498a43467e3a237f5b564d0d4c570dd1bb35593c4b4e2f3",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/staged/sem_policy/eval_config.py",
+      "bytes": 752,
+      "sha256": "41025092e37723429a145b31fc1707d10f6994eeb34a8f8e664b226f561906e1",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/staged/train_config.py",
+      "bytes": 22779,
+      "sha256": "bf495482c9f068d1161ae6d69d6d7d2d9aade8b10b6f894f99e6ac81d1f03168",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/staged/train_kwargs.json",
+      "bytes": 42,
+      "sha256": "9e478b0927895990f0b9b14fef0d62acb9538423e149740cb811d36ce0026dde",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/train/checkpoints/checkpoint_12/model.config.json",
+      "bytes": 15920,
+      "sha256": "cb371304c9a7fdb84e0796141f6b5a722316d1513af97a5265770ee660c67b5f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_shoe/train/checkpoints/checkpoint_12/model.safetensors",
+      "bytes": 198329592,
+      "sha256": "508ab3049b8bbf83c6edae1f1035039e5450b4dfa3a1623fd40bd847ba185380",
+      "lfs": true
+    },
+    {
+      "path": "c7-formal/place_shoe/train/robotwin2_0_processor.json",
+      "bytes": 5081,
+      "sha256": "5584e494445d64f55148d8793a54107df180dea437fe618a9fdbc567fb549c11",
       "lfs": false
     },
     {

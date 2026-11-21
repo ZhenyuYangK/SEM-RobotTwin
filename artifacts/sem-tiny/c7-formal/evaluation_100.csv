@@ -3,3 +3,4 @@ adjust_bottle,100000,100,98,98.0,continuation,15+85,c7-formal/adjust_bottle/eval
 beat_block_hammer,100000,100,87,87.0,continuation,15+85,c7-formal/beat_block_hammer/eval_100/eval_episodes.csv,c7-formal/beat_block_hammer/eval_100/videos
 place_container_plate,50000,100,94,94.0,single_run,100,c7-formal/place_container_plate/eval_100/eval_episodes.csv,c7-formal/place_container_plate/eval_100/videos
 place_empty_cup,100000,100,91,91.0,continuation,94+6,c7-formal/place_empty_cup/eval_100/eval_episodes.csv,
+place_shoe,50000,100,75,75.0,single_run,100,c7-formal/place_shoe/eval_100/eval_episodes.csv,c7-formal/place_shoe/eval_100/videos
