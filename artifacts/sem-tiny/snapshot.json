@@ -1,5 +1,5 @@
 {
-  "captured_at_utc": "2026-11-21T04:07:04+00:00",
+  "captured_at_utc": "2026-11-21T04:07:10+00:00",
   "tasks": {
     "place_empty_cup": {
       "phase": "stopped",
@@ -99,24 +99,65 @@
       "observed_at_utc": "2026-11-21T04:07:10+00:00",
       "train_step": 100000,
       "target_steps": 100000,
+      "train_seconds": 40969.2,
       "training_completed": true,
+      "checkpoint": "c7-formal/beat_block_hammer/train/checkpoints/checkpoint_25/model.safetensors",
+      "checkpoint_sha256": "6a8a2de0b08479ef55f35302510160271aacee647a84088fe7486000f0e28d98",
+      "checkpoint_bytes": 198329592,
       "evaluated_episodes": 15,
-      "target_eval_episodes": 15,
       "successes": 13,
+      "target_eval_episodes": 15,
       "success_rate_pct": 86.6667,
-      "formal_result": true
+      "formal_result": true,
+      "eval_seconds": 679.13,
+      "train_metrics": "c7-formal/beat_block_hammer/train_metrics.csv",
+      "loss_at_final_logged_step": 0.0176,
+      "representative_videos": [
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_001.mp4",
+          "episode": 1,
+          "scene_seed": 1000100001,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_002.mp4",
+          "episode": 2,
+          "scene_seed": 1000100003,
+          "success": 0
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_008.mp4",
+          "episode": 8,
+          "scene_seed": 1000100010,
+          "success": 0
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_015.mp4",
+          "episode": 15,
+          "scene_seed": 1000100017,
+          "success": 1
+        }
+      ],
+      "implementation": {
+        "sem_cloud_eval_checkout": "6d835ec5f8714b07a417dd0f2ad16d1c5b8bbb3b",
+        "robotwin_commit": "e71140e9734e69686daa420a9be8b75a20ff4587",
+        "robo_orchard_lab_commit": "41112765f9904efb2374dd9c8946fb5af452861a",
+        "cloud_train_worker_sha256": "bd210884304e112bae8cf0e189eef46ac1f11584579b1569701e1b2c4d556965",
+        "cloud_eval_worker_sha256": "d741f2ecae9fe1f9572f998bedb5f23a01d759bb8479f5a5aea2e644b5994e3b",
+        "cloud_train_source": "c7-parallel-control/worker.py"
+      }
     },
     "handover_block": {
       "phase": "train",
-      "train_step": 67875,
+      "train_step": 67900,
       "target_steps": 100000,
-      "observed_at_utc": "2026-11-21T04:07:04+00:00"
+      "observed_at_utc": "2026-11-21T04:07:10+00:00"
     },
     "place_container_plate": {
       "phase": "train",
-      "train_step": 18775,
+      "train_step": 18800,
       "target_steps": 50000,
-      "observed_at_utc": "2026-11-21T04:07:04+00:00"
+      "observed_at_utc": "2026-11-21T04:07:10+00:00"
     }
   },
   "implementation": {
@@ -241,6 +282,108 @@
       "lfs": false
     },
     {
+      "path": "c7-formal/beat_block_hammer/_result.txt",
+      "bytes": 76,
+      "sha256": "9d5d958d013992293de4ff536f6d09aaa7095eda244b5d8ab001bdab42db5ab8",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/eval_episodes.csv",
+      "bytes": 274,
+      "sha256": "64c0386db9bd4f73a5b4064321227c708710522796e319231de3b8df7489b0cb",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/eval_evidence.txt",
+      "bytes": 971,
+      "sha256": "e0f9c329b6e9d1e087adedb231a003414a412a196738ec66c9c2787c97fafb98",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/staged/demo_clean.yml",
+      "bytes": 726,
+      "sha256": "cfc4e4006de3e368ca2338318b9d0d823db18da5697e25cefcdb23ef986d9730",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/staged/sem_policy/deploy_policy.yml",
+      "bytes": 452,
+      "sha256": "849007d17e4096b39d2adaa69f75e7f3906eec11025e946a742939c14509949b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/staged/sem_policy/eval.sh",
+      "bytes": 1132,
+      "sha256": "46de78bef098df9ae6405879bd6c85b5100f6d8be2e3c384966194d9ea9e86ac",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/staged/sem_policy/eval_config.py",
+      "bytes": 759,
+      "sha256": "88e9f0b5281915728cf07f53ff9c058cdbfa46ea50a01a5b6ede3086b1de8bec",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/staged/train_config.py",
+      "bytes": 22794,
+      "sha256": "97037fea1be5beef529cc695f8ee7aa429a0e51d276c39c5dc1418be72f9cdf7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/staged/train_kwargs.json",
+      "bytes": 42,
+      "sha256": "9e478b0927895990f0b9b14fef0d62acb9538423e149740cb811d36ce0026dde",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/train/checkpoints/checkpoint_25/model.config.json",
+      "bytes": 15920,
+      "sha256": "cb371304c9a7fdb84e0796141f6b5a722316d1513af97a5265770ee660c67b5f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/train/checkpoints/checkpoint_25/model.safetensors",
+      "bytes": 198329592,
+      "sha256": "6a8a2de0b08479ef55f35302510160271aacee647a84088fe7486000f0e28d98",
+      "lfs": true
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/train/robotwin2_0_processor.json",
+      "bytes": 5081,
+      "sha256": "5584e494445d64f55148d8793a54107df180dea437fe618a9fdbc567fb549c11",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/train_metrics.csv",
+      "bytes": 135614,
+      "sha256": "0c31f6f4963f593e6bfcbd0aae5e79b700868c719e2ce3574b6d890051dd66c7",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_001.mp4",
+      "bytes": 128558,
+      "sha256": "78eef6d4f7b2ca689506c3c340396f2c8ae5306a384168f0a0c1510e733ba88d",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_002.mp4",
+      "bytes": 298634,
+      "sha256": "eaa39d64fa0ba8ada1e3d8819b8bdbefcd43e02944949201e9619df4e6577ea3",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_008.mp4",
+      "bytes": 354816,
+      "sha256": "3c5f0b0f02504185370011183effce0baa9736b4b427adf552ff0f6bc562ddb6",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_015.mp4",
+      "bytes": 144055,
+      "sha256": "e4a86be94875abee9a6c6a1569f083766daf084f05b4a57411abdd46fb05e098",
+      "lfs": false
+    },
+    {
       "path": "c7-formal/place_empty_cup/eval_episodes.csv",
       "bytes": 1617,
       "sha256": "d73cd8c0254ec76123a2d34a8b0aa0ce0d0323610b019bd3ec835e4b750a7277",
@@ -338,8 +481,8 @@
     },
     {
       "path": "c7-formal/results.csv",
-      "bytes": 690,
-      "sha256": "8d423cdb3c28bc08c132ab7e60e4ca83083c92c43d13e7004b6ea15cbd010d5a",
+      "bytes": 952,
+      "sha256": "d3e66cbf7f01d22f82c475ad4b84b786708f6ff2f3de70d1e8c90223800169db",
       "lfs": false
     },
     {

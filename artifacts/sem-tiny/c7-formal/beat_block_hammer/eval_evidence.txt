@@ -1,0 +1,18 @@
+Task Name: beat_block_hammer
+Policy Name: sem_policy
+Success rate: 1/1 => 100.0%, current seed: 1000100001
+Success rate: 1/2 => 50.0%, current seed: 1000100003
+Success rate: 2/3 => 66.7%, current seed: 1000100004
+Success rate: 3/4 => 75.0%, current seed: 1000100005
+Success rate: 4/5 => 80.0%, current seed: 1000100006
+Success rate: 5/6 => 83.3%, current seed: 1000100007
+Success rate: 6/7 => 85.7%, current seed: 1000100008
+Success rate: 6/8 => 75.0%, current seed: 1000100010
+Success rate: 7/9 => 77.8%, current seed: 1000100011
+Success rate: 8/10 => 80.0%, current seed: 1000100012
+Success rate: 9/11 => 81.8%, current seed: 1000100013
+Success rate: 10/12 => 83.3%, current seed: 1000100014
+Success rate: 11/13 => 84.6%, current seed: 1000100015
+Success rate: 12/14 => 85.7%, current seed: 1000100016
+Success rate: 13/15 => 86.7%, current seed: 1000100017
+Data has been saved to eval_result/beat_block_hammer/sem_policy/demo_clean/none/2026-11-21 01:11:51/_result.txt
