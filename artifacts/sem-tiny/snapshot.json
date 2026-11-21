@@ -392,8 +392,8 @@
       }
     },
     "place_container_plate": {
-      "phase": "train",
-      "train_step": 18800,
+      "phase": "complete",
+      "train_step": 50000,
       "target_steps": 50000,
       "observed_at_utc": "2026-11-21T04:07:10+00:00",
       "evaluation_100": {
@@ -411,7 +411,12 @@
         "results": "c7-formal/place_container_plate/eval_100/eval_episodes.csv",
         "video_directory": "c7-formal/place_container_plate/eval_100/videos",
         "summary": "c7-formal/place_container_plate/eval_100/summary.json"
-      }
+      },
+      "training_completed": true,
+      "train_seconds": 18559.13,
+      "checkpoint": "c7-formal/place_container_plate/train/checkpoints/checkpoint_12/model.safetensors",
+      "checkpoint_bytes": 198329592,
+      "checkpoint_sha256": "2e675beca1b24681972aa9507a066d73b946df144f227a940e5eb7b67a280ff4"
     }
   },
   "implementation": {
@@ -2645,6 +2650,60 @@
       "path": "c7-formal/place_container_plate/eval_100/videos/episode_100.mp4",
       "sha256": "0541ff6e2fd497cc823c8a52cc4bd60d2b0bf38bd9b2c8d1749e5229b5449b71",
       "bytes": 139190,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_container_plate/staged/demo_clean.yml",
+      "bytes": 726,
+      "sha256": "cfc4e4006de3e368ca2338318b9d0d823db18da5697e25cefcdb23ef986d9730",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_container_plate/staged/sem_policy/deploy_policy.yml",
+      "bytes": 460,
+      "sha256": "8af8a5686cd317de57bfdcdff6fe74f9a9450acf228019b5ab9acc9746bd8d72",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_container_plate/staged/sem_policy/eval.sh",
+      "bytes": 1137,
+      "sha256": "cf2b1869ed431257e381fa103b717fb0c06fb45384f516aa3ada8147f6548c32",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_container_plate/staged/sem_policy/eval_config.py",
+      "bytes": 763,
+      "sha256": "2555a58d17bba9fc8b28e6d4249de1b72355353c6087f7523575ca96b7a1621f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_container_plate/staged/train_config.py",
+      "bytes": 22801,
+      "sha256": "78c492ed04a09c508dbc3ba7e58ad405a91cf5ca9e2f1008f3a4da97ff59de0c",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_container_plate/staged/train_kwargs.json",
+      "bytes": 42,
+      "sha256": "9e478b0927895990f0b9b14fef0d62acb9538423e149740cb811d36ce0026dde",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_container_plate/train/checkpoints/checkpoint_12/model.config.json",
+      "bytes": 15920,
+      "sha256": "cb371304c9a7fdb84e0796141f6b5a722316d1513af97a5265770ee660c67b5f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_container_plate/train/checkpoints/checkpoint_12/model.safetensors",
+      "bytes": 198329592,
+      "sha256": "2e675beca1b24681972aa9507a066d73b946df144f227a940e5eb7b67a280ff4",
+      "lfs": true
+    },
+    {
+      "path": "c7-formal/place_container_plate/train/robotwin2_0_processor.json",
+      "bytes": 5081,
+      "sha256": "5584e494445d64f55148d8793a54107df180dea437fe618a9fdbc567fb549c11",
       "lfs": false
     },
     {
