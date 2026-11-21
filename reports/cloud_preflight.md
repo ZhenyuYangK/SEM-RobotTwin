@@ -79,7 +79,7 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 | 任务 | 训练进度 | 正式评估 |
 | --- | --- | --- |
 | `place_empty_cup` | 100000/100000步，约9小时14分钟 | 手动停止。计划100回合，已完成94回合，其中86次成功（91.49%） |
-| `adjust_bottle` | 100000/100000步，训练完成 | 15/15次成功（100.00%）。[验收包](../artifacts/sem-tiny/c7-formal/adjust_bottle) |
+| `adjust_bottle` | 100000/100000步，训练完成 | 15/15次成功（100.00%）。[验收包](../artifacts/sem-tiny/c7-formal/adjust_bottle) · [15段评估视频](../artifacts/sem-tiny/c7-formal/adjust_bottle/videos) |
 | `beat_block_hammer` | 100000/100000步，训练完成 | 13/15次成功（86.67%）。[验收包](../artifacts/sem-tiny/c7-formal/beat_block_hammer) |
 | `handover_block` | 67900/100000步 | 待训练完成，目标15回合 |
 | `place_container_plate` | 18800/50000步 | 待训练完成，目标15回合 |
