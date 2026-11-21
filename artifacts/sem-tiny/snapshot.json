@@ -1,5 +1,5 @@
 {
-  "captured_at_utc": "2026-11-20T18:51:44+00:00",
+  "captured_at_utc": "2026-11-21T04:07:04+00:00",
   "tasks": {
     "place_empty_cup": {
       "phase": "stopped",
@@ -44,23 +44,79 @@
           "scene_seed": 1000100109,
           "success": 1
         }
-      ]
+      ],
+      "observed_at_utc": "2026-11-20T18:51:44+00:00"
     },
     "adjust_bottle": {
-      "phase": "train",
-      "train_step": 41825,
-      "target_steps": 100000
+      "phase": "complete",
+      "observed_at_utc": "2026-11-21T04:07:04+00:00",
+      "train_step": 100000,
+      "target_steps": 100000,
+      "train_seconds": 40913.86,
+      "training_completed": true,
+      "checkpoint": "c7-formal/adjust_bottle/train/checkpoints/checkpoint_25/model.safetensors",
+      "checkpoint_sha256": "06184167ec84ab0c6687d45eb7b184d5a76c27b62f99b11fd94f6b3bd7c46319",
+      "checkpoint_bytes": 198329592,
+      "evaluated_episodes": 15,
+      "successes": 15,
+      "target_eval_episodes": 15,
+      "success_rate_pct": 100.0,
+      "formal_result": true,
+      "eval_seconds": 802.15,
+      "train_metrics": "c7-formal/adjust_bottle/train_metrics.csv",
+      "loss_at_final_logged_step": 0.0202,
+      "representative_videos": [
+        {
+          "path": "c7-formal/adjust_bottle/videos/episode_001.mp4",
+          "episode": 1,
+          "scene_seed": 1000100000,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/adjust_bottle/videos/episode_008.mp4",
+          "episode": 8,
+          "scene_seed": 1000100012,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/adjust_bottle/videos/episode_015.mp4",
+          "episode": 15,
+          "scene_seed": 1000100021,
+          "success": 1
+        }
+      ],
+      "implementation": {
+        "sem_cloud_eval_checkout": "6d835ec5f8714b07a417dd0f2ad16d1c5b8bbb3b",
+        "robotwin_commit": "e71140e9734e69686daa420a9be8b75a20ff4587",
+        "robo_orchard_lab_commit": "41112765f9904efb2374dd9c8946fb5af452861a",
+        "cloud_train_worker_sha256": "bd210884304e112bae8cf0e189eef46ac1f11584579b1569701e1b2c4d556965",
+        "cloud_eval_worker_sha256": "d741f2ecae9fe1f9572f998bedb5f23a01d759bb8479f5a5aea2e644b5994e3b",
+        "cloud_train_source": "c7-parallel-control/worker.py"
+      }
     },
     "beat_block_hammer": {
-      "phase": "train",
-      "train_step": 44400,
-      "target_steps": 100000
+      "phase": "complete",
+      "observed_at_utc": "2026-11-21T04:07:10+00:00",
+      "train_step": 100000,
+      "target_steps": 100000,
+      "training_completed": true,
+      "evaluated_episodes": 15,
+      "target_eval_episodes": 15,
+      "successes": 13,
+      "success_rate_pct": 86.6667,
+      "formal_result": true
     },
     "handover_block": {
-      "phase": "queued"
+      "phase": "train",
+      "train_step": 67875,
+      "target_steps": 100000,
+      "observed_at_utc": "2026-11-21T04:07:04+00:00"
     },
     "place_container_plate": {
-      "phase": "queued"
+      "phase": "train",
+      "train_step": 18775,
+      "target_steps": 50000,
+      "observed_at_utc": "2026-11-21T04:07:04+00:00"
     }
   },
   "implementation": {
@@ -81,7 +137,6 @@
     ]
   },
   "evaluation_protocol": {
-    "expected_valid_episodes": 100,
     "policy": "sem_policy",
     "task_config": "demo_clean",
     "base_seed": 10000,
@@ -89,6 +144,102 @@
     "ckpt_setting": "none"
   },
   "files": [
+    {
+      "path": "c7-formal/adjust_bottle/_result.txt",
+      "bytes": 61,
+      "sha256": "a0a2554a8d07992c9b00b25554a20b2f09e7013aa835144f4cc24de18b572315",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_episodes.csv",
+      "bytes": 274,
+      "sha256": "24624db954bac568d3fdb90c81856cc886ed6ac7c073c8e27bd3c6e370dc7ec4",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_evidence.txt",
+      "bytes": 979,
+      "sha256": "6d5ca764ae91514560896d692a4bb6bb0a49318843c3cec7247460de98bb92d2",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/staged/demo_clean.yml",
+      "bytes": 726,
+      "sha256": "cfc4e4006de3e368ca2338318b9d0d823db18da5697e25cefcdb23ef986d9730",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/staged/sem_policy/deploy_policy.yml",
+      "bytes": 444,
+      "sha256": "3bdf3ea78e6c86ec23807a59f19d2f069492e8cc1b07372f96d7697d47e1d6e8",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/staged/sem_policy/eval.sh",
+      "bytes": 1128,
+      "sha256": "2aa30a4e7cd6663f2c678b85ef41e24bd575588241db6d03cc9ce6571071bcf5",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/staged/sem_policy/eval_config.py",
+      "bytes": 755,
+      "sha256": "4cd03e281fc74b0411edb2d3117d06149651b169dc883737a8758729e9ce6ce3",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/staged/train_config.py",
+      "bytes": 22786,
+      "sha256": "0ac9302f247e052f130c03a90a7b633ebef6c76890d483537cdb735cf38e2563",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/staged/train_kwargs.json",
+      "bytes": 42,
+      "sha256": "9e478b0927895990f0b9b14fef0d62acb9538423e149740cb811d36ce0026dde",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/train/checkpoints/checkpoint_25/model.config.json",
+      "bytes": 15920,
+      "sha256": "cb371304c9a7fdb84e0796141f6b5a722316d1513af97a5265770ee660c67b5f",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/train/checkpoints/checkpoint_25/model.safetensors",
+      "bytes": 198329592,
+      "sha256": "06184167ec84ab0c6687d45eb7b184d5a76c27b62f99b11fd94f6b3bd7c46319",
+      "lfs": true
+    },
+    {
+      "path": "c7-formal/adjust_bottle/train/robotwin2_0_processor.json",
+      "bytes": 5081,
+      "sha256": "5584e494445d64f55148d8793a54107df180dea437fe618a9fdbc567fb549c11",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/train_metrics.csv",
+      "bytes": 135614,
+      "sha256": "e3192e1bf548ff7fe10440728bf6f3f7fff9d91cbcc0e04db91bacd7d53f1af3",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/videos/episode_001.mp4",
+      "bytes": 173250,
+      "sha256": "c5942b10c93835e74b6c394c1000ff6b375d9d94a423a1321425c100d0647c4e",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/videos/episode_008.mp4",
+      "bytes": 180966,
+      "sha256": "f45ca8a1a783b6136291af250e4e4362fa59bf42b18879d5fc3e280ef7d8ccd8",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/videos/episode_015.mp4",
+      "bytes": 141848,
+      "sha256": "787540c73af0320390afed3ee590d8b24f0e12957cdfe2027f405fa8fd76070e",
+      "lfs": false
+    },
     {
       "path": "c7-formal/place_empty_cup/eval_episodes.csv",
       "bytes": 1617,
@@ -187,8 +338,8 @@
     },
     {
       "path": "c7-formal/results.csv",
-      "bytes": 441,
-      "sha256": "dace5990537ea65585431fcd596edbc6e794559f5d28a78af0e9245137f89bfd",
+      "bytes": 690,
+      "sha256": "8d423cdb3c28bc08c132ab7e60e4ca83083c92c43d13e7004b6ea15cbd010d5a",
       "lfs": false
     },
     {

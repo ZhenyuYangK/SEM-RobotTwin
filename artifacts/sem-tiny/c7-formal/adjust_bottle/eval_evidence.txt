@@ -1,0 +1,18 @@
+Task Name: adjust_bottle
+Policy Name: sem_policy
+Success rate: 1/1 => 100.0%, current seed: 1000100000
+Success rate: 2/2 => 100.0%, current seed: 1000100002
+Success rate: 3/3 => 100.0%, current seed: 1000100003
+Success rate: 4/4 => 100.0%, current seed: 1000100004
+Success rate: 5/5 => 100.0%, current seed: 1000100005
+Success rate: 6/6 => 100.0%, current seed: 1000100006
+Success rate: 7/7 => 100.0%, current seed: 1000100008
+Success rate: 8/8 => 100.0%, current seed: 1000100012
+Success rate: 9/9 => 100.0%, current seed: 1000100013
+Success rate: 10/10 => 100.0%, current seed: 1000100015
+Success rate: 11/11 => 100.0%, current seed: 1000100016
+Success rate: 12/12 => 100.0%, current seed: 1000100017
+Success rate: 13/13 => 100.0%, current seed: 1000100018
+Success rate: 14/14 => 100.0%, current seed: 1000100020
+Success rate: 15/15 => 100.0%, current seed: 1000100021
+Data has been saved to eval_result/adjust_bottle/sem_policy/demo_clean/none/2026-11-21 01:28:32/_result.txt

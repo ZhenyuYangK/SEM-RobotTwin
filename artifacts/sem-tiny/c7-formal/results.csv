@@ -1,2 +1,3 @@
 task,demonstrations,training_steps,batch_size,evaluation_status,planned_episodes,episodes,successes,success_rate_pct,train_seconds,eval_seconds,checkpoint,checkpoint_sha256,episode_results
 place_empty_cup,100,100000,2,stopped,100,94,86,91.4894,33227.34,,c7-formal/place_empty_cup/train/checkpoints/checkpoint_25/model.safetensors,631d5fa364db57834b47a5c936586e342fb16214c862e0343ba69ed2e9097d8d,c7-formal/place_empty_cup/eval_episodes.csv
+adjust_bottle,100,100000,2,complete,15,15,15,100.0,40913.86,802.15,c7-formal/adjust_bottle/train/checkpoints/checkpoint_25/model.safetensors,06184167ec84ab0c6687d45eb7b184d5a76c27b62f99b11fd94f6b3bd7c46319,c7-formal/adjust_bottle/eval_episodes.csv
