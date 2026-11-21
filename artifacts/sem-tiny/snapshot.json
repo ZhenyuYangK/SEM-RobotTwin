@@ -184,7 +184,25 @@
           "scene_seed": 1000100021,
           "success": 1
         }
-      ]
+      ],
+      "evaluation_100": {
+        "task": "adjust_bottle",
+        "training_steps": 100000,
+        "evaluated_episodes": 100,
+        "successes": 98,
+        "success_rate_pct": 98.0,
+        "method": "continuation",
+        "segment_episode_counts": [
+          15,
+          85
+        ],
+        "video_count": 100,
+        "complete_recorded_at_utc": "2026-11-21T05:43:59+00:00",
+        "instruction_candidate_limit": 15,
+        "results": "c7-formal/adjust_bottle/eval_100/eval_episodes.csv",
+        "video_directory": "c7-formal/adjust_bottle/eval_100/videos",
+        "summary": "c7-formal/adjust_bottle/eval_100/summary.json"
+      }
     },
     "beat_block_hammer": {
       "phase": "complete",
@@ -373,6 +391,630 @@
       "path": "c7-formal/adjust_bottle/_result.txt",
       "bytes": 61,
       "sha256": "a0a2554a8d07992c9b00b25554a20b2f09e7013aa835144f4cc24de18b572315",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/eval_episodes.csv",
+      "sha256": "2d0dd5b8f0e53287154f1f91d7bf06fd4302f8fe04db9c11a65e09f22183a2d8",
+      "bytes": 3925,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/eval_evidence_continuation.txt",
+      "sha256": "c141edde2d3f4c935bba40b85bdb60b8ac1f793d2c080bf6f8b7231262be29a0",
+      "bytes": 4815,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/eval_evidence_initial.txt",
+      "sha256": "6d5ca764ae91514560896d692a4bb6bb0a49318843c3cec7247460de98bb92d2",
+      "bytes": 979,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/summary.json",
+      "sha256": "a7f696f6f80f0a38a34cfbd4da87ad1952c65e8ab0a9fbfff4c22defa0163135",
+      "bytes": 330,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_001.mp4",
+      "sha256": "c5942b10c93835e74b6c394c1000ff6b375d9d94a423a1321425c100d0647c4e",
+      "bytes": 173250,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_002.mp4",
+      "sha256": "163f78768d0d0444ac8712f5ba14c25b9206cfe9768f39f08770005d282319ec",
+      "bytes": 180370,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_003.mp4",
+      "sha256": "26e4367852438d690b9a1e3e266734671448e619872bc28a4374e7d903646799",
+      "bytes": 156365,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_004.mp4",
+      "sha256": "42b9d41590064586d6945efd6e40029167d2173844a6c3e94436801b51ea1ef6",
+      "bytes": 157366,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_005.mp4",
+      "sha256": "c77b1b3c0723e215eacb750ed27d81484b9a484a236084bb95489fc270932dc8",
+      "bytes": 151457,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_006.mp4",
+      "sha256": "d629e40263c94761fb7e5c3dcbbcd63a8f25e90b581421cd738105273a411fd4",
+      "bytes": 183325,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_007.mp4",
+      "sha256": "036b4c315937a2d3e7fcc7d4a7ea8dd4bc6f178f02457a199e2ce0cbc8e5ddf3",
+      "bytes": 166404,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_008.mp4",
+      "sha256": "f45ca8a1a783b6136291af250e4e4362fa59bf42b18879d5fc3e280ef7d8ccd8",
+      "bytes": 180966,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_009.mp4",
+      "sha256": "db4596f9c90da178502bfebc407ceba4bfef34ce6967ccf075cd5e316444627c",
+      "bytes": 151648,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_010.mp4",
+      "sha256": "c53b1ccf6326b2d6f79aa1aed33f9e41868d7c88075d099ef3b0781e81e5509c",
+      "bytes": 172540,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_011.mp4",
+      "sha256": "e5044c3666c40d26e473f24ea71f9b8d18a73d0d288383f617bde8bf60201a99",
+      "bytes": 161313,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_012.mp4",
+      "sha256": "b03b4f486a3fa0b78d7620c1ebaebfb5738cc6f17f0845539b671e7ec78e2dbf",
+      "bytes": 173653,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_013.mp4",
+      "sha256": "d9399112a316f19acbc8379e32340d3354dc9cf9d6330fc8cb216478aff4b593",
+      "bytes": 163867,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_014.mp4",
+      "sha256": "03a10868e4365976d88952f2ba8ff724d272f1e6a47f20ef48877064bc418e2e",
+      "bytes": 141316,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_015.mp4",
+      "sha256": "787540c73af0320390afed3ee590d8b24f0e12957cdfe2027f405fa8fd76070e",
+      "bytes": 141848,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_016.mp4",
+      "sha256": "c1953e7d8d2ef8146914d22ddd14016782f75f67b1404ad3cb1e4f492496d26f",
+      "bytes": 195284,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_017.mp4",
+      "sha256": "5125ac730e9a09f259a04310a14a7e0ac898a297bd027ff4bb2ba8df2f909698",
+      "bytes": 175281,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_018.mp4",
+      "sha256": "c09dbdc5e3e929153c7f6954b30182c6440751385dfe9c920be0d00209d301d0",
+      "bytes": 179533,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_019.mp4",
+      "sha256": "f48c3852cb5c8ca0c549433ff55c1b154c45c3288a295bb0a07f08930d41d795",
+      "bytes": 172782,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_020.mp4",
+      "sha256": "5d9ba33ba3c06db3b46fb113a44477e0d57744b6d416e8671dbabcc9a41ff293",
+      "bytes": 166435,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_021.mp4",
+      "sha256": "55519d9fdaec71304b8094d4589091d1b87d049cafec52cf342765b36ab52c0f",
+      "bytes": 159635,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_022.mp4",
+      "sha256": "df84cd0872269090a636cae2a3a9bab04d5c9979f42b5e0ecfed6760139ffe71",
+      "bytes": 188769,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_023.mp4",
+      "sha256": "acfeb05dcf2e672168d1e6ecaf117c514b77ebdb2143110f62813fe479cb2a36",
+      "bytes": 146185,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_024.mp4",
+      "sha256": "9c0c8e2178b5c4616a9cf4e3169f1ceaffbeff0fad639d84b5f172e73963cd10",
+      "bytes": 187807,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_025.mp4",
+      "sha256": "d7dd6fcb0d0a7bffb29d0f8ceadefa049a2342b6e8c0eda4c16efcb189ae9941",
+      "bytes": 177691,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_026.mp4",
+      "sha256": "ae6e67f8b1e3d3d52b586932bc95904a453aa64fd45710e0177c5204acec501b",
+      "bytes": 176836,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_027.mp4",
+      "sha256": "2dfc6f55f80b540b02222c34018a772497ad96b951cd02c5faeabb38c8cc2a4d",
+      "bytes": 163867,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_028.mp4",
+      "sha256": "81538a504a4bd54f73f822ad50c0dec950caf62ea50239c237055fb6bfa1ddde",
+      "bytes": 152089,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_029.mp4",
+      "sha256": "d98d92c5949eead1b8a4b998f5d0210d54495ec4b96dcceb8515a4551f9c1a5b",
+      "bytes": 171423,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_030.mp4",
+      "sha256": "5a9ba1afcf9896d359c9b0a54accb5dde18a095628f02ae89cb2b1f2a328dd31",
+      "bytes": 179588,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_031.mp4",
+      "sha256": "2261b6c74ccdff1d61a12beac4568a12f16af04cff72d1c9ded8a9b298bdff4a",
+      "bytes": 178636,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_032.mp4",
+      "sha256": "1203363e71c541e0a4825b0cc9ebbc5cdec64c142f2fed1477a5ed912301e246",
+      "bytes": 151351,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_033.mp4",
+      "sha256": "74c44ac050148d3661a07f66af64c6e97a55807dbc7fdd4465208795dd829080",
+      "bytes": 176431,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_034.mp4",
+      "sha256": "e14b1eb4c5ce7b56f4ffe569a41df48a069dd4a97cb5f1791291551809720d72",
+      "bytes": 141429,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_035.mp4",
+      "sha256": "4670e2019533571e4fd0291630a9eee7a5b4a5ce37985a93b8a36c39aa68cfbb",
+      "bytes": 148065,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_036.mp4",
+      "sha256": "aefcf52705b8766ee8654eae544ca038c67e04d5b20ad81b5c36f713c7ce37c2",
+      "bytes": 155988,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_037.mp4",
+      "sha256": "448e41e37fe25c5ffc7b88bf469b014b4dbf73044212f2f3db3736a75aadaf86",
+      "bytes": 178254,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_038.mp4",
+      "sha256": "f4b778ba5a1ffe4e4f764df82943fedf30e12f1ad9790ddc1903f6a2e1c7da64",
+      "bytes": 175775,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_039.mp4",
+      "sha256": "a6529bfca51c5b83edb8ecc40069fa188437db31b811212b91227393b6765c73",
+      "bytes": 136412,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_040.mp4",
+      "sha256": "e8b0f70bea08ea108edff2e21f24ec101a5611123033588fd9b61f150a6787ce",
+      "bytes": 157045,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_041.mp4",
+      "sha256": "b0bfc1a9dd60a7ce50cc37d46c8b6270266cbb2c8f21fb714c0ba447351edbe0",
+      "bytes": 174306,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_042.mp4",
+      "sha256": "806ccda29cbe0bf67495a841eb3eeae9d1741dcd77d447618ece080ea6305add",
+      "bytes": 179103,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_043.mp4",
+      "sha256": "82aa81498a4f42bac995a079acc6f05a49cc0bf3f91efd717e3aa15be72831cd",
+      "bytes": 143961,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_044.mp4",
+      "sha256": "a051031e662d75ab06277c2b048a544adcd002dc92106e6f26a269f1eda33d1f",
+      "bytes": 159178,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_045.mp4",
+      "sha256": "802f61bede8ba174877169589fdf5027dfbba6d6500fc36ba1ce9730d2619e14",
+      "bytes": 198485,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_046.mp4",
+      "sha256": "0931c49b5cb7b7c44ed688d89facf7244a8ff2694720ba9950448d0d9eb7b466",
+      "bytes": 154448,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_047.mp4",
+      "sha256": "966835fd4aa16771092cbf2d1e013ac852f134eb4f581e7a5b2399ccc7ff9f1c",
+      "bytes": 166218,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_048.mp4",
+      "sha256": "d090d39ee76774df87b6e162752881701820e95559ff8d6942c0917ad34a73de",
+      "bytes": 149577,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_049.mp4",
+      "sha256": "ed263838213dbbacc6d6b16bf7dcd52b625c8cb10bb54ef7c1d90419a9c4f730",
+      "bytes": 154235,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_050.mp4",
+      "sha256": "4eca6872b4ba0210b2e80a447c34a0a79fd0383994e6c96f77b0e16ab6eb3c8d",
+      "bytes": 177706,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_051.mp4",
+      "sha256": "eed6393c7e0eb8783f233e99cb2ee0095c12097423bf72013711ecca3f5a0b0e",
+      "bytes": 152089,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_052.mp4",
+      "sha256": "3891f7c7f289f84c75dfcbbbb7c49cbb937ffc37d27f7ff7e18939e5adbce66d",
+      "bytes": 167892,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_053.mp4",
+      "sha256": "dbc4584e7fbb0ee767fb91f03ccebe7d8c607a980b1a8305df165c7c6e9f2c4d",
+      "bytes": 171817,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_054.mp4",
+      "sha256": "0fe47706804dbd4cc5aa23ebfd4b494f6c0f76a6071161049038c38c707648fa",
+      "bytes": 175767,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_055.mp4",
+      "sha256": "f6e04f805a9609efe36879c7a5a9f0fde1de3678c21ad9be8c9e424b481f7a80",
+      "bytes": 161911,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_056.mp4",
+      "sha256": "9ae965a33ae56aae0fbc9f22452a0f21ac65789cf8369645915415b01093ff7f",
+      "bytes": 176301,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_057.mp4",
+      "sha256": "38c688ec17b3ccbfa1b0c393d8ae119df0cea390a4c056fafb9281fa74d06827",
+      "bytes": 163267,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_058.mp4",
+      "sha256": "47aa0f24cde9a25d6947a5a7d135c524127c49ca0aeaa24aefb5423e17e4ba29",
+      "bytes": 144252,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_059.mp4",
+      "sha256": "32bf62d700c5cb491b3c6801ac0dd8fa15df851ce06d8771879976acdd2995d9",
+      "bytes": 173364,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_060.mp4",
+      "sha256": "64fb64a43453ef481530c20d456e1b5e021ccb3ae40c0061c78e0a82e20de01e",
+      "bytes": 152115,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_061.mp4",
+      "sha256": "d1091249ce81c91b6fd50cd1b4077e4e3b86194af8d39b3678720631f3d9f79d",
+      "bytes": 150797,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_062.mp4",
+      "sha256": "7656f16fd2f841f0391492d3ad73406bdcd5042449bc74f75e8eaaf990258edc",
+      "bytes": 154894,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_063.mp4",
+      "sha256": "3d4f0d1bafc3ef32e0a7ee5040659bfe35012b665a394284e1d8e724b6dcb323",
+      "bytes": 174341,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_064.mp4",
+      "sha256": "4866d586d57abd719b5e3a9e543a7e4e3fcd6d7d0cc82354c9ca7b60322ca00e",
+      "bytes": 151962,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_065.mp4",
+      "sha256": "c72dc36bcfa0d5283c0882643abca25d51af124b1f873188f57d1895091b37e0",
+      "bytes": 143002,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_066.mp4",
+      "sha256": "84f691d9fecb04eba48fce398d81f9f70e6957a0da5c0ebe6f349d8688663a69",
+      "bytes": 144450,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_067.mp4",
+      "sha256": "e8cfdfa99245856952b7d2357320870fd2d5b162460b635e59eb06b885913e59",
+      "bytes": 154546,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_068.mp4",
+      "sha256": "fd26f4375bb36dc32549f5f6d736aa3842ecf8d31d3ad54d4dc25446788f067f",
+      "bytes": 158672,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_069.mp4",
+      "sha256": "461c96bd2ebe1daa670f9f38d8feb595e8eab537b1cbe769eb2a747d19a28a7f",
+      "bytes": 167981,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_070.mp4",
+      "sha256": "f62be6a5ac9feadce9723de9476efae7d48737200c60c2b2249aca12877b253a",
+      "bytes": 172424,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_071.mp4",
+      "sha256": "18e3649b4a7cf4492933cb6a4d86c3234aa2d13400f21b69b3cc655cc7c29544",
+      "bytes": 172765,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_072.mp4",
+      "sha256": "69aac6c7ed980498ed1c3e767b5b2f240ae4a42d3328885930f882088abc40f1",
+      "bytes": 182748,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_073.mp4",
+      "sha256": "21198aa7203cdd36eda03877766b6a1301b5bbe1bf6d2e39a08041d498b8d7e5",
+      "bytes": 150309,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_074.mp4",
+      "sha256": "c8691adcb2d9405fa2ac173365f2e2b7dc50d92283e5640b1f45d16e9421f7e8",
+      "bytes": 149751,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_075.mp4",
+      "sha256": "68cd831736e34aaf4a24f5d1c09452015a4451b580defa1085933e0d288d04ea",
+      "bytes": 169934,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_076.mp4",
+      "sha256": "b41b63e9cc826a69e031f1c64de400a90f5f035ffb2b489bba9a2fd9cce45118",
+      "bytes": 171809,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_077.mp4",
+      "sha256": "d5237e9e65ebbb0fdfed12de95c12eb942b6568923e7f21d7a7ea2b517d7d093",
+      "bytes": 158989,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_078.mp4",
+      "sha256": "7bd9ddc081a8564bb7da258c2ac73d4aa6eccc4c5a9719cbac14048acd265952",
+      "bytes": 158479,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_079.mp4",
+      "sha256": "d0ef50c51a4b723b57d133a455d7afdece19702de19acaca79c4f0b5a73b4a70",
+      "bytes": 167891,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_080.mp4",
+      "sha256": "3b37fe42b3c0965723b46b4ebf95e6fdedf283def6ac4506f0909804246439f7",
+      "bytes": 154958,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_081.mp4",
+      "sha256": "9aafab851429964916d2a36ce9d5b644384cb7d15ce52ebf5819a5a32fcfd445",
+      "bytes": 166625,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_082.mp4",
+      "sha256": "e78a7260223b627a3f438e328391dfd92b3b1f7c70dc3f52c4f667469c7d3082",
+      "bytes": 162177,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_083.mp4",
+      "sha256": "bb08c4d1c254cd3fc069a7cbc79e339c06ca5e113bd5d3a3550ce40ae85011b8",
+      "bytes": 150308,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_084.mp4",
+      "sha256": "58400bfb512991799704826b485e1c2204f0487bdec42a2d3598a905104c3e1d",
+      "bytes": 149690,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_085.mp4",
+      "sha256": "2f75c17e316e51ef0024b33df8561199a2a96f38ab17ec4688d0c17e8f601f25",
+      "bytes": 175437,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_086.mp4",
+      "sha256": "998616b3950c7dbc45f79e288b16f53b89513091a737886902a62264b3f1b468",
+      "bytes": 158263,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_087.mp4",
+      "sha256": "cc7a75d15066c254826e71b3f1bcf5ed77b6bfa3b4e54be6679759f635c34268",
+      "bytes": 170476,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_088.mp4",
+      "sha256": "b8f371ee027ba8919ce30d102b74d8454ded268282574d3bf120095240be0377",
+      "bytes": 183816,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_089.mp4",
+      "sha256": "13dbb3b0766040f9e7a51ec2b10c4604f5f2e707053cd6f857909313ba9897a4",
+      "bytes": 171219,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_090.mp4",
+      "sha256": "f1b0a2d36b6e141047f229274a769741acf00d39cc6e99fbbd2fd0c0984ebbe1",
+      "bytes": 146571,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_091.mp4",
+      "sha256": "be9a46c124afe1d70dbf812eaac2b2f5335ff190973e8c5a14b2b0b355352690",
+      "bytes": 161421,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_092.mp4",
+      "sha256": "47ac56b9a447b806547fff65818ee04a6d6d22f194cd89905bb2d580c837578a",
+      "bytes": 156767,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_093.mp4",
+      "sha256": "edf8bd9f0d3090bfde5829daa6acf5f58dee89c795f93b78e781aa9367bee5c4",
+      "bytes": 145833,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_094.mp4",
+      "sha256": "8a35b1dcb6098d508f5cd91396909d27606ba143ba1731d3bf21ff8a865b211e",
+      "bytes": 154117,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_095.mp4",
+      "sha256": "ae48db73b8f3d943ce6c8a2a859b63fdb65ed50e2c6539c49f47cec3beeae641",
+      "bytes": 162165,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_096.mp4",
+      "sha256": "abfd6086cb678c83bebd38afb4300890b564b5992fbb68fd08eb6c1fe01148db",
+      "bytes": 148847,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_097.mp4",
+      "sha256": "b414e8bd2909734157e3ac1cd015c5bd1324b4167a81ebd96b7bc8adef6aa162",
+      "bytes": 146342,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_098.mp4",
+      "sha256": "2a24ee454a0d70407c3026ac635829eae2e7b8ee73b926c8b2e4fde54caac78a",
+      "bytes": 169878,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_099.mp4",
+      "sha256": "3dfdaba42ee89a07e55163d5ece63bfc6a4de8ac0604dfac735a67c496faa12d",
+      "bytes": 143703,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/adjust_bottle/eval_100/videos/episode_100.mp4",
+      "sha256": "e717bb18f0c76c77bf2065023661246d8815bc964d65cd16bf2d222e3d0189bd",
+      "bytes": 176025,
       "lfs": false
     },
     {
@@ -703,6 +1345,12 @@
       "path": "c7-formal/beat_block_hammer/videos/episode_015.mp4",
       "bytes": 144055,
       "sha256": "e4a86be94875abee9a6c6a1569f083766daf084f05b4a57411abdd46fb05e098",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/evaluation_100.csv",
+      "bytes": 252,
+      "sha256": "86a521738ac5ab1657ed7e99829b6f96e5b312f92180232c4473f15dd4e5e59b",
       "lfs": false
     },
     {
