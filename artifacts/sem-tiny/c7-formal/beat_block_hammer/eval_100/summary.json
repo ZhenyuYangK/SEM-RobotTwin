@@ -1,0 +1,15 @@
+{
+  "task": "beat_block_hammer",
+  "training_steps": 100000,
+  "evaluated_episodes": 100,
+  "successes": 87,
+  "success_rate_pct": 87.0,
+  "method": "continuation",
+  "segment_episode_counts": [
+    15,
+    85
+  ],
+  "video_count": 100,
+  "complete_recorded_at_utc": "2026-11-21T06:45:13+00:00",
+  "instruction_candidate_limit": 15
+}
