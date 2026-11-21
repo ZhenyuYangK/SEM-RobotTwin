@@ -9,7 +9,7 @@
 | 两份原始资料 | `SEM评估流程.md`为`22c5a51582bf232ac4bc7aefcc518323f65a536216cb098a574dcba25d0c3e19`，`arx5_description_isaac.urdf`为`097c59fb19a7b482249c6097df8319586ea7cfd268c015516f103b289a7e761a`。两份均按原件保留。 |
 | 源码 | `bash scripts/bootstrap_sources.sh --clone`完成文本源码检出，整个`src/`约21MiB。RoboTwin为`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab为`41112765f9904efb2374dd9c8946fb5af452861a`。源码审计与证据行号见`code_audit.md`。 |
 | URDF | 静态结构通过，54个Link、53个Joint、唯一根为`footprint`。30个Mesh路径本地未解析。报告路径指向输入文件的硬链接时，脚本正确拒绝写入。参照库存与结构结果见`urdf_differences.md`和`urdf_audit.json`。 |
-| 任务 | `discover_tasks.py --workspace . --list`发现50个任务。`--validate`通过已确认的5个任务，顺序为`place_empty_cup`、`adjust_bottle`、`beat_block_hammer`、`handover_block`、`place_container_plate`。源码证据见`task_candidates.md`。 |
+| 任务 | `discover_tasks.py --workspace . --list`发现50个任务。`--validate`通过当前5个任务，顺序为`place_empty_cup`、`adjust_bottle`、`beat_block_hammer`、`place_shoe`、`place_container_plate`。源码证据见`task_candidates.md`。 |
 | 入口与产物 | 在临时目录生成`demo_clean.yml`、SEM训练配置、部署YAML、评估启动器及5任务云端清单。对采集、打包、训练提取锁定源码中的`argparse`声明验证参数。评估对启动器执行`bash -n`，使用命令捕获替代运行环境，再调用锁定版解析函数核对参数与路径。统计CLI通过空模板和合成日志检查。 |
 | 操作范围 | 按用户范围只在本地预开发。未连接GPU服务器、安装仿真依赖、下载权重或资产，也未启动采集、训练或仿真评估。 |
 

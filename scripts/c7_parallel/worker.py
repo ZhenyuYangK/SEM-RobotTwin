@@ -21,7 +21,10 @@ URDF = ROBOTWIN / "assets/embodiments/aloha-agilex/urdf/arx5_description_isaac.u
 PRETRAINED = BASE / "weights/groundingdino_swint_ogc_mmdet-822d7e9d-rename.pth"
 BERT = BASE / "weights/bert-base-uncased-86b5e0934494bd15c9632b12f734a8a67f723594"
 DEMOS = 100
-TASKS = ("place_empty_cup", "adjust_bottle", "beat_block_hammer", "handover_block", "place_container_plate")
+TASKS = tuple(
+    task["name"] for task in json.loads((REPO / "configs/project.json").read_text())["tasks"]
+    if task["include"]
+)
 SOURCES = {
     "adjust_bottle": BASE / "runs/adjust_bottle-parallel-check/raw",
     "beat_block_hammer": BASE / "runs/beat_block_hammer-parallel-check/raw",

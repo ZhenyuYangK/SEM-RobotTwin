@@ -47,7 +47,7 @@ python3 scripts/make_training_config.py --task place_empty_cup \
 
 1. 在远程RoboTwin运行环境按既定要求安装RoboOrchardLab，部署审查过的`sem_policy`到`policy/sem_policy/`，保持`demo_clean`的Depth开启。确认`CHECKPOINT`指向实际训练产物，`EVAL_CONFIG`指向可加载的SEM Python配置。
 2. 用刚实际参与训练的示范数量生成部署文件。核对YAML、路径和评估任务后应用到运行副本的策略目录。
-3. 用`run_smoke_eval.py`验证模型加载、观测输入和14维双臂动作。该入口校验运行副本和锁定源码中的评估脚本一致，在内存中替换Episode数，并检查策略动作形状和有限值。C7后续任务评估15个有效Episode，使用`seed=10000`、`sem_policy`、`demo_clean`、`unseen`和`ckpt_setting=none`。
+3. 用`run_smoke_eval.py`验证模型加载、观测输入和14维双臂动作。该入口校验运行副本和锁定源码中的评估脚本一致，在内存中替换Episode数，并检查策略动作形状和有限值。C7正式评估回合数由`configs/project.json`的`eval_episodes_target`指定，当前为100，使用`seed=10000`、`sem_policy`、`demo_clean`、`unseen`和`ckpt_setting=none`。
 4. 保存训练和评估配置、Git提交、原始日志、`_result.txt`与视频。统计用完成日志中的成功数和有效Episode数，CSV汇总输入示例见`templates/evaluation_results_template.csv`。
 
 ```bash

@@ -81,7 +81,6 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 | `place_empty_cup` | 100000/100000步，约9小时14分钟 | 手动停止。计划100回合，已完成94回合，其中86次成功（91.49%） |
 | `adjust_bottle` | 100000/100000步，训练完成 | 15/15次成功（100.00%）。[验收包](../artifacts/sem-tiny/c7-formal/adjust_bottle) · [15段评估视频](../artifacts/sem-tiny/c7-formal/adjust_bottle/videos) |
 | `beat_block_hammer` | 100000/100000步，训练完成 | 13/15次成功（86.67%）。[验收包](../artifacts/sem-tiny/c7-formal/beat_block_hammer) · [15段评估视频](../artifacts/sem-tiny/c7-formal/beat_block_hammer/videos) |
-| `handover_block` | 67900/100000步 | 待训练完成，目标15回合 |
 | `place_container_plate` | 18800/50000步 | 待训练完成，目标15回合 |
 
 `place_empty_cup`使用100条成功示范和`batch_size=2`完成训练。最终Checkpoint为`runs/c7-formal/place_empty_cup/train/checkpoints/checkpoint_25/model.safetensors`，大小为198329592字节。训练日志记录`GlobalStep[100000/100000]`及结束保存，评估日志保存在同一任务目录的`eval.log`。
@@ -89,13 +88,13 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 ### 验收文件与代码
 
 - `place_empty_cup`于10:48手动停止评估，汇总按已完成的94个有效回合计算。任务目录的`review_videos/`保留14条成功视频和1条失败视频，合计4分37秒。`selection.csv`记录原始回合与场景种子，其余80个评估视频文件已移至数据盘回收站。
-- 云端调度已切换为后续任务每项15个有效回合。新调度器接管了`adjust_bottle`和`beat_block_hammer`的原训练进程，并启动了`handover_block`的采集。`place_container_plate`等待空闲名额。
+- 云端调度已切换为后续任务每项15个有效回合。新调度器接管了`adjust_bottle`和`beat_block_hammer`的原训练进程。`place_container_plate`等待空闲名额。
 
 - `main`上的验收包保留最终权重、模型与处理器配置、实测训练和评估配置、训练损失CSV、评估汇总、逐回合结果和视频。`place_empty_cup`保留代表视频，15回合的评估留存全部15段视频。逐回合CSV记录场景种子和成败，视频编号对应回合编号。权重通过Git LFS下载，清单提供每个文件的SHA-256。[验收文件](../artifacts/sem-tiny/c7-formal) · [评估汇总](../artifacts/sem-tiny/c7-formal/results.csv) · [校验清单](../artifacts/sem-tiny/snapshot.json)
-- 首项运行的工程检出为`3a20e74`，上游为RoboTwin `e71140e`和RoboOrchardLab `4111276`。已核对运行副本的任务、训练、打包和评估入口，以及SEM部署策略文件，均与锁定源码一致。[实际训练入口](https://github.com/ZhenyuYangK/SEM-cloud/blob/3a20e74496401cd1f09f36b23b5e006bfbfe6384/scripts/run_formal_experiments.py) · [实际并行调度](../artifacts/sem-tiny/c7-parallel-control) · [RoboTwin源码](https://github.com/RoboTwin-Platform/RoboTwin/tree/e71140e9734e69686daa420a9be8b75a20ff4587) · [RoboOrchardLab源码](https://github.com/HorizonRobotics/RoboOrchardLab/tree/41112765f9904efb2374dd9c8946fb5af452861a)
+- 首项运行的工程检出为`3a20e74`，上游为RoboTwin `e71140e`和RoboOrchardLab `4111276`。已核对运行副本的任务、训练、打包和评估入口，以及SEM部署策略文件，均与锁定源码一致。[实际训练入口](https://github.com/ZhenyuYangK/SEM-cloud/blob/3a20e74496401cd1f09f36b23b5e006bfbfe6384/scripts/run_formal_experiments.py) · [历史并行调度](https://github.com/ZhenyuYangK/SEM-cloud/tree/3d681efcd425377bdf905df3666a39b7d2d8cd5b/artifacts/sem-tiny/c7-parallel-control) · [RoboTwin源码](https://github.com/RoboTwin-Platform/RoboTwin/tree/e71140e9734e69686daa420a9be8b75a20ff4587) · [RoboOrchardLab源码](https://github.com/HorizonRobotics/RoboOrchardLab/tree/41112765f9904efb2374dd9c8946fb5af452861a)
 - 完整日志和可续训状态留在云端。先前的全量产物快照可按历史提交访问。[历史快照](https://github.com/ZhenyuYangK/SEM-cloud/tree/93e69994c7fb033d9e52de27e15b4fceadcd353f/artifacts/sem-tiny)
 
-11:03（太平洋时间）确认云端调度已加载50000步和15个有效评估回合的目标，排队的`place_container_plate`将使用这套配置。`adjust_bottle`和`beat_block_hammer`的训练进程以及`handover_block`的采集工作进程在交接后继续运行。三个已启动的工作流沿用100000步，验收使用各自的实际训练配置、完成日志和Checkpoint。[项目配置](../configs/project.json)
+11:03（太平洋时间）确认云端调度已加载50000步和15个有效评估回合的目标，排队的`place_container_plate`将使用这套配置。`adjust_bottle`和`beat_block_hammer`在交接后沿用100000步，验收使用各自的实际训练配置、完成日志和Checkpoint。[项目配置](../configs/project.json)
 
 项目评估目标已恢复为100回合。按原评估日志，`adjust_bottle`续评从候选种子`1000100022`开始，`beat_block_hammer`从`1000100018`开始，各增加85个有效回合。[续评入口](../scripts/c7_parallel/extend_eval.py)
 
@@ -103,7 +102,7 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 
 完整归档的视频按评估回合编号保存，逐回合CSV将视频与场景种子及成败对应。汇总记录实际回合数及单次评估或分段续评的方式。[100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv)
 
-云端调度已加载100回合目标，并接管`handover_block`与`place_container_plate`原有训练进程。两项续评依次运行，各自沿用原Checkpoint和指令采样设置。合并后核对了原15条记录、100个唯一场景种子、成功计数和对应视频文件。
+云端调度已加载100回合目标，并接管`place_container_plate`原有训练进程。`adjust_bottle`和`beat_block_hammer`依次续评，各自沿用原Checkpoint和指令采样设置。合并后核对了原15条记录、100个唯一场景种子、成功计数和对应视频文件。
 
 | 任务 | 原评估 | 新增评估 | 合计 | 新增评估耗时 |
 | --- | --- | --- | --- | --- |
@@ -113,3 +112,5 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 串行续评实测合计7971.33秒。云端各任务目录的`eval_to_100/`保存合并结果，原评估和续评各自的日志与视频保留在任务目录中。
 
 2026-11-21，`place_empty_cup`沿用100000步Checkpoint和原评估设置，从候选种子`1000100110`开始续评6个有效回合。新增成功5次，耗时337.10秒，合并结果为91/100（91%）。已逐条核对原94回合及合并后的100个唯一场景种子。新增6段视频保存在云端续评目录。[逐回合结果](../artifacts/sem-tiny/c7-formal/place_empty_cup/eval_100/eval_episodes.csv) · [评估摘要](../artifacts/sem-tiny/c7-formal/place_empty_cup/eval_100/summary.json)
+
+2026-11-21，`place_shoe`列入C7正式任务。锁定源码与本地配置生成已核对，待采集100条成功示范、训练50000步并评估100个有效回合。[任务清单](task_candidates.md)
