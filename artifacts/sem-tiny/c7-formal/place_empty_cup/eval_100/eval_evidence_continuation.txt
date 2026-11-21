@@ -1,0 +1,10 @@
+Task Name: place_empty_cup
+Policy Name: sem_policy
+Policy action shape: (32, 14)
+Success rate: 1/1 => 100.0%, current seed: 1000100110
+Success rate: 2/2 => 100.0%, current seed: 1000100111
+Success rate: 3/3 => 100.0%, current seed: 1000100112
+Success rate: 3/4 => 75.0%, current seed: 1000100113
+Success rate: 4/5 => 80.0%, current seed: 1000100114
+Success rate: 5/6 => 83.3%, current seed: 1000100115
+Data has been saved to eval_result/place_empty_cup/sem_policy/demo_clean/none/2026-11-21 09:46:21/_result.txt

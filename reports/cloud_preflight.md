@@ -101,7 +101,7 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 
 ### 100回合评估视频
 
-每个完成100个有效回合的任务上传全部100段视频。逐回合CSV将视频与场景种子及成败对应。汇总记录实际回合数及单次评估或分段续评的方式。[100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv)
+完整归档的视频按评估回合编号保存，逐回合CSV将视频与场景种子及成败对应。汇总记录实际回合数及单次评估或分段续评的方式。[100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv)
 
 云端调度已加载100回合目标，并接管`handover_block`与`place_container_plate`原有训练进程。两项续评依次运行，各自沿用原Checkpoint和指令采样设置。合并后核对了原15条记录、100个唯一场景种子、成功计数和对应视频文件。
 
@@ -111,3 +111,5 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 | `beat_block_hammer` | 13/15 | 74/85 | 87/100（87%） | 3674.62秒 |
 
 串行续评实测合计7971.33秒。云端各任务目录的`eval_to_100/`保存合并结果，原评估和续评各自的日志与视频保留在任务目录中。
+
+2026-11-21，`place_empty_cup`沿用100000步Checkpoint和原评估设置，从候选种子`1000100110`开始续评6个有效回合。新增成功5次，耗时337.10秒，合并结果为91/100（91%）。已逐条核对原94回合及合并后的100个唯一场景种子。新增6段视频保存在云端续评目录。[逐回合结果](../artifacts/sem-tiny/c7-formal/place_empty_cup/eval_100/eval_episodes.csv) · [评估摘要](../artifacts/sem-tiny/c7-formal/place_empty_cup/eval_100/summary.json)

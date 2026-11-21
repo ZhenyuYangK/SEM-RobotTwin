@@ -45,7 +45,31 @@
           "success": 1
         }
       ],
-      "observed_at_utc": "2026-11-20T18:51:44+00:00"
+      "observed_at_utc": "2026-11-20T18:51:44+00:00",
+      "evaluation_100": {
+        "task": "place_empty_cup",
+        "training_steps": 100000,
+        "evaluated_episodes": 100,
+        "successes": 91,
+        "success_rate_pct": 91.0,
+        "method": "continuation",
+        "segment_episode_counts": [
+          94,
+          6
+        ],
+        "segment_successes": [
+          86,
+          5
+        ],
+        "complete_recorded_at_utc": "2026-11-21T09:51:53+00:00",
+        "instruction_candidate_limit": 100,
+        "checkpoint_sha256": "631d5fa364db57834b47a5c936586e342fb16214c862e0343ba69ed2e9097d8d",
+        "first_candidate_scene_seed": 1000100110,
+        "additional_eval_seconds": 337.1,
+        "continuation_videos_retained": 6,
+        "results": "c7-formal/place_empty_cup/eval_100/eval_episodes.csv",
+        "summary": "c7-formal/place_empty_cup/eval_100/summary.json"
+      }
     },
     "adjust_bottle": {
       "phase": "complete",
@@ -2007,8 +2031,8 @@
     },
     {
       "path": "c7-formal/evaluation_100.csv",
-      "bytes": 569,
-      "sha256": "425a4b6fff59738430cb06c7a865be23e0cb86d814b668fd180740df2e8aaadb",
+      "bytes": 676,
+      "sha256": "85681e51cfaa72d59690b5cc62043e2d5b0e45fe875749f45712663b569cd1c2",
       "lfs": false
     },
     {
@@ -2627,6 +2651,30 @@
       "path": "c7-formal/place_container_plate/eval_100/videos/episode_100.mp4",
       "sha256": "0541ff6e2fd497cc823c8a52cc4bd60d2b0bf38bd9b2c8d1749e5229b5449b71",
       "bytes": 139190,
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/eval_100/eval_episodes.csv",
+      "bytes": 1619,
+      "sha256": "aa3f32c3af3522bdd43505e33d0e799218003bdf0358f3bf1278f07d88af6445",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/eval_100/eval_evidence_continuation.txt",
+      "bytes": 512,
+      "sha256": "2d6d952abd51da1b36b163c9100a9f57079aa3d05e4cbda2d8852ea3dd065873",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/eval_100/eval_evidence_initial.txt",
+      "bytes": 5289,
+      "sha256": "a00892693183afb5bf932d185af2df1a5a07bfb65e82ed3e3e037c4450be057b",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/place_empty_cup/eval_100/summary.json",
+      "bytes": 562,
+      "sha256": "dd9a7218af23c772bce6f978b297fe959aff0374911faa74e796adeece91b984",
       "lfs": false
     },
     {

@@ -1,0 +1,22 @@
+{
+  "task": "place_empty_cup",
+  "training_steps": 100000,
+  "evaluated_episodes": 100,
+  "successes": 91,
+  "success_rate_pct": 91.0,
+  "method": "continuation",
+  "segment_episode_counts": [
+    94,
+    6
+  ],
+  "segment_successes": [
+    86,
+    5
+  ],
+  "complete_recorded_at_utc": "2026-11-21T09:51:53+00:00",
+  "instruction_candidate_limit": 100,
+  "checkpoint_sha256": "631d5fa364db57834b47a5c936586e342fb16214c862e0343ba69ed2e9097d8d",
+  "first_candidate_scene_seed": 1000100110,
+  "additional_eval_seconds": 337.1,
+  "continuation_videos_retained": 6
+}
