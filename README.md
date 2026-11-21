@@ -40,4 +40,4 @@ RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定�
 
 云端步骤见[采集与训练评估](docs/DATA_TRAIN_EVAL.md)和[迁移与启动清单](docs/CLOUD_HANDOFF.md)。阶段验收见[阶段计划](docs/PHASE_PLAN.md)。
 
-验收从[云端实验记录](reports/cloud_preflight.md#c7正式实验进展)查看任务状态、正式结果与对应代码版本。最终权重、实测配置、逐回合结果和代表视频见[验收产物](artifacts/sem-tiny/)。
+验收从[云端实验记录](reports/cloud_preflight.md#c7正式实验进展)查看任务状态、正式结果与对应代码版本。最终权重、实测配置、逐回合结果和评估视频见[验收产物](artifacts/sem-tiny/)。

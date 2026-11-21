@@ -237,7 +237,99 @@
         "cloud_train_worker_sha256": "bd210884304e112bae8cf0e189eef46ac1f11584579b1569701e1b2c4d556965",
         "cloud_eval_worker_sha256": "d741f2ecae9fe1f9572f998bedb5f23a01d759bb8479f5a5aea2e644b5994e3b",
         "cloud_train_source": "c7-parallel-control/worker.py"
-      }
+      },
+      "evaluation_videos": [
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_001.mp4",
+          "episode": 1,
+          "scene_seed": 1000100001,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_002.mp4",
+          "episode": 2,
+          "scene_seed": 1000100003,
+          "success": 0
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_003.mp4",
+          "episode": 3,
+          "scene_seed": 1000100004,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_004.mp4",
+          "episode": 4,
+          "scene_seed": 1000100005,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_005.mp4",
+          "episode": 5,
+          "scene_seed": 1000100006,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_006.mp4",
+          "episode": 6,
+          "scene_seed": 1000100007,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_007.mp4",
+          "episode": 7,
+          "scene_seed": 1000100008,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_008.mp4",
+          "episode": 8,
+          "scene_seed": 1000100010,
+          "success": 0
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_009.mp4",
+          "episode": 9,
+          "scene_seed": 1000100011,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_010.mp4",
+          "episode": 10,
+          "scene_seed": 1000100012,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_011.mp4",
+          "episode": 11,
+          "scene_seed": 1000100013,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_012.mp4",
+          "episode": 12,
+          "scene_seed": 1000100014,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_013.mp4",
+          "episode": 13,
+          "scene_seed": 1000100015,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_014.mp4",
+          "episode": 14,
+          "scene_seed": 1000100016,
+          "success": 1
+        },
+        {
+          "path": "c7-formal/beat_block_hammer/videos/episode_015.mp4",
+          "episode": 15,
+          "scene_seed": 1000100017,
+          "success": 1
+        }
+      ]
     },
     "handover_block": {
       "phase": "train",
@@ -536,9 +628,75 @@
       "lfs": false
     },
     {
+      "path": "c7-formal/beat_block_hammer/videos/episode_003.mp4",
+      "bytes": 127872,
+      "sha256": "db14d765afcb19d8887f208db27522db8ac2b4c4369ac751981482945e79559a",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_004.mp4",
+      "bytes": 129142,
+      "sha256": "3f032b889b5b4a01c2704ed250ca3fac595287a087aa1454e7a41e310c14bf21",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_005.mp4",
+      "bytes": 130805,
+      "sha256": "a3c8bc5853f9740fbc24b08d8a1be245fcb423a38e8e68152db06fa26ef3c170",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_006.mp4",
+      "bytes": 130028,
+      "sha256": "ed44f0e4b88d647fcc625647610571be6ad2093658a8f96e22e7afd7b40c8bd3",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_007.mp4",
+      "bytes": 129328,
+      "sha256": "50a02d44ae3545aa46f25ac868aece103f55de0ae338010db1fdcfd6723e2173",
+      "lfs": false
+    },
+    {
       "path": "c7-formal/beat_block_hammer/videos/episode_008.mp4",
       "bytes": 354816,
       "sha256": "3c5f0b0f02504185370011183effce0baa9736b4b427adf552ff0f6bc562ddb6",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_009.mp4",
+      "bytes": 127767,
+      "sha256": "c1ee41833844cd640e7e453154c346ab0bf6ad31d4faf5a77b6d4c5bd5a22bd0",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_010.mp4",
+      "bytes": 144647,
+      "sha256": "efe04f2d862946619f6b8ea987214d7825913ee56a4f7d72a73907fc2c792281",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_011.mp4",
+      "bytes": 125982,
+      "sha256": "52051360fdcf3596324910e344729cbb59935c414c81ab41498a06f6271531a9",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_012.mp4",
+      "bytes": 146471,
+      "sha256": "97de0085845c63896cbc10ac9a61f03ed1ef94b100f03b182c38df3d808a5949",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_013.mp4",
+      "bytes": 127371,
+      "sha256": "8f8c69c869c77fe8a61b66f502d6accb2f034168ea5b66831c2f653f25533542",
+      "lfs": false
+    },
+    {
+      "path": "c7-formal/beat_block_hammer/videos/episode_014.mp4",
+      "bytes": 127082,
+      "sha256": "802ea9864ba7a939b7feb1b03006c6a05f7c29a977644e5fefd1039ffdf534c6",
       "lfs": false
     },
     {
