@@ -1,0 +1,13 @@
+{
+  "task": "place_container_plate",
+  "training_steps": 50000,
+  "evaluated_episodes": 100,
+  "successes": 94,
+  "success_rate_pct": 94.0,
+  "method": "single_run",
+  "segment_episode_counts": [
+    100
+  ],
+  "video_count": 100,
+  "complete_recorded_at_utc": "2026-11-21T08:34:32+00:00"
+}
