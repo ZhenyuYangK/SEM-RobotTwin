@@ -11,6 +11,24 @@ from discover_tasks import require_locked_task
 EVALUATOR = 'script/eval_policy.py'
 EPISODE_LIMIT = b'\n    test_num = 100\n'
 MODEL_LOAD = b'\n    model = get_model(usr_args)\n'
+SCENE_SEED = b'\n    st_seed = 100000 * (1 + seed)\n'
+INSTRUCTION_LIMIT = b'generate_episode_descriptions(args["task_name"], episode_info_list, test_num)'
+
+
+def evaluator_source(source, episodes, start_scene_seed=None, instruction_limit=None):
+    replacements = {
+        EPISODE_LIMIT: f'\n    test_num = {episodes}\n'.encode(),
+        MODEL_LOAD: b'\n    model = check_policy_actions(get_model(usr_args))\n',
+    }
+    if start_scene_seed is not None:
+        replacements[SCENE_SEED] = f'\n    st_seed = {start_scene_seed}\n'.encode()
+    if instruction_limit is not None:
+        replacements[INSTRUCTION_LIMIT] = INSTRUCTION_LIMIT.replace(b'test_num', str(instruction_limit).encode())
+    for original, replacement in replacements.items():
+        if source.count(original) != 1:
+            raise ValueError(f'Unexpected locked evaluator source near {original.strip()!r}')
+        source = source.replace(original, replacement)
+    return source
 
 
 def check_policy_actions(model):
@@ -41,11 +59,17 @@ def main():
     parser.add_argument('--runtime', type=Path, required=True)
     parser.add_argument('--task', required=True)
     parser.add_argument('--episodes', type=int, required=True)
+    parser.add_argument('--start-scene-seed', type=int, help='First candidate scene seed in a continuation')
+    parser.add_argument('--instruction-limit', type=int, help='Instruction candidate count used by the original run')
     parser.add_argument('--expert-data-num', type=int, required=True)
     parser.add_argument('--config', type=Path, required=True)
     args = parser.parse_args()
     if not 1 <= args.episodes < 100 or args.expert_data_num < 1:
         parser.error('Use 1–99 smoke evaluation episodes and a positive training demo count')
+    if args.start_scene_seed is not None and not 0 <= args.start_scene_seed < 2**32:
+        parser.error('The scene seed must be a valid NumPy seed')
+    if args.instruction_limit is not None and not 1 <= args.instruction_limit <= 100:
+        parser.error('Use 1–100 instruction candidates')
 
     try:
         pinned = require_locked_task(args.workspace, args.task, EVALUATOR)
@@ -55,8 +79,7 @@ def main():
         source = (pinned / EVALUATOR).read_bytes()
         if runtime == pinned or evaluator.read_bytes() != source:
             raise ValueError('Use a separate runtime copy with the unchanged locked evaluator')
-        if source.count(EPISODE_LIMIT) != 1 or source.count(MODEL_LOAD) != 1:
-            raise ValueError('Unexpected episode limit or model initialization in the locked evaluator')
+        patched = evaluator_source(source, args.episodes, args.start_scene_seed, args.instruction_limit)
     except (OSError, ValueError) as error:
         parser.error(str(error))
 
@@ -68,8 +91,6 @@ def main():
         '--ckpt_setting', 'none', '--expert_data_num', str(args.expert_data_num),
         '--seed', '10000', '--policy_name', 'sem_policy', '--instruction_type', 'unseen',
     ]
-    patched = source.replace(EPISODE_LIMIT, f'\n    test_num = {args.episodes}\n'.encode())
-    patched = patched.replace(MODEL_LOAD, b'\n    model = check_policy_actions(get_model(usr_args))\n')
     exec(compile(patched, str(evaluator), 'exec'), {
         '__name__': '__main__', '__file__': str(evaluator), 'check_policy_actions': check_policy_actions,
     })

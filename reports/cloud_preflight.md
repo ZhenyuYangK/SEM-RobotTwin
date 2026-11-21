@@ -96,3 +96,5 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 - 完整日志和可续训状态留在云端。先前的全量产物快照可按历史提交访问。[历史快照](https://github.com/ZhenyuYangK/SEM-cloud/tree/93e69994c7fb033d9e52de27e15b4fceadcd353f/artifacts/sem-tiny)
 
 11:03（太平洋时间）确认云端调度已加载50000步和15个有效评估回合的目标，排队的`place_container_plate`将使用这套配置。`adjust_bottle`和`beat_block_hammer`的训练进程以及`handover_block`的采集工作进程在交接后继续运行。三个已启动的工作流沿用100000步，验收使用各自的实际训练配置、完成日志和Checkpoint。[项目配置](../configs/project.json)
+
+项目评估目标已恢复为100回合。按原评估日志，`adjust_bottle`续评从候选种子`1000100022`开始，`beat_block_hammer`从`1000100018`开始，各增加85个有效回合。[续评入口](../scripts/c7_parallel/extend_eval.py)

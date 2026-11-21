@@ -15,7 +15,7 @@
 | C4 | 云端 | `place_empty_cup`的10条成功示范采集 | RGB-D+状态+动作完整 | 需要 |
 | C5 | 云端 | HDF5→LMDB打包、加载数据、200~1000Step短训练 | LMDB的image/depth/index/meta存在；显存/速度已测 | 需要 |
 | C6 | 云端 | 审核缩量入口并少量评估，核对日志统计 | 成功次数/有效Episode/视频目录 | 需要 |
-| C7 | 云端 | 完成固定5个任务的独立训练，后续每任务评估15次，首项保留已有评估记录 | 每任务Checkpoint+结果+日志+视频 | 需要 |
+| C7 | 云端 | 完成固定5个任务的独立训练，评估目标恢复为100次，已完成15次的任务各续评85次 | 每任务Checkpoint+结果+日志+视频 | 需要 |
 | P8 | 本地 | 从云端下载权重和配置，RTX4060单样本推理 | 测量GPU显存、无OOM、动作输出形状正确 | 否 |
 
 **停止条件**：任一阶段的输入检查不通过，停在本阶段，不继续下载资产或启动长期训练。运行前获得用户明确批准。报告禁止把“设计/脚本编写”写成“真实跑通”。
@@ -53,4 +53,4 @@ C5通过。LMDB和DataLoader已验收，1000步训练完成并保存Checkpoint�
 
 C6通过。已验证Checkpoint加载、有限的32×14动作序列、3次有效评估和3个视频。短训练模型结果为0/3。[缩量评估记录](../reports/cloud_preflight.md#c6策略加载与缩量评估)
 
-C7运行中。`place_empty_cup`评估手动停止时86/94成功。`adjust_bottle`与`beat_block_hammer`的训练和15回合评估均已完成，验收包各保留全部15段视频。`handover_block`与`place_container_plate`仍在训练，目标分别为100000步与50000步。[正式实验进展](../reports/cloud_preflight.md#c7正式实验进展)
+C7最近一次云端快照中，`place_empty_cup`评估手动停止时86/94成功。`adjust_bottle`与`beat_block_hammer`的训练和15回合评估均已完成，验收包各保留全部15段视频。`handover_block`与`place_container_plate`仍在训练，目标分别为100000步与50000步。项目配置已恢复100次评估目标，两项已完成15回合的评估纳入续评计划。[正式实验进展](../reports/cloud_preflight.md#c7正式实验进展)

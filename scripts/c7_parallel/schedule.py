@@ -11,8 +11,8 @@ import sys
 import time
 from pathlib import Path
 
-from worker import (BASE, CONTROL, DEMOS, EPISODES, OUTPUT, TASKS, completed_training_steps,
-                    state, training_steps_target, verified_inputs, write_json)
+from worker import (BASE, CONTROL, DEMOS, OUTPUT, TASKS, completed_training_steps,
+                    evaluation_target, state, training_steps_target, verified_inputs, write_json)
 
 TASK_LIMIT = 3
 FIRST = TASKS[0]
@@ -73,7 +73,7 @@ def adopt(controller_pid, trainer_pid, monitor_pid):
 def save_completion(task):
     complete = OUTPUT / task / "completion.json"
     outcome = json.loads(complete.read_text())
-    allowed_episodes = {EPISODES, 100} if task == FIRST else {EPISODES}
+    allowed_episodes = {15, 100, evaluation_target()}
     if (outcome["task"] != task or outcome["demos"] != DEMOS
             or outcome["steps"] != completed_training_steps(OUTPUT / task)
             or outcome["episodes"] not in allowed_episodes):
@@ -101,9 +101,9 @@ def save_completion(task):
     write_json(OUTBOX / f"{task}.json", public)
     print(f"{task}: verified result ready for Git push", flush=True)
 
-def schedule(adopted, external, waiting, stopped=()):
+def schedule(adopted, external, waiting, stopped=(), completed=()):
     workers = {}
-    finished = set()
+    finished = set(completed)
     failed = set()
     while True:
         for task, (trainer, monitor, start_time) in list(adopted.items()):
@@ -145,7 +145,7 @@ def schedule(adopted, external, waiting, stopped=()):
         write_json(CONTROL / "queue.json",
                    {"max_active": TASK_LIMIT, "active": active, "waiting": waiting,
                     "complete": sorted(finished), "failed": sorted(failed), "stopped": list(stopped),
-                    "eval_episodes_target": EPISODES, "train_steps_target": training_steps_target()})
+                    "eval_episodes_target": evaluation_target(), "train_steps_target": training_steps_target()})
         if not active:
             break
         time.sleep(10)
@@ -157,11 +157,15 @@ def resume(snapshot, *, check_only=False):
     data = json.loads(snapshot.read_text())
     adopted, waiting, stopped = (data[key] for key in ("adopted", "waiting", "stopped"))
     external = data.get("external", {})
-    if (sorted([*adopted, *external, *waiting, *stopped]) != sorted(TASKS)
+    completed = data.get("completed", [])
+    if (sorted([*adopted, *external, *waiting, *stopped, *completed]) != sorted(TASKS)
             or len(adopted) + len(external) > TASK_LIMIT):
         raise ValueError("Resume snapshot must cover each C7 task once and fit the worker limit")
     if any(phase_for(task) != "stopped" for task in stopped):
         raise ValueError("Resume snapshot includes a task without a recorded stop")
+    if any(phase_for(task) != "complete" or not (OUTPUT / task / "completion.json").is_file()
+           for task in completed):
+        raise ValueError("Resume snapshot includes a task without a completed evaluation")
     if any((OUTPUT / task).exists() for task in waiting):
         raise ValueError("Resume snapshot includes an already started task in its waiting list")
     for task, (trainer, monitor, _) in adopted.items():
@@ -178,9 +182,9 @@ def resume(snapshot, *, check_only=False):
     if check_only:
         print("C7 resume snapshot passed verification", flush=True)
         return
-    print(f"Resuming C7 with {training_steps_target()} steps for new runs and {EPISODES} evaluation episodes",
+    print(f"Resuming C7 with {training_steps_target()} steps for new runs and {evaluation_target()} evaluation episodes",
           flush=True)
-    schedule(adopted, external, waiting, stopped)
+    schedule(adopted, external, waiting, stopped, completed)
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)

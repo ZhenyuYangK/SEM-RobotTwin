@@ -21,7 +21,6 @@ URDF = ROBOTWIN / "assets/embodiments/aloha-agilex/urdf/arx5_description_isaac.u
 PRETRAINED = BASE / "weights/groundingdino_swint_ogc_mmdet-822d7e9d-rename.pth"
 BERT = BASE / "weights/bert-base-uncased-86b5e0934494bd15c9632b12f734a8a67f723594"
 DEMOS = 100
-EPISODES = json.loads((REPO / "configs/project.json").read_text())["eval_episodes_target"]
 TASKS = ("place_empty_cup", "adjust_bottle", "beat_block_hammer", "handover_block", "place_container_plate")
 SOURCES = {
     "adjust_bottle": BASE / "runs/adjust_bottle-parallel-check/raw",
@@ -30,6 +29,12 @@ SOURCES = {
 sys.path.insert(0, str(REPO / "scripts"))
 from run_formal_experiments import completed_training_steps, run_logged, training_steps_target
 from summarize_eval import eval_log_row
+
+def evaluation_target():
+    episodes = json.loads((REPO / "configs/project.json").read_text())["eval_episodes_target"]
+    if type(episodes) is not int or not 1 <= episodes <= 100:
+        raise ValueError("eval_episodes_target must be an integer from 1 to 100")
+    return episodes
 
 def tool(name, *args):
     subprocess.run([sys.executable, REPO / "scripts" / f"{name}.py", *args], cwd=REPO, check=True)
@@ -117,6 +122,7 @@ def train_task(task):
     state(task, "trained")
 
 def evaluate(task):
+    episodes = evaluation_target()
     run_dir, runtime = layout(task)
     raw, staged, training, videos = (run_dir / key for key in ("raw", "staged", "train", "eval_result"))
     shutil.copyfile(staged / "demo_clean.yml", runtime / "task_config/demo_clean.yml")
@@ -127,7 +133,7 @@ def evaluate(task):
         raise ValueError(f"Incomplete checkpoint artifacts for {task}")
     config = staged / "train_config.py"
     tool("make_eval_config", "--task", task, "--checkpoint", checkpoint, "--config-file", config,
-         "--align-projection-dtype", "--expert-data-num", str(DEMOS), "--episodes", str(EPISODES),
+         "--align-projection-dtype", "--expert-data-num", str(DEMOS), "--episodes", str(episodes),
          "--out", staged / "sem_policy")
     policy = runtime / "policy/sem_policy"
     for name in ("eval.sh", "deploy_policy.yml"):
@@ -138,20 +144,20 @@ def evaluate(task):
     eval_log = run_dir / "eval.log"
     eval_seconds = run_logged(["bash", "eval.sh"], policy, eval_log, monitor_gpu=True)
     log = eval_log.read_text()
-    counts = eval_log_row(log, task, EPISODES)
+    counts = eval_log_row(log, task, episodes)
     saved, = re.findall(r"^Data has been saved to (.+)$", log, re.M)
     result = (runtime / saved.strip()).resolve(strict=True)
     successes = int(counts["successes"])
     if (not result.is_relative_to(videos) or result.name != "_result.txt"
-            or abs(float(result.read_text().splitlines()[-1]) - successes / EPISODES) > 1e-8
-            or any(not (result.parent / f"episode{i}.mp4").stat().st_size for i in range(EPISODES))):
+            or abs(float(result.read_text().splitlines()[-1]) - successes / episodes) > 1e-8
+            or any(not (result.parent / f"episode{i}.mp4").stat().st_size for i in range(episodes))):
         raise ValueError(f"Incomplete evaluation results or videos for {task}")
-    summary_args = ("--log", eval_log, "--task", task, "--expected-episodes", str(EPISODES))
+    summary_args = ("--log", eval_log, "--task", task, "--expected-episodes", str(episodes))
     tool("summarize_eval", *summary_args, "--output", run_dir / "eval_summary.csv")
     tool("summarize_eval", *summary_args, "--episode-output", run_dir / "eval_episodes.csv")
     elapsed = json.loads((run_dir / "training_complete.json").read_text())["train_seconds"]
-    outcome = dict(task=task, demos=DEMOS, steps=steps, episodes=EPISODES, successes=successes,
-                   success_rate_pct=100 * successes / EPISODES, checkpoint=str(checkpoint),
+    outcome = dict(task=task, demos=DEMOS, steps=steps, episodes=episodes, successes=successes,
+                   success_rate_pct=100 * successes / episodes, checkpoint=str(checkpoint),
                    result=str(result), train_seconds=elapsed, eval_seconds=eval_seconds)
     write_json(run_dir / "completion.json", outcome)
     state(task, "complete")

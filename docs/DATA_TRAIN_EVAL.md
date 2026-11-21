@@ -72,13 +72,13 @@ python3 scripts/summarize_eval.py --log "$RUN_DIR/eval_smoke.log" --task place_e
   --expected-episodes 3 --output "$RUN_DIR/eval_smoke_summary.csv"
 ```
 
-正式评估用`make_eval_config.py --episodes 15`生成启动器，从已部署的`RoboTwin/policy/sem_policy/`运行`bash eval.sh`，将完整标准输出保留到`eval.log`。用`summarize_eval.py --log --expected-episodes 15`核对15条连续计数和结果保存标记。用`--input`可读取核对后的CSV。
+正式评估用`make_eval_config.py --episodes 100`生成启动器，从已部署的`RoboTwin/policy/sem_policy/`运行`bash eval.sh`，将完整标准输出保留到`eval.log`。用`summarize_eval.py --log --expected-episodes 100`核对100条连续计数和结果保存标记。用`--input`可读取核对后的CSV。
 
 验收用`--episode-output`导出每个有效回合的编号、场景种子和成败。场景种子来自评估日志中的`current seed`，评估启动参数仍为`seed=10000`。评估进行中或手动停止后，可用`--allow-incomplete`导出已完成的回合，并在汇总中标明状态和计划回合数。正式成绩以指定回合数完成后的汇总为准。
 
 ```bash
 python3 scripts/summarize_eval.py --log "$RUN_DIR/eval.log" --task adjust_bottle \
-  --expected-episodes 15 --episode-output "$RUN_DIR/eval_episodes.csv"
+  --expected-episodes 100 --episode-output "$RUN_DIR/eval_episodes.csv"
 ```
 
 ## C7五项正式实验
@@ -100,5 +100,7 @@ python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" --output "$OUTP
 `schedule.py --preflight`校验运行副本和权重。`--adopt`用于本次从串行入口交接首项训练，需要原入口及其训练和监控进程仍在运行，同时两个后续任务的工作进程已启动。交接会终止原串行入口进程，由并行调度继续跟踪其训练子进程。`--check-resume`可先校验续接快照中的进程和排队任务。
 
 `schedule.py --resume`可从云端控制目录里的交接快照接管正在运行的训练。快照记录训练PID、显存监控PID、开始时间和待运行任务。接管后的评估按当前项目配置执行。
+
+已完成15回合的`adjust_bottle`和`beat_block_hammer`各续评85回合。续评沿用各自的Checkpoint、评估配置和指令候选数，从原日志最后一个有效场景种子的下一值开始。启动前在已加载云端环境的项目检出目录执行`python scripts/c7_parallel/extend_eval.py --check adjust_bottle beat_block_hammer`。通过后去掉`--check`运行。每项`eval_to_100/`中的`completion.json`和`eval_episodes.csv`汇总两段评估的100个回合，逐回合CSV包含原视频路径。
 
 GitHub验收产物保留最终权重、模型与处理器配置、实际执行的训练和评估配置、结果汇总、逐回合CSV及评估视频。15回合的评估上传全部15段视频，视频编号与逐回合CSV对应。回合较多的评估保留代表视频。完整训练日志、原始视频和可续训状态在云端归档。保存本次运行的工程和上游提交号，便于从同一版本重新生成配置。`staged/`中的实测配置保留原运行路径，复现时用本节生成器写入本地路径。

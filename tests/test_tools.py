@@ -15,6 +15,7 @@ from discover_tasks import validate_config
 from make_eval_config import create_files, projection_config
 from make_training_config import write_config
 from run_formal_experiments import completed_training_steps
+from run_smoke_eval import evaluator_source
 from summarize_eval import aggregate, eval_log_episodes, eval_log_row
 from estimate_budget import estimate
 from estimate_storage import estimate_storage
@@ -82,7 +83,18 @@ class TestEval(unittest.TestCase):
         self.assertIn('instruction_type: unseen', yaml)
         self.assertIn('seed=10000', script)
         self.assertIn('task_config=demo_clean', script)
+        self.assertIn('episodes=100', script)
         self.assertIn('expert_data_num="5"', script)
+
+    def test_eval_continuation_keeps_instruction_limit_independent_of_episode_count(self):
+        path = ROOT / 'src/RoboTwin/script/eval_policy.py'
+        original = path.read_bytes()
+        source = evaluator_source(original, 85, start_scene_seed=1000100022, instruction_limit=15)
+        compile(source, str(path), 'exec')
+        self.assertIn(b'\n    test_num = 85\n', source)
+        self.assertIn(b'\n    st_seed = 1000100022\n', source)
+        self.assertIn(b'generate_episode_descriptions(args["task_name"], episode_info_list, 15)', source)
+        self.assertIn(b'100000 * (1 + seed)', evaluator_source(original, 3))
 
     def test_eval_task_injection_rejected(self):
         with self.assertRaises(ValueError):
