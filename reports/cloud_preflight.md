@@ -116,3 +116,5 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 2026-11-21，`place_shoe`列入C7正式任务。锁定源码与本地配置生成已核对，待采集100条成功示范、训练50000步并评估100个有效回合。[任务清单](task_candidates.md)
 
 2026-11-21，`place_shoe`已开始50000步训练。`place_container_plate`的最终模型`checkpoint_12`已补传。GitHub可下载4个已完成任务的最终权重，每个文件198329592字节，SHA-256均与云端对应Checkpoint一致。[C7验收文件](../artifacts/sem-tiny/c7-formal) · [发布脚本](../scripts/c7_parallel/publish.py)
+
+2026-11-21，`place_shoe`和补充实验`click_bell`均完成50000步训练和100回合评估，分别成功75次和55次。两项的最终权重、逐回合结果及各100段评估视频已发布。[100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv)
