@@ -1,12 +1,14 @@
 # 本地RTX4060 8GB：模型推理与调试准备
 
-## 可以提前做
+P8单样本推理待实测。已有本地环境验证记录及RTX4090正式评估成绩可作参考。[本地环境](../reports/local_readiness.md#已有本地robotwin环境) · [100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv)
 
-- Ubuntu22.04、NVIDIA驱动与`nvidia-smi`可用；VS Code、Git、OpenSSH、rsync已经配置。
-- 查看SEM源代码中的`sem_policy/deploy_policy.py`和`config_sem_robotwin.py`，准备与训练环境一致的Python依赖版本记录（不要盲装新版本）。
-- 本地下载云端最终的`model.safetensors`、模型配置、预处理器配置、对应URDF/机械臂参数等部署必需文件。
+## 单样本推理准备
 
-## 云端结果传回后怎么验证
+- 确认Ubuntu22.04环境和NVIDIA驱动，用`nvidia-smi`核对可用显存。
+- 查看锁定SEM源码中的`sem_policy/deploy_policy.py`和`config_sem_robotwin.py`，记录本地依赖版本。
+- 选择一个任务，获取其已发布权重、模型配置、预处理器配置以及对应URDF和机械臂参数。[权重路径与校验值](../artifacts/sem-tiny/snapshot.json)
+
+## 推理验收步骤
 
 1. 先只运行SEM-Tiny加载及**单样本无梯度推理**（`torch.inference_mode()`），记录显存峰值。
 2. 再试最小RoboTwin场景；SAPIEN、CuRobo、Vulkan与SEM叠加显存可能超过8GB。

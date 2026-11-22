@@ -1,4 +1,4 @@
-# 本地预开发就绪报告
+# 本地环境与验证记录
 
 2026-11-19，在Ubuntu22.04.5、Python3.10.12、Git2.34.1笔记本完成。首轮15项离线单测通过，最终22项通过。两份原始资料在首轮及最终检查均通过`sha256sum -c reports/teacher_inputs_sha256.txt`。阶段提交记录保存在本包Git仓库。
 
@@ -13,7 +13,7 @@
 | 入口与产物 | 在临时目录生成`demo_clean.yml`、SEM训练配置、部署YAML、评估启动器及5任务云端清单。对采集、打包、训练提取锁定源码中的`argparse`声明验证参数。评估对启动器执行`bash -n`，使用命令捕获替代运行环境，再调用锁定版解析函数核对参数与路径。统计CLI通过空模板和合成日志检查。 |
 | 操作范围 | 按用户范围只在本地预开发。未连接GPU服务器、安装仿真依赖、下载权重或资产，也未启动采集、训练或仿真评估。 |
 
-### 最终单测
+### 预开发阶段单测
 
 通过`bash scripts/run_local_checks.sh`运行`python3 -m unittest discover -s tests -v`，22项全部通过。另在临时目录用仅含本包版本文件的归档复跑，22项仍通过，缺少源码的状态正确显示为`NOT_READY`。
 
@@ -32,20 +32,16 @@
 
 26项单测、两份原件SHA256、上游锁定提交、五项正式任务和补充任务`click_bell`均通过本地检查。六项任务重新生成的采集与训练配置均与归档一致，100000步和50000步两组正式命令通过`--dry-run`。已核对六张100回合表的种子和成功数、599项文件清单及六个Git LFS指针，其中三个权重完整文件位于本地缓存并通过SHA256检查。本轮验收覆盖本地脚本、配置和产物，端到端仿真以云端实测记录为准。[云端实测记录](cloud_preflight.md)
 
-## 云端GPU验证
+## 云端验收与本地推理
 
-- 在RTX4090目标环境验证GPU驱动、Vulkan、CUDA、SAPIEN、CuRobo、可编辑安装和FFmpeg。
-- 获取授权的真实机械臂资产后，完成原始URDF与RoboTwin参照的逐项对比、Mesh解析、14维状态顺序、运动学索引及夹爪映射验证。
-- 先采集`place_empty_cup`的10条成功示范，核对实际HDF5、RGB-D、相机参量、机器人状态、示范种子与指令。随后验证HDF5→LMDB→DataLoader。
-- 用已核验的LMDB、预训练权重和运行路径完成200～1000 Step短训练，再验收Checkpoint保存和加载。记录显存、吞吐和动作形状。
-- 使用审定的少量评估入口验证仿真与统计闭环。正式评估由固定源码运行100个有效Episode，通过人工审核的原始日志和结果文件核对计数。详见`docs/CLOUD_HANDOFF.md`。
+RTX4090已完成环境、URDF、示范采集、LMDB打包、短训练与评估验收，五项正式实验和一项补充实验均已发布。P8的RTX4060单样本推理仍待实测。[云端记录](cloud_preflight.md) · [阶段进度](../docs/PHASE_PLAN.md) · [本地推理计划](../docs/LOCAL_4060.md)
 
-## 启动阻塞项
+## 预开发阶段的启动检查
 
-| 阻塞项 | 解除条件 |
+| 初期发现 | 对应记录 |
 |---|---|
-| 参照URDF与Mesh缺失 | 在云端获准取得资产，核对`aloha-agilex`实际URDF和SEM运动学参照文件。 |
-| 默认`demo_clean`关闭Depth及Endpose | 在独立云端运行副本应用`prepare_collection.py`生成且审核通过的同名YAML。 |
-| 缺少真实HDF5与本机h5py | 在目标环境取得首批示范并用`inspect_hdf5.py`运行真实文件校验。 |
-| 依赖与权重尚未到位 | 按云端检查清单备齐真实依赖和指定权重，完成最小环境、加载和数据读取验证。 |
-| 固定版评估无缩量CLI | 在云端审查独立冒烟入口或隔离测试副本。`expert_data_num`保留为训练示范数，正式入口保留100个有效Episode。 |
+| 本地缺少参照URDF与Mesh | 已在云端核对同一原件及实际资产。[URDF验收](urdf_differences.md#c3云端验收) |
+| 默认`demo_clean`关闭Depth及Endpose | 用`prepare_collection.py`构建采集配置。[配置步骤](../docs/DATA_TRAIN_EVAL.md#采集与数据检查) |
+| 初期缺少真实HDF5与h5py | 云端已校验首批示范，本地Conda环境已通过HDF5压缩往返检查。[云端采集记录](cloud_preflight.md#c4示范采集) |
+| 初期依赖与权重待准备 | 云端已完成运行环境和模型加载验收。[评估实测](cloud_preflight.md#c6策略加载与缩量评估) |
+| 固定版评估入口缺少缩量参数 | 用`run_smoke_eval.py`完成3回合冒烟。正式评估保持100个有效回合。[评估步骤](../docs/DATA_TRAIN_EVAL.md#评估与统计) |

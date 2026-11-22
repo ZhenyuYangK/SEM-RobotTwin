@@ -1,4 +1,6 @@
-# C1云端环境预检
+# 云端环境与实验记录
+
+本报告按实验进程保存环境排查、采集、训练及续评记录。五项正式任务和补充任务`click_bell`均已完成。各任务的实际训练步数、评估方式及最终成绩见[100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv)。重跑步骤见[采集、训练与评估指南](../docs/DATA_TRAIN_EVAL.md)。
 
 2026-11-19。SSH直连、工程迁移、提交与资料核对已通过，首次预检定位到容器缺少图形驱动组件。随后在隔离运行目录补齐匹配的用户态库，RTX4090通过Vulkan验收。
 
@@ -68,19 +70,19 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 
 ## C7正式实验启动
 
-- 云端已启动`run_formal_experiments.py`。按固定顺序从`place_empty_cup`开始，每任务采集100条成功示范，使用`batch_size=2`独立训练100000步，再执行100个有效Episode的正式评估。
-- 结果目录为数据盘`runs/c7-formal/`，总控日志为`logs/c7-formal.log`。启动时可用容量约180GiB。按C5后段0.28秒/步估算，5项训练约38.9小时。按工程配置的1.98元/小时，训练部分约77元，采集和评估另计。
+- 启动时使用`run_formal_experiments.py`从`place_empty_cup`开始。初始计划为每任务采集100条成功示范、以`batch_size=2`独立训练100000步、评估100个有效回合。
+- 结果目录为数据盘`runs/c7-formal/`，总控日志为`logs/c7-formal.log`。启动时可用容量约180GiB。按初始计划和C5后段0.28秒/步估算，5项训练约38.9小时，以当时的1.98元/小时计算约77元。该预算覆盖训练阶段。
 - 首项100条示范通过结构与文件检查，原始目录为6338551210字节，LMDB为1448296725字节。首条正式HDF5为67100223字节，4路深度均使用无损`gzip`级别1。`place_empty_cup`正式训练已开始，超过1000步时的平均耗时为0.28秒/步。
 
 ## C7正式实验进展
 
-2026-11-20 20:07（太平洋时间）。云端最多同时运行3项独立实验。[并行调度代码](../scripts/c7_parallel)
+2026-11-20 20:07（太平洋时间）进度快照。云端最多同时运行3项独立实验。[并行调度代码](../scripts/c7_parallel)
 
 | 任务 | 训练进度 | 正式评估 |
 | --- | --- | --- |
 | `place_empty_cup` | 100000/100000步，约9小时14分钟 | 手动停止。计划100回合，已完成94回合，其中86次成功（91.49%） |
-| `adjust_bottle` | 100000/100000步，训练完成 | 15/15次成功（100.00%）。[验收包](../artifacts/sem-tiny/c7-formal/adjust_bottle) · [15段评估视频](../artifacts/sem-tiny/c7-formal/adjust_bottle/videos) |
-| `beat_block_hammer` | 100000/100000步，训练完成 | 13/15次成功（86.67%）。[验收包](../artifacts/sem-tiny/c7-formal/beat_block_hammer) · [15段评估视频](../artifacts/sem-tiny/c7-formal/beat_block_hammer/videos) |
+| `adjust_bottle` | 100000/100000步，训练完成 | 15/15次成功（100.00%）。[前15回合记录](../artifacts/sem-tiny/c7-formal/adjust_bottle/eval_episodes.csv) · [评估视频第1至15段](../artifacts/sem-tiny/c7-formal/adjust_bottle/eval_100/videos) |
+| `beat_block_hammer` | 100000/100000步，训练完成 | 13/15次成功（86.67%）。[前15回合记录](../artifacts/sem-tiny/c7-formal/beat_block_hammer/eval_episodes.csv) · [评估视频第1至15段](../artifacts/sem-tiny/c7-formal/beat_block_hammer/eval_100/videos) |
 | `place_container_plate` | 18800/50000步 | 待训练完成，目标15回合 |
 
 `place_empty_cup`使用100条成功示范和`batch_size=2`完成训练。最终Checkpoint为`runs/c7-formal/place_empty_cup/train/checkpoints/checkpoint_25/model.safetensors`，大小为198329592字节。训练日志记录`GlobalStep[100000/100000]`及结束保存，评估日志保存在同一任务目录的`eval.log`。

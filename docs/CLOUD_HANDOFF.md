@@ -29,7 +29,7 @@ git -C "$ROBOTWIN" rev-parse HEAD
 git -C "$SEM" rev-parse HEAD
 ```
 
-两个提交应分别为RoboTwin的`e71140e9734e69686daa420a9be8b75a20ff4587`和RoboOrchardLab的`41112765f9904efb2374dd9c8946fb5af452861a`。在隔离的Python环境中按固定源码的SEM指南和C2实测记录补齐依赖，运行`python -m pip install -e "$SEM"`和`python -m pip check`，然后把锁定版`"$SEM/projects/sem/robotwin/sem_policy"`复制到`"$ROBOTWIN/policy/"`。原云端可以直接加载已有的`runtime/env.sh`。[固定源码审计](../reports/code_audit.md#安装留待云端) · [云端Vulkan与依赖记录](../reports/cloud_preflight.md)
+两个提交应分别为RoboTwin的`e71140e9734e69686daa420a9be8b75a20ff4587`和RoboOrchardLab的`41112765f9904efb2374dd9c8946fb5af452861a`。在隔离的Python环境中按固定源码的SEM指南和C2实测记录补齐依赖，运行`python -m pip install -e "$SEM"`和`python -m pip check`，然后把锁定版`"$SEM/projects/sem/robotwin/sem_policy"`复制到`"$ROBOTWIN/policy/"`。原云端可以直接加载已有的`runtime/env.sh`。[固定源码审计](../reports/code_audit.md#运行依赖与环境验证) · [云端Vulkan与依赖记录](../reports/cloud_preflight.md)
 
 | 输入 | 来源及放置位置 |
 |---|---|

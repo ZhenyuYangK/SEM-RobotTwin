@@ -30,10 +30,10 @@
 ## 固定版评估
 
 - `script/eval_policy.py --config policy/sem_policy/deploy_policy.yml --overrides ...`先加载YAML，再以成对参数覆盖，最后按`policy_name`导入`get_model`、`eval`和`reset_model`。沿用既定的`sem_policy`、`demo_clean`、`seed=10000`、`instruction_type=unseen`和`ckpt_setting=none`。上游入口先运行`Sapien_TEST()`，本地只做静态审查。RoboTwin `script/eval_policy.py:28–43,64–83,208–210,327–362`；RoboOrchardLab `projects/sem/robotwin/sem_policy/eval.sh:3–25`及同目录`__init__.py`。
-- 原始`SEM评估流程.md:37–42`以`expert_data_num`记录训练示范数量。此提交的评估入口仅透传给策略，SEM的`get_model`只读取`ckpt_path`和`config_file`。其他策略可用它选训练产物，例如DP按该字段拼Checkpoint路径。固定版SEM正式评估由`test_num=100`决定，先过滤专家规划失败或场景不稳定的种子，再计数有效评估，初始场景种子为`100000 * (1 + seed)`。少量冒烟评估需另审独立入口或云端测试副本，没有已核实的缩量CLI。RoboTwin `script/eval_policy.py:153–183,200–260,291–324`、`policy/DP/deploy_policy.py:17–19`；RoboOrchardLab `projects/sem/robotwin/sem_policy/deploy_policy.py:193–195`。
+- 原始`SEM评估流程.md:37–42`以`expert_data_num`记录训练示范数量。此提交的评估入口仅透传给策略，SEM的`get_model`只读取`ckpt_path`和`config_file`。其他策略可用它选训练产物，例如DP按该字段拼Checkpoint路径。固定版SEM正式评估由`test_num=100`决定，先过滤专家规划失败或场景不稳定的种子，再计数有效评估，初始场景种子为`100000 * (1 + seed)`。项目的`run_smoke_eval.py`在内存中调整评估回合数，已完成3回合云端验证。[评估实测](cloud_preflight.md#c6策略加载与缩量评估) · RoboTwin `script/eval_policy.py:153–183,200–260,291–324`、`policy/DP/deploy_policy.py:17–19` · RoboOrchardLab `projects/sem/robotwin/sem_policy/deploy_policy.py:193–195`。
 - 策略部署至`RoboTwin/policy/sem_policy/`。`ckpt_path`和`config_file`若为相对路径，以策略模块目录解析。配置内的权重和URDF路径仍按各自加载器解析，部署建议用云端绝对路径。部署通过配置重建模型和Transform，从Safetensors加载参数，未读取训练导出的processor JSON。观测读取每个相机的RGB、depth和相机矩阵，双臂关节与夹爪按左、右拼接。RoboOrchardLab `projects/sem/robotwin/sem_policy/deploy_policy.py:30–85,92–127,130–177,193–207`。
 - 输出为`eval_result/<task>/sem_policy/demo_clean/none/<时间>/_result.txt`，内容包含时间、指令类别和成功率。配置开启视频时写`episodeN.mp4`；有效Episode及成功计数从最后一条完成日志的`Success rate: S/N`审核录入，避免从小数反推。RoboTwin `script/eval_policy.py:124–132,176–185,262–289,303–324`。
 
-## 安装留待云端
+## 运行依赖与环境验证
 
-既定流程要求在RoboTwin运行环境中以可编辑模式安装RoboOrchardLab。SEM上游README列出PyTorch、TorchVision、Transformers、LMDB、Safetensors、Accelerate、Diffusers和h5py版本，且推荐CUDA11.8。项目计划使用CUDA12.1.1镜像，需在云端记录实际驱动、PyTorch所用CUDA、Vulkan和TorchVision等组件的验收结果。锁定RoboTwin的README第49–51行指向外部安装文档，资产下载及环境安装属于后续阶段。原始`SEM评估流程.md:3`；SEM `projects/sem/robotwin/README.md:50–67`；RoboTwin `README.md:49–51`。
+RoboOrchardLab在RoboTwin运行环境中以可编辑模式安装。SEM上游README列出PyTorch、TorchVision、Transformers、LMDB、Safetensors、Accelerate、Diffusers和h5py版本，并推荐CUDA11.8。项目在CUDA12.1环境完成了Torch、TorchVision、Vulkan、SAPIEN和CuRobo验证。锁定RoboTwin的README第49–51行指向上游安装说明。[运行环境与资产](../docs/CLOUD_HANDOFF.md) · [云端验证](cloud_preflight.md#c2续跑记录)

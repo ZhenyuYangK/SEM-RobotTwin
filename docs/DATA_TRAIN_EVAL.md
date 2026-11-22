@@ -151,7 +151,7 @@ python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" \
 
 ### 评估产物自动发布
 
-在能SSH登录云端且有GitHub写权限的本机运行。将`CLOUD_SSH`设为已有的SSH主机别名，可重复传入`--task`监控指定任务，默认监控项目配置中的全部任务。
+在能SSH登录云端且有GitHub写权限的本机运行。将`CLOUD_SSH`设为已有的SSH主机别名。此脚本读取云端并行调度生成的完成记录，默认监控五项正式任务，也可重复传入`--task`指定其中的任务。
 
 ```bash
 python3 scripts/c7_parallel/publish.py --cloud "$CLOUD_SSH" --check
@@ -160,4 +160,4 @@ python3 scripts/c7_parallel/publish.py --cloud "$CLOUD_SSH" --watch --task place
 
 监控按配置的评估回合数识别任务完成，核对训练结束记录、评估逐回合数据和Checkpoint路径。每个任务单独发布到`origin/main`，归档包含评估摘要、逐回合CSV、可用的评估视频、权重和模型配置。权重使用Git LFS，传输后校验SHA-256。短评估完成后继续等待正式回合数，SSH或Git推送失败时下轮重试，所选任务全部发布后退出。需要提前备份已训练完成的权重时，使用`--weights-only`指定任务。本机后台服务`sem-c7-publish.service`的运行日志可用`journalctl --user -u sem-c7-publish.service`查看。
 
-GitHub验收产物保留最终权重、模型与处理器配置、实际执行的训练和评估配置、结果汇总、逐回合CSV及评估视频。15回合的评估上传全部15段视频，视频编号与逐回合CSV对应。回合较多的评估保留代表视频。完整训练日志、原始视频和可续训状态在云端归档。保存本次运行的工程和上游提交号，便于从同一版本重新生成配置。`staged/`中的实测配置保留原运行路径，复现时用本节生成器写入本地路径。
+GitHub归档包含最终权重、模型与处理器配置、实测训练和评估配置、结果汇总和逐回合CSV。`place_empty_cup`保留4段代表视频，其他5项各保留100段视频。`adjust_bottle`和`beat_block_hammer`首轮评估的视频对应各自100回合目录中的第1至15段。完整训练日志和可续训状态留在云端。`staged/`中的实测配置保留原运行路径，复现时用配置生成器写入当前路径。[100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv) · [文件清单](../artifacts/sem-tiny/snapshot.json)
