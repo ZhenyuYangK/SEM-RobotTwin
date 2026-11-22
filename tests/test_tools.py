@@ -88,6 +88,8 @@ class TestEval(unittest.TestCase):
 
     def test_eval_continuation_keeps_instruction_limit_independent_of_episode_count(self):
         path = ROOT / 'src/RoboTwin/script/eval_policy.py'
+        if not path.is_file():
+            self.skipTest('Requires the pinned RoboTwin source checkout')
         original = path.read_bytes()
         source = evaluator_source(original, 85, start_scene_seed=1000100022, instruction_limit=15)
         compile(source, str(path), 'exec')

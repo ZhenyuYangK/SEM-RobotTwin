@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the five verified SEM single-task experiments on the prepared cloud instance."""
+"""Run the verified SEM single-task experiments on a prepared cloud instance."""
 import argparse
 import csv
 import fcntl
@@ -37,6 +37,19 @@ def completed_training_steps(run_dir):
             or log.rfind('FINISH TRAINING') < progress[-1].end()):
         raise ValueError(f'Missing completed {target}-step training evidence for {run_dir.name}')
     return target
+
+
+def completed_smoke_eval(run_dir):
+    for path in run_dir.glob('phase6*.log'):
+        log = path.read_text()
+        if re.search(r'^C6 passed ', log, re.M):
+            return True
+        try:
+            eval_log_row(log, 'place_empty_cup', 3)
+        except ValueError:
+            continue
+        return True
+    return False
 
 
 def run_logged(command, cwd, log_path, monitor_gpu=False):
@@ -155,9 +168,10 @@ def main():
     parser.add_argument('--batch-size', type=int, required=True)
     parser.add_argument('--pretrained', type=Path, required=True)
     parser.add_argument('--bert', type=Path, required=True)
+    parser.add_argument('--task', action='append', help='Run this task. Repeat to select multiple tasks')
+    parser.add_argument('--dry-run', action='store_true', help='Validate task sources and print the plan without launching runs')
     args = parser.parse_args()
-    args.base, args.output = args.base.resolve(strict=True), args.output.resolve()
-    args.pretrained, args.bert = args.pretrained.resolve(strict=True), args.bert.resolve(strict=True)
+    args.base, args.output = args.base.resolve(), args.output.resolve()
     if args.max_step <= 0 or args.batch_size <= 0 or not args.output.is_relative_to(args.base):
         parser.error('Use positive training parameters and put the outputs on the data disk')
     project = json.loads((WORKSPACE / 'configs/project.json').read_text())
@@ -165,19 +179,38 @@ def main():
     if problems or selected_count != 5:
         parser.error(f'Expected the five verified tasks: {problems}')
     selected = [entry['name'] for entry in project['tasks'] if entry['include']]
+    if args.task:
+        allowed = set(selected) | set(project.get('supplementary_tasks', []))
+        if len(set(args.task)) != len(args.task) or not set(args.task) <= allowed:
+            parser.error(f'Tasks must be distinct and selected from: {", ".join(sorted(allowed))}')
+        selected = args.task
     if project['episodes_per_task_target'] != 100 or not 1 <= project['eval_episodes_target'] <= 100:
         parser.error('The formal experiment requires 100 demonstrations and 1–100 valid evaluations per task')
-    smoke_run = args.base / 'runs/place_empty_cup-smoke'
-    if not any(re.search(r'^C6 passed ', log.read_text(), re.M) for log in smoke_run.glob('phase6*.log')):
-        parser.error('Complete the three-episode cloud evaluation before starting formal experiments')
-    if not args.pretrained.stat().st_size or not (args.bert / 'model.safetensors').stat().st_size:
-        parser.error('Missing verified pretrained weights')
-    robotwin, orchard = (args.base / 'work' / name for name in ('RoboTwin', 'RoboOrchardLab'))
     evaluator = 'script/eval_policy.py'
     train = 'projects/sem/robotwin/train.py'
     packer = 'robo_orchard_lab/dataset/robotwin/robotwin_packer.py'
-    pinned_robotwin = require_locked_task(WORKSPACE, selected[0], evaluator)
-    pinned_orchard = require_locked_files(WORKSPACE, 'RoboOrchardLab', train, packer)
+    try:
+        for task in selected:
+            require_locked_task(WORKSPACE, task)
+        pinned_robotwin = require_locked_files(WORKSPACE, 'RoboTwin', evaluator)
+        pinned_orchard = require_locked_files(WORKSPACE, 'RoboOrchardLab', train, packer)
+    except (OSError, ValueError) as error:
+        parser.error(str(error))
+    if args.dry_run:
+        print(json.dumps(dict(tasks=selected, demonstrations=project['episodes_per_task_target'],
+                              training_steps=args.max_step, batch_size=args.batch_size,
+                              evaluation_episodes=project['eval_episodes_target'], output=str(args.output)),
+                         indent=2))
+        return
+    smoke_run = args.base / 'runs/place_empty_cup-smoke'
+    if not completed_smoke_eval(smoke_run):
+        parser.error('Complete the three-episode cloud evaluation before starting formal experiments')
+    if not args.pretrained.is_file() or not (args.bert / 'model.safetensors').is_file():
+        parser.error('Missing verified pretrained weights')
+    args.pretrained, args.bert = args.pretrained.resolve(), args.bert.resolve()
+    if not args.pretrained.stat().st_size or not (args.bert / 'model.safetensors').stat().st_size:
+        parser.error('Empty pretrained weights')
+    robotwin, orchard = (args.base / 'work' / name for name in ('RoboTwin', 'RoboOrchardLab'))
     for runtime, pinned, entries in ((robotwin, pinned_robotwin, (evaluator,)),
                                      (orchard, pinned_orchard, (train, packer))):
         for entry in entries:

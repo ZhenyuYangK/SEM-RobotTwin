@@ -1,8 +1,41 @@
 # 采集、SEM训练与评估
 
-以下命令用于完成云端环境验收后的单任务闭环。路径与参数证据见[固定源码审计](../reports/code_audit.md)。示例中的`PREP`、`ROBOTWIN`、`SEM`、`RUN_DIR`均为云端实测的绝对路径，分别指本包根目录、两个运行副本和本次数据盘目录。暂存工具从本包`src/`中的干净锁定源码读取。
+以下命令在配置好依赖和资产的云端环境执行。`PREP`、`ROBOTWIN`、`SEM`、`CLOUD_BASE`和外部权重路径见[运行环境](CLOUD_HANDOFF.md)。配置生成工具读取`src/`中的锁定源码。
+
+## 评估已发布权重
+
+以下以`place_shoe`为例。其他任务的权重路径、训练步数和SHA256见[产物校验清单](../artifacts/sem-tiny/snapshot.json)。运行副本须完成资产和`sem_policy`部署。
+
+```bash
+(
+set -euo pipefail
+cd "$PREP"
+TASK=place_shoe
+WEIGHT="artifacts/sem-tiny/c7-formal/$TASK/train/checkpoints/checkpoint_12/model.safetensors"
+git lfs pull --include="$WEIGHT" --exclude=""
+sha256sum "$WEIGHT"
+RUN_DIR="$(mktemp -d "$CLOUD_BASE/runs/eval-$TASK.XXXXXX")"
+
+python3 scripts/prepare_collection.py --task "$TASK" --episodes 100 \
+  --out "$RUN_DIR/staged/demo_clean.yml"
+python3 scripts/make_training_config.py --task "$TASK" --data-path "$RUN_DIR/lmdb" \
+  --urdf "$KINEMATICS_URDF" --max-step 50000 --out "$RUN_DIR/staged/train_config.py"
+python3 scripts/make_eval_config.py --task "$TASK" --checkpoint "$PREP/$WEIGHT" \
+  --config-file "$RUN_DIR/staged/train_config.py" --align-projection-dtype \
+  --expert-data-num 100 --episodes 100 --out "$RUN_DIR/staged/sem_policy"
+cp "$RUN_DIR/staged/demo_clean.yml" "$ROBOTWIN/task_config/demo_clean.yml"
+cp "$RUN_DIR/staged/sem_policy/"{deploy_policy.yml,eval.sh} "$ROBOTWIN/policy/sem_policy/"
+bash "$ROBOTWIN/policy/sem_policy/eval.sh" 2>&1 | tee "$RUN_DIR/eval.log"
+python3 scripts/summarize_eval.py --log "$RUN_DIR/eval.log" --task "$TASK" \
+  --expected-episodes 100 --episode-output "$RUN_DIR/eval_episodes.csv"
+)
+```
+
+这里的LMDB路径用于生成模型配置，评估直接读取仿真观测。视频和`_result.txt`写入运行副本的`eval_result/`。逐回合CSV可按场景种子与发布记录对照。[已发布结果](../artifacts/sem-tiny/c7-formal/evaluation_100.csv)
 
 ## 采集与数据检查
+
+首次完整闭环使用`RUN_DIR="$CLOUD_BASE/runs/place_empty_cup-smoke"`。在新的RoboTwin运行副本里，将`data/`链接到`$RUN_DIR/raw`，将`eval_result/`链接到`$RUN_DIR/eval_result`，并提前创建目标目录。串行正式入口会接管这两个链接。
 
 1. 保持场景配置名`demo_clean`。在本包生成10条示范用配置，在独立云端运行副本审阅并应用到`task_config/demo_clean.yml`。默认相机为头部和双腕，采集需打开RGB、Depth、Endpose和QPos。
 2. 将该运行副本的`data/`挂载或链接到独立数据盘目录。采集器会读取已有种子并跳过已有连续Episode，首次烟测应指向新的数据目录。指令输出也定位在RoboTwin的`data/`。
@@ -41,6 +74,11 @@ python3 scripts/make_training_config.py --task place_empty_cup \
   --pretrained-checkpoint "$PRETRAINED" --bert-checkpoint "$BERT_CHECKPOINT" \
   --max-step 1000 \
   --training-workspace "$RUN_DIR/train" --out "$RUN_DIR/staged/train_config.py"
+
+printf '%s\n' '{"batch_size":2,"num_workers":4}' > "$RUN_DIR/staged/train_kwargs.json"
+cd "$SEM/projects/sem/robotwin"
+python -u train.py --config "$RUN_DIR/staged/train_config.py" \
+  --workspace "$RUN_DIR/train" --kwargs "$RUN_DIR/staged/train_kwargs.json"
 ```
 
 ## 评估与统计
@@ -52,12 +90,12 @@ python3 scripts/make_training_config.py --task place_empty_cup \
 
 ```bash
 cd "$PREP"
+CHECKPOINT="$RUN_DIR/train/checkpoints/checkpoint_1/model.safetensors"
+EVAL_CONFIG="$RUN_DIR/staged/train_config.py"
 python3 scripts/make_eval_config.py --task place_empty_cup \
   --checkpoint "$CHECKPOINT" --config-file "$EVAL_CONFIG" \
   --align-projection-dtype \
-  --expert-data-num 10 --out "$RUN_DIR/staged/sem_policy"
-python3 scripts/summarize_eval.py --log "$RUN_DIR/eval.log" --task place_empty_cup \
-  --output "$RUN_DIR/eval_summary.csv"
+  --episodes 3 --expert-data-num 10 --out "$RUN_DIR/staged/sem_policy"
 ```
 
 部署后可以从本包运行3个有效Episode的缩量评估，并用相同的Episode数统计。日志存放在此次冒烟运行的独立目录`RUN_DIR`。
@@ -67,8 +105,8 @@ cd "$PREP"
 set -o pipefail
 python -u scripts/run_smoke_eval.py --runtime "$ROBOTWIN" --task place_empty_cup \
   --episodes 3 --expert-data-num 10 --config "$RUN_DIR/staged/sem_policy/deploy_policy.yml" \
-  2>&1 | tee "$RUN_DIR/eval_smoke.log"
-python3 scripts/summarize_eval.py --log "$RUN_DIR/eval_smoke.log" --task place_empty_cup \
+  2>&1 | tee "$RUN_DIR/phase6-eval.log"
+python3 scripts/summarize_eval.py --log "$RUN_DIR/phase6-eval.log" --task place_empty_cup \
   --expected-episodes 3 --output "$RUN_DIR/eval_smoke_summary.csv"
 ```
 
@@ -81,19 +119,25 @@ python3 scripts/summarize_eval.py --log "$RUN_DIR/eval.log" --task adjust_bottle
   --expected-episodes 100 --episode-output "$RUN_DIR/eval_episodes.csv"
 ```
 
-## C7五项正式实验
+## C7正式实验与补充实验
 
-在已验收的云端环境中，`CLOUD_BASE`指向数据盘工程目录。`OUTPUT`是数据盘下新建的结果目录。`BATCH_SIZE`按C5实测选择。新启动的训练默认读取`configs/project.json`中的`train_steps_reference=50000`，串行入口支持用`--max-step`显式指定。
+在完成C6的同一环境中，每条命令使用新的输出目录。保留`--dry-run`可先核对任务和训练计划，移除后才启动采集、训练和评估。每项使用100条示范、Batch 2和4个DataLoader工作进程。
 
 ```bash
 cd "$PREP"
-source "$CLOUD_BASE/runtime/env.sh"
-python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" --output "$OUTPUT" \
-  --batch-size "$BATCH_SIZE" \
-  --pretrained "$PRETRAINED" --bert "$BERT_CHECKPOINT"
+python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" \
+  --output "$CLOUD_BASE/runs/reproduce-100k" --max-step 100000 --batch-size 2 \
+  --task place_empty_cup --task adjust_bottle --task beat_block_hammer \
+  --pretrained "$PRETRAINED" --bert "$BERT_CHECKPOINT" --dry-run
+python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" \
+  --output "$CLOUD_BASE/runs/reproduce-50k" --max-step 50000 --batch-size 2 \
+  --task place_shoe --task place_container_plate --task click_bell \
+  --pretrained "$PRETRAINED" --bert "$BERT_CHECKPOINT" --dry-run
 ```
 
-入口按`configs/project.json`的顺序采集、打包、训练和评估。每项使用100条成功示范独立训练，评估回合数读取`eval_episodes_target`。任务目录保存Checkpoint、部署配置、训练和评估日志、`_result.txt`与视频。根目录的`results.csv`记录各任务实际完成的训练步数。并行调度用每项实验保存的训练配置和完成日志核对已启动任务。
+串行入口每项从协议初始种子评估100回合。任务目录保存Checkpoint、部署配置、训练与评估日志、`_result.txt`和视频，输出根目录的`results.csv`汇总各任务。正式训练数据由采集器重新生成。原始示范、完整训练日志和云端环境全量清单保存在原数据盘。
+
+### 历史并行调度与续评
 
 本次云端运行采用[并行调度脚本](../scripts/c7_parallel)，最多同时运行3项独立实验。每项使用自己的RoboTwin运行副本，并独立保存训练与评估产物。调度状态记录在数据盘`runs/c7-parallel-control/queue.json`。
 
@@ -102,6 +146,8 @@ python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" --output "$OUTP
 `schedule.py --resume`可从云端控制目录里的交接快照接管正在运行的训练。快照记录训练PID、显存监控PID、开始时间和待运行任务。接管后的评估按当前项目配置执行。
 
 已完成15回合的`adjust_bottle`和`beat_block_hammer`各续评85回合。续评沿用各自的Checkpoint、评估配置和指令候选数，从原日志最后一个有效场景种子的下一值开始。启动前在已加载云端环境的项目检出目录执行`python scripts/c7_parallel/extend_eval.py --check adjust_bottle beat_block_hammer`。通过后去掉`--check`运行。每项`eval_to_100/`中的`completion.json`和`eval_episodes.csv`汇总两段评估的100个回合，逐回合CSV包含原视频路径。
+
+`place_empty_cup`先记录94个有效回合，再从候选种子`1000100110`开始续评6回合。两段的指令候选数均为100。历史分段设置和场景种子见[评估摘要](../artifacts/sem-tiny/c7-formal/place_empty_cup/eval_100/summary.json)与[逐回合记录](../artifacts/sem-tiny/c7-formal/place_empty_cup/eval_100/eval_episodes.csv)。
 
 ### 评估产物自动发布
 

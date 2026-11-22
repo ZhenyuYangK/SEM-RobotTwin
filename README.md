@@ -1,10 +1,30 @@
 # SEM-Tiny×RoboTwin2.0
 
-本包用于在Ubuntu22.04上锁定并审计SEM和RoboTwin源码，准备任务配置、URDF报告、数据工具和云端启动清单。本地验收见[本地就绪报告](reports/local_readiness.md)。
+本项目使用SEM-Tiny在RoboTwin2.0中训练独立单任务策略，涵盖RGB-D示范采集、LMDB打包、训练和仿真评估。仓库包含五项C7正式实验和一项补充实验的训练配置、最终权重与逐回合结果。
+
+## 复现入口
+
+| 目标 | 入口 |
+|---|---|
+| 核对已发布成绩 | [100回合汇总](artifacts/sem-tiny/c7-formal/evaluation_100.csv) · [逐回合结果与视频](artifacts/sem-tiny/c7-formal/) · [SHA256清单](artifacts/sem-tiny/snapshot.json) |
+| 评估已发布权重 | [下载指定任务权重并生成本机路径的评估配置](docs/DATA_TRAIN_EVAL.md#评估已发布权重) |
+| 从采集开始重跑 | [准备运行环境](docs/CLOUD_HANDOFF.md) · [按已发布训练步数重跑](docs/DATA_TRAIN_EVAL.md#c7正式实验与补充实验) |
+| 查阅原始实验过程 | [云端实验记录](reports/cloud_preflight.md#c7正式实验进展) · [验收阶段](docs/PHASE_PLAN.md) · [训练曲线](C7_curves/) |
+
+每项实验使用100条示范，评估协议为`demo_clean`、`sem_policy`、`seed=10000`和`unseen`，每项统计100个有效回合。
+
+| 任务 | 训练步数 | 成功回合 |
+|---|---:|---:|
+| `place_empty_cup` | 100000 | 91/100 |
+| `adjust_bottle` | 100000 | 98/100 |
+| `beat_block_hammer` | 100000 | 87/100 |
+| `place_shoe` | 50000 | 75/100 |
+| `place_container_plate` | 50000 | 94/100 |
+| `click_bell`（补充） | 50000 | 55/100 |
 
 ## 本地检查
 
-在包含本README的目录执行以下命令。源码未检出时，原件校验、单测和URDF结构检查仍可离线运行。
+在项目根目录用Python3.10执行以下命令。源码未检出时，原件校验、离线单测和URDF结构检查仍可执行。依赖上游源码的测试在检出后运行。检查报告写入临时目录，退出时自动清理。
 
 ```bash
 bash scripts/run_local_checks.sh
@@ -14,16 +34,15 @@ bash scripts/run_local_checks.sh
 
 ```bash
 bash scripts/bootstrap_sources.sh --clone
-python3 scripts/audit_sources.py --workspace .
 python3 scripts/discover_tasks.py --workspace . --list
-python3 scripts/discover_tasks.py --workspace . --validate
+bash scripts/run_local_checks.sh
 ```
 
 RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定首次实际检出并审计的`41112765f9904efb2374dd9c8946fb5af452861a`。两份原始资料位于`teacher_inputs/`，哈希清单见`reports/teacher_inputs_sha256.txt`。
 
 ## 训练任务与工具
 
-训练范围固定为`configs/project.json`中已确认的5个任务。先完成`place_empty_cup`的云端闭环，再逐项推进其余4个独立单任务实验。源码证据见[任务报告](reports/task_candidates.md)。
+`configs/project.json`记录五项正式任务及补充任务`click_bell`。源码证据见[任务报告](reports/task_candidates.md)。
 
 | 工具 | 用途 |
 |---|---|
@@ -36,8 +55,4 @@ RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定�
 | `run_smoke_eval.py` | 用锁定评估入口执行C6的缩量验证，在内存中调整Episode数。 |
 | `summarize_eval.py` | 从完成日志或经核对的CSV统计有效Episode和成功数。 |
 | `create_cloud_runbook.py` | 依据已确认任务生成云端逐项执行清单。 |
-| `run_formal_experiments.py` | 通过C6后，按配置顺序运行5项正式实验并核对各项训练和评估产物。 |
-
-云端步骤见[采集与训练评估](docs/DATA_TRAIN_EVAL.md)和[迁移与启动清单](docs/CLOUD_HANDOFF.md)。阶段验收见[阶段计划](docs/PHASE_PLAN.md)。
-
-验收从[云端实验记录](reports/cloud_preflight.md#c7正式实验进展)查看任务状态、正式结果与对应代码版本。最终权重、实测配置、逐回合结果和评估视频见[验收产物](artifacts/sem-tiny/)。
+| `run_formal_experiments.py` | 校验任务和训练计划。通过C6后，可从采集开始运行指定单任务实验。 |

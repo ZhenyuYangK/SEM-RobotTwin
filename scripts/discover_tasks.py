@@ -83,12 +83,13 @@ def main():
     issues, available, selected = validate_config(root, config)
     print(f'Available: {available}, selected: {selected}')
     if not issues:
-        for task in config['tasks']:
-            if task.get('include'):
-                try:
-                    require_locked_task(root, task['name'])
-                except ValueError as error:
-                    issues.append(str(error))
+        names = [task['name'] for task in config['tasks'] if task.get('include')]
+        names.extend(config.get('supplementary_tasks', []))
+        for name in names:
+            try:
+                require_locked_task(root, name)
+            except ValueError as error:
+                issues.append(str(error))
     if issues:
         for issue in issues:
             print('CHECK:', issue)

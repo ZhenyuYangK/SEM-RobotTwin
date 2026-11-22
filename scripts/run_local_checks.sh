@@ -3,6 +3,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 export PYTHONDONTWRITEBYTECODE=1
+report_dir="$(mktemp -d)"
+trap 'rm -f -- "$report_dir/urdf_audit.json" "$report_dir/source_revisions.json"; rmdir -- "$report_dir"' EXIT
 
 echo '== 1/4 Verify input hashes and run unit tests =='
 sha256sum -c reports/teacher_inputs_sha256.txt
@@ -10,15 +12,16 @@ python3 -m unittest discover -s tests -v
 
 echo '== 2/4 Source URDF static structural audit =='
 python3 scripts/audit_urdf.py --urdf teacher_inputs/arx5_description_isaac.urdf \
-  --robotwin src/RoboTwin --output reports/urdf_audit.json
+  --robotwin src/RoboTwin --output "$report_dir/urdf_audit.json"
 
 echo '== 3/4 Locked source checkout audit =='
-python3 scripts/audit_sources.py --workspace . >/dev/null
-if python3 - <<'PY_SOURCE'
+python3 scripts/audit_sources.py --workspace . --output "$report_dir/source_revisions.json" >/dev/null
+if python3 - "$report_dir/source_revisions.json" <<'PY_SOURCE'
 import json
+import sys
 from pathlib import Path
 
-report = json.loads(Path('reports/source_revisions.json').read_text(encoding='utf-8'))
+report = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
 for issue in report['not_ready']:
     print(' -', issue)
 raise SystemExit(bool(report['not_ready']))

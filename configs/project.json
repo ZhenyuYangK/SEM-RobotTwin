@@ -42,5 +42,6 @@
       "include": true
     }
   ],
+  "supplementary_tasks": ["click_bell"],
   "notes": "任务范围固定为所列5个任务。先以place_empty_cup完成云端单任务验证，再按已确认顺序逐项推进其余4个任务。"
 }
