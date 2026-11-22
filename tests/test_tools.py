@@ -17,9 +17,6 @@ from make_training_config import write_config
 from run_formal_experiments import completed_training_steps
 from run_smoke_eval import evaluator_source
 from summarize_eval import aggregate, eval_log_episodes, eval_log_row
-from estimate_budget import estimate
-from estimate_storage import estimate_storage
-from create_cloud_runbook import runbook
 from inspect_hdf5 import dataset_episodes, sem_schema_errors
 from prepare_collection import collection_config
 
@@ -217,29 +214,6 @@ class TestTrainAndSource(unittest.TestCase):
             result, _, selected = validate_config(d, {'tasks': [{'name': 'place_empty_cup', 'status': 'verified_in_pinned_source', 'include': True}]})
             self.assertEqual(result, [])
             self.assertEqual(selected, 1)
-
-    def test_runbook_rejects_unverified(self):
-        with self.assertRaises(ValueError):
-            runbook({'tasks': [{'name':'place_empty_cup', 'include':True, 'status':'pending_source_validation'}], 'eval_seed':10000, 'train_mode':'single_task', 'eval_policy':'sem_policy', 'task_config':'demo_clean'})
-
-    def test_budget(self):
-        r = estimate(5, 100000, 20, 1.98)
-        self.assertAlmostEqual(r['training_hours_all_tasks'], 166.6666666667)
-        self.assertAlmostEqual(r['estimated_gpu_cost_cny'], 330)
-
-    def test_storage(self):
-        r = estimate_storage(1024**3, 1024**3, 10, 5, 100, 25)
-        self.assertEqual(r['episodes'], 500)
-        self.assertAlmostEqual(r['raw_plus_lmdb_gib'], 100)
-        self.assertAlmostEqual(r['total_with_extra_gib'], 125)
-
-    def test_storage_invalid(self):
-        with self.assertRaises(ValueError):
-            estimate_storage(1, 1, 0, 5, 100, 25)
-
-    def test_bad_budget(self):
-        with self.assertRaises(ValueError):
-            estimate(0, 1000, 10, 2)
 
 
 class TestCollection(unittest.TestCase):

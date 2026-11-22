@@ -1,6 +1,6 @@
 # 云端运行环境
 
-C7使用Ubuntu22.04.4、Python3.10.12、RTX4090 24GB和CUDA12.1。实测关键组件为Torch2.4.1、TorchVision0.19.1（均为CUDA12.1构建）、SAPIEN3.0.0b1、CuRobo0.7.8、Warp1.8.1、PyTorch3D0.7.8与FFmpeg的`libx264`。原实验完整的`pip freeze`记录在云端数据盘的`logs/python-freeze.txt`。[环境实测记录](../reports/cloud_preflight.md#c2续跑记录)
+C7使用Ubuntu22.04.4、Python3.10.12、RTX4090 24GB和CUDA12.1。实测关键组件为Torch2.4.1、TorchVision0.19.1（均为CUDA12.1构建）、SAPIEN3.0.0b1、CuRobo0.7.8、Warp1.8.1、PyTorch3D0.7.8与FFmpeg的`libx264`。原实验完整的`pip freeze`记录在云端数据盘的`logs/python-freeze.txt`。
 
 ## 代码同步
 
@@ -29,12 +29,12 @@ git -C "$ROBOTWIN" rev-parse HEAD
 git -C "$SEM" rev-parse HEAD
 ```
 
-两个提交应分别为RoboTwin的`e71140e9734e69686daa420a9be8b75a20ff4587`和RoboOrchardLab的`41112765f9904efb2374dd9c8946fb5af452861a`。在隔离的Python环境中按固定源码的SEM指南和C2实测记录补齐依赖，运行`python -m pip install -e "$SEM"`和`python -m pip check`，然后把锁定版`"$SEM/projects/sem/robotwin/sem_policy"`复制到`"$ROBOTWIN/policy/"`。原云端可以直接加载已有的`runtime/env.sh`。[固定源码审计](../reports/code_audit.md#运行依赖与环境验证) · [云端Vulkan与依赖记录](../reports/cloud_preflight.md)
+两个提交应分别为RoboTwin的`e71140e9734e69686daa420a9be8b75a20ff4587`和RoboOrchardLab的`41112765f9904efb2374dd9c8946fb5af452861a`。在隔离的Python环境中按锁定版SEM指南和本页的实测版本补齐依赖，运行`python -m pip install -e "$SEM"`和`python -m pip check`，然后把锁定版`"$SEM/projects/sem/robotwin/sem_policy"`复制到`"$ROBOTWIN/policy/"`。原云端可以直接加载已有的`runtime/env.sh`。[锁定版SEM安装指南](https://github.com/HorizonRobotics/RoboOrchardLab/blob/41112765f9904efb2374dd9c8946fb5af452861a/projects/sem/robotwin/README.md)
 
 | 输入 | 来源及放置位置 |
 |---|---|
 | 场景与机械臂资产 | 从固定资产版本`3dc3b798668feb99ac61cc9086d84cbcc3d79186`获取`objects.zip`和`embodiments.zip`，校验后解压至`$ROBOTWIN/assets/`。在RoboTwin运行副本根目录执行`python script/update_embodiment_config_path.py`生成CuRobo配置。[资产版本](https://huggingface.co/datasets/TianxingChen/RoboTwin2.0/tree/3dc3b798668feb99ac61cc9086d84cbcc3d79186) |
-| 运动学URDF | `KINEMATICS_URDF="$ROBOTWIN/assets/embodiments/aloha-agilex/urdf/arx5_description_isaac.urdf"`。用`sha256sum`与`reports/teacher_inputs_sha256.txt`比对。 |
+| 运动学URDF | `KINEMATICS_URDF="$ROBOTWIN/assets/embodiments/aloha-agilex/urdf/arx5_description_isaac.urdf"`。用`sha256sum`与原件清单比对。[SHA256清单](../configs/teacher_inputs_sha256.txt) |
 | GroundingDINO-Tiny预训练权重 | 按固定SEM源码中`projects/sem/robotwin/README.md`下载原始`groundingdino_swint_ogc_mmdet-822d7e9d.pth`并运行上游`tools/ckpt_rename.py`。将`PRETRAINED`设为转换后的`groundingdino_swint_ogc_mmdet-822d7e9d-rename.pth`绝对路径。 |
 | BERT目录 | 将`BERT_CHECKPOINT`设为包含`model.safetensors`的模型目录。原运行使用`google-bert/bert-base-uncased`的`86b5e0934494bd15c9632b12f734a8a67f723594`版本。[BERT版本](https://huggingface.co/google-bert/bert-base-uncased/tree/86b5e0934494bd15c9632b12f734a8a67f723594) |
 
@@ -47,11 +47,11 @@ sha256sum -c <<'ASSET_SHA256'
 ASSET_SHA256
 ```
 
-从采集开始重跑时，数据盘保存原始示范、LMDB、日志与Checkpoint。运行前核对空间、Vulkan渲染与GPU规划。已发布权重的评估使用相同场景与机械臂资产。[资源预算](RESOURCE_BUDGET.md) · [采集和评估操作](DATA_TRAIN_EVAL.md)
+从采集开始重跑时，数据盘保存原始示范、LMDB、日志与Checkpoint。运行前核对空间、Vulkan渲染与GPU规划。已发布权重的评估使用相同场景与机械臂资产。[采集和评估操作](DATA_TRAIN_EVAL.md)
 
 ### 本地URDF检查
 
-如需运行URDF静态审计，先从上述固定版本获取`embodiments.zip`并核对压缩包SHA256。将其中的`aloha-agilex/urdf/arx5_description_isaac.urdf`提取到本地`teacher_inputs/`。运行本地检查脚本可核对该文件SHA256并检查关节与链接结构。[原件SHA256清单](../reports/teacher_inputs_sha256.txt) · [与官方资产的比对记录](../reports/urdf_differences.md#c3云端验收)
+如需运行URDF静态审计，先从上述固定版本获取`embodiments.zip`并核对压缩包SHA256。将其中的`aloha-agilex/urdf/arx5_description_isaac.urdf`提取到本地`teacher_inputs/`。运行本地检查脚本可核对该文件SHA256并检查关节与链接结构。[原件SHA256清单](../configs/teacher_inputs_sha256.txt)
 
 ## 启动前预检
 

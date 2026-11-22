@@ -26,6 +26,7 @@ wandb/
 
 # Generated configs / caches
 generated/
+/reports/
 .cache/
 *.log
 *.tmp

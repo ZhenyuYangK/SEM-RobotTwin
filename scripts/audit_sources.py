@@ -123,7 +123,7 @@ def main():
     if r['not_ready']:
         print('STATUS: NOT_READY (source checkout/inspection needs attention)')
     else:
-        print('STATUS: Locked source paths present. See reports/code_audit.md for the interface audit.')
+        print('STATUS: Locked source paths present. See docs/DATA_TRAIN_EVAL.md for pipeline commands.')
 
 
 if __name__ == '__main__':

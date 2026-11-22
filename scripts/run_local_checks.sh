@@ -13,7 +13,7 @@ while read -r checksum input; do
   else
     printf 'Skip checksum for absent local input: %s\n' "$input"
   fi
-done < reports/teacher_inputs_sha256.txt
+done < configs/teacher_inputs_sha256.txt
 python3 -m unittest discover -s tests -v
 
 echo '== 2/4 Source URDF static structural audit =='

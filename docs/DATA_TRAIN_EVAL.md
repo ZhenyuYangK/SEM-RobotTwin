@@ -139,25 +139,12 @@ python -u scripts/run_formal_experiments.py --base "$CLOUD_BASE" \
 
 ### 历史并行调度与续评
 
-本次云端运行采用[并行调度脚本](../scripts/c7_parallel)，最多同时运行3项独立实验。每项使用自己的RoboTwin运行副本，并独立保存训练与评估产物。调度状态记录在数据盘`runs/c7-parallel-control/queue.json`。
+C7云端运行最多同时调度3项独立实验。每项使用自己的RoboTwin运行副本，并独立保存训练与评估产物。实测调度源码的提交与校验值见[文件清单](../artifacts/sem-tiny/snapshot.json)。
 
-`schedule.py --preflight`校验运行副本和权重。`--adopt`用于本次从串行入口交接首项训练，需要原入口及其训练和监控进程仍在运行，同时两个后续任务的工作进程已启动。交接会终止原串行入口进程，由并行调度继续跟踪其训练子进程。`--check-resume`可先校验续接快照中的进程和排队任务。
-
-`schedule.py --resume`可从云端控制目录里的交接快照接管正在运行的训练。快照记录训练PID、显存监控PID、开始时间和待运行任务。接管后的评估按当前项目配置执行。
-
-已完成15回合的`adjust_bottle`和`beat_block_hammer`各续评85回合。续评沿用各自的Checkpoint、评估配置和指令候选数，从原日志最后一个有效场景种子的下一值开始。启动前在已加载云端环境的项目检出目录执行`python scripts/c7_parallel/extend_eval.py --check adjust_bottle beat_block_hammer`。通过后去掉`--check`运行。每项`eval_to_100/`中的`completion.json`和`eval_episodes.csv`汇总两段评估的100个回合，逐回合CSV包含原视频路径。
+`adjust_bottle`和`beat_block_hammer`先各评估15回合，再各续评85回合。续评沿用各自的Checkpoint、评估配置和指令候选数，从原日志最后一个有效场景种子的下一值开始。[100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv)
 
 `place_empty_cup`先记录94个有效回合，再从候选种子`1000100110`开始续评6回合。两段的指令候选数均为100。历史分段设置和场景种子见[评估摘要](../artifacts/sem-tiny/c7-formal/place_empty_cup/eval_100/summary.json)与[逐回合记录](../artifacts/sem-tiny/c7-formal/place_empty_cup/eval_100/eval_episodes.csv)。
 
-### 评估产物自动发布
-
-在能SSH登录云端且有GitHub写权限的本机运行。将`CLOUD_SSH`设为已有的SSH主机别名。此脚本读取云端并行调度生成的完成记录，默认监控五项正式任务，也可重复传入`--task`指定其中的任务。
-
-```bash
-python3 scripts/c7_parallel/publish.py --cloud "$CLOUD_SSH" --check
-python3 scripts/c7_parallel/publish.py --cloud "$CLOUD_SSH" --watch --task place_shoe
-```
-
-监控按配置的评估回合数识别任务完成，核对训练结束记录、评估逐回合数据和Checkpoint路径。每个任务单独发布到`origin/main`，归档包含评估摘要、逐回合CSV、可用的评估视频、权重和模型配置。权重使用Git LFS，传输后校验SHA-256。短评估完成后继续等待正式回合数，SSH或Git推送失败时下轮重试，所选任务全部发布后退出。需要提前备份已训练完成的权重时，使用`--weights-only`指定任务。本机后台服务`sem-c7-publish.service`的运行日志可用`journalctl --user -u sem-c7-publish.service`查看。
+### 已发布的评估产物
 
 GitHub归档包含最终权重、模型与处理器配置、实测训练和评估配置、结果汇总和逐回合CSV。`place_empty_cup`保留4段代表视频，其他5项各保留100段视频。`adjust_bottle`和`beat_block_hammer`首轮评估的视频对应各自100回合目录中的第1至15段。完整训练日志和可续训状态留在云端。`staged/`中的实测配置保留原运行路径，复现时用配置生成器写入当前路径。[100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv) · [文件清单](../artifacts/sem-tiny/snapshot.json)

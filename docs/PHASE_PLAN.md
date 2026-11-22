@@ -2,10 +2,10 @@
 
 | 阶段 | 设备 | 工作 | 必须输出/验收 | 允许付费云GPU？ |
 |---|---|---|---|---|
-| L0 | 本地 | 核对可用原件SHA256，运行单测 | `reports/local_readiness.md` | 否 |
-| L1 | 本地 | 获取Git源码并固定RoboTwin提交 | `reports/source_revisions.json` | 否 |
-| L2 | 本地 | 审计SEM模型和RoboTwin采集/评估接口 | `reports/code_audit.md` | 否 |
-| L3 | 本地 | 用本地原件或锁定官方资产检查URDF结构、关节与Mesh | `reports/urdf_audit.json` | 否 |
+| L0 | 本地 | 核对可用原件SHA256，运行单测 | `scripts/run_local_checks.sh`输出 | 否 |
+| L1 | 本地 | 获取Git源码并固定RoboTwin提交 | `audit_sources.py`生成的源码审计报告 | 否 |
+| L2 | 本地 | 审计SEM模型和RoboTwin采集/评估接口 | 锁定源码、采集与评估入口 | 否 |
+| L3 | 本地 | 用本地原件或锁定官方资产检查URDF结构、关节与Mesh | `audit_urdf.py`生成的结构报告 | 否 |
 | L4 | 本地 | 从源码发现并选择5个候选任务 | `configs/project.json`及核验结果 | 否 |
 | L5 | 本地 | 完成数据采集、打包、训练、评估脚本审查 | 命令清单、静态测试、无虚构参数 | 否 |
 | L6 | 本地 | 统计工具、预算与云端迁移准备 | 单测通过，云端就绪清单 | 否 |
@@ -37,22 +37,22 @@
 | L3 | 原始URDF静态结构通过。固定提交和本地资产目录均无参照URDF，实物差异对比纳入C3。 |
 | L4 | 从50个真实源码任务中确认5个，保存所定顺序并验证配置。 |
 | L5 | 工具的本地格式、配置和锁定版参数解析验证通过。 |
-| L6 | 初次验收的22项单测通过。复现整理后，在锁定上游源码下26项单测通过。[本地验证](../reports/local_readiness.md#复现整理验证) |
+| L6 | 在锁定上游源码下，当前21项单测通过。[本地检查入口](../README.md#本地检查) |
 
-P8的RTX4060单样本推理仍待实测。当前本地记录覆盖环境和HDF5压缩往返，模型加载、动作形状及显存峰值按P8单独记录。[本地验证](../reports/local_readiness.md) · [P8检查步骤](LOCAL_4060.md)
+P8的RTX4060单样本推理仍待实测。验收记录应包含模型加载结果、动作形状及显存峰值。[权重路径与校验值](../artifacts/sem-tiny/snapshot.json)
 
 ## 云端进度
 
-C1与C2通过。RTX4090、Vulkan、SAPIEN的RGB-D渲染、Torch的CUDA卷积和CuRobo的GPU轨迹规划已验收。[云端预检报告](../reports/cloud_preflight.md)
+C1与C2通过。RTX4090、Vulkan、SAPIEN的RGB-D渲染、Torch的CUDA卷积和CuRobo的GPU轨迹规划已验收。[云端运行环境](CLOUD_HANDOFF.md)
 
-C3通过。原始URDF与官方仿真URDF的SHA256一致。已验证Mesh加载、双臂关节映射和正运动学。[URDF验收报告](../reports/urdf_differences.md)
+C3通过。原始URDF与官方仿真URDF的SHA256一致。已验证Mesh加载、双臂关节映射和正运动学。[URDF来源与校验](CLOUD_HANDOFF.md#本地urdf检查)
 
-C4通过。`place_empty_cup`的10条成功示范已验证4路RGB-D、末端状态、关节动作及指令，并生成10个视频。[示范采集记录](../reports/cloud_preflight.md#c4示范采集)
+C4通过。`place_empty_cup`的10条成功示范已验证4路RGB-D、末端状态、关节动作及指令，并生成10个视频。[采集步骤](DATA_TRAIN_EVAL.md#采集与数据检查)
 
-C5通过。LMDB和DataLoader已验收，1000步训练完成并保存Checkpoint。[短训练记录](../reports/cloud_preflight.md#c5打包与短训练)
+C5通过。LMDB和DataLoader已验收，1000步训练完成并保存Checkpoint。[短训练步骤](DATA_TRAIN_EVAL.md#打包与短训练)
 
-C6通过。已验证Checkpoint加载、有限的32×14动作序列、3次有效评估和3个视频。短训练模型结果为0/3。[缩量评估记录](../reports/cloud_preflight.md#c6策略加载与缩量评估)
+C6通过。已验证Checkpoint加载、有限的32×14动作序列、3次有效评估和3个视频。短训练模型结果为0/3。[评估步骤](DATA_TRAIN_EVAL.md#评估与统计)
 
-C7配置中的5项任务均已完成训练和100回合评估。`adjust_bottle`为98/100，`beat_block_hammer`为87/100，`place_empty_cup`为91/100，`place_container_plate`为94/100，`place_shoe`为75/100。5项最终权重均已通过Git LFS发布。[正式实验进展](../reports/cloud_preflight.md#c7正式实验进展)
+C7配置中的5项任务均已完成训练和100回合评估。`adjust_bottle`为98/100，`beat_block_hammer`为87/100，`place_empty_cup`为91/100，`place_container_plate`为94/100，`place_shoe`为75/100。5项最终权重均已通过Git LFS发布。[100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv)
 
 补充实验`click_bell`完成50000步训练及100回合评估，成功55次，最终权重已发布。复现入口支持按任务指定已发布的训练步数。[100回合汇总](../artifacts/sem-tiny/c7-formal/evaluation_100.csv) · [复现命令](DATA_TRAIN_EVAL.md#c7正式实验与补充实验)

@@ -487,7 +487,6 @@
     ],
     "maintained_paths": [
       "scripts/run_formal_experiments.py",
-      "scripts/c7_parallel",
       "scripts/summarize_eval.py",
       "configs/project.json"
     ]
