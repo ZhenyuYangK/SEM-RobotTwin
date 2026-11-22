@@ -115,7 +115,7 @@
         "robo_orchard_lab_commit": "41112765f9904efb2374dd9c8946fb5af452861a",
         "cloud_train_worker_sha256": "bd210884304e112bae8cf0e189eef46ac1f11584579b1569701e1b2c4d556965",
         "cloud_eval_worker_sha256": "d741f2ecae9fe1f9572f998bedb5f23a01d759bb8479f5a5aea2e644b5994e3b",
-        "cloud_train_source": "https://github.com/ZhenyuYangK/SEM-cloud/blob/3d681efcd425377bdf905df3666a39b7d2d8cd5b/artifacts/sem-tiny/c7-parallel-control/worker.py"
+        "cloud_train_source": "https://github.com/ZhenyuYangK/SEM-RobotTwin/blob/08f6709689f6d24d10321d54281e2603877ff0e8/artifacts/sem-tiny/c7-parallel-control/worker.py"
       },
       "evaluation_videos": [
         {
@@ -278,7 +278,7 @@
         "robo_orchard_lab_commit": "41112765f9904efb2374dd9c8946fb5af452861a",
         "cloud_train_worker_sha256": "bd210884304e112bae8cf0e189eef46ac1f11584579b1569701e1b2c4d556965",
         "cloud_eval_worker_sha256": "d741f2ecae9fe1f9572f998bedb5f23a01d759bb8479f5a5aea2e644b5994e3b",
-        "cloud_train_source": "https://github.com/ZhenyuYangK/SEM-cloud/blob/3d681efcd425377bdf905df3666a39b7d2d8cd5b/artifacts/sem-tiny/c7-parallel-control/worker.py"
+        "cloud_train_source": "https://github.com/ZhenyuYangK/SEM-RobotTwin/blob/08f6709689f6d24d10321d54281e2603877ff0e8/artifacts/sem-tiny/c7-parallel-control/worker.py"
       },
       "evaluation_videos": [
         {
@@ -482,8 +482,8 @@
     "cloud_scheduler_sha256": "cec4d49999ea983973cb2e2e1dcddeaf1bddd79d321dde8bec107a920bd26f09",
     "cloud_worker_sha256": "bd210884304e112bae8cf0e189eef46ac1f11584579b1569701e1b2c4d556965",
     "deployed_files": [
-      "https://github.com/ZhenyuYangK/SEM-cloud/blob/3d681efcd425377bdf905df3666a39b7d2d8cd5b/artifacts/sem-tiny/c7-parallel-control/schedule.py",
-      "https://github.com/ZhenyuYangK/SEM-cloud/blob/3d681efcd425377bdf905df3666a39b7d2d8cd5b/artifacts/sem-tiny/c7-parallel-control/worker.py"
+      "https://github.com/ZhenyuYangK/SEM-RobotTwin/blob/08f6709689f6d24d10321d54281e2603877ff0e8/artifacts/sem-tiny/c7-parallel-control/schedule.py",
+      "https://github.com/ZhenyuYangK/SEM-RobotTwin/blob/08f6709689f6d24d10321d54281e2603877ff0e8/artifacts/sem-tiny/c7-parallel-control/worker.py"
     ],
     "maintained_paths": [
       "scripts/run_formal_experiments.py",

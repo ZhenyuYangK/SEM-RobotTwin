@@ -70,6 +70,8 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 
 ## C7正式实验启动
 
+下文保留实测时记录的提交号。源码链接指向历史整理后内容相同的提交。
+
 - 启动时使用`run_formal_experiments.py`从`place_empty_cup`开始。初始计划为每任务采集100条成功示范、以`batch_size=2`独立训练100000步、评估100个有效回合。
 - 结果目录为数据盘`runs/c7-formal/`，总控日志为`logs/c7-formal.log`。启动时可用容量约180GiB。按初始计划和C5后段0.28秒/步估算，5项训练约38.9小时，以当时的1.98元/小时计算约77元。该预算覆盖训练阶段。
 - 首项100条示范通过结构与文件检查，原始目录为6338551210字节，LMDB为1448296725字节。首条正式HDF5为67100223字节，4路深度均使用无损`gzip`级别1。`place_empty_cup`正式训练已开始，超过1000步时的平均耗时为0.28秒/步。
@@ -93,8 +95,8 @@ LD_LIBRARY_PATH="$driver/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY
 - 云端调度已切换为后续任务每项15个有效回合。新调度器接管了`adjust_bottle`和`beat_block_hammer`的原训练进程。`place_container_plate`等待空闲名额。
 
 - `main`上的验收包保留最终权重、模型与处理器配置、实测训练和评估配置、训练损失CSV、评估汇总、逐回合结果和视频。`place_empty_cup`保留代表视频。`adjust_bottle`和`beat_block_hammer`最初15回合的视频各自对应`eval_100/videos/`中的第1至15段。逐回合CSV记录场景种子和成败，视频编号对应回合编号。权重通过Git LFS下载，清单提供每个文件的SHA-256。[验收文件](../artifacts/sem-tiny/c7-formal) · [早期评估汇总](../artifacts/sem-tiny/c7-formal/results.csv) · [校验清单](../artifacts/sem-tiny/snapshot.json)
-- 首项运行的工程检出为`3a20e74`，上游为RoboTwin `e71140e`和RoboOrchardLab `4111276`。已核对运行副本的任务、训练、打包和评估入口，以及SEM部署策略文件，均与锁定源码一致。[实际训练入口](https://github.com/ZhenyuYangK/SEM-cloud/blob/3a20e74496401cd1f09f36b23b5e006bfbfe6384/scripts/run_formal_experiments.py) · [历史并行调度](https://github.com/ZhenyuYangK/SEM-cloud/tree/3d681efcd425377bdf905df3666a39b7d2d8cd5b/artifacts/sem-tiny/c7-parallel-control) · [RoboTwin源码](https://github.com/RoboTwin-Platform/RoboTwin/tree/e71140e9734e69686daa420a9be8b75a20ff4587) · [RoboOrchardLab源码](https://github.com/HorizonRobotics/RoboOrchardLab/tree/41112765f9904efb2374dd9c8946fb5af452861a)
-- 完整日志和可续训状态留在云端。先前的全量产物快照可按历史提交访问。[历史快照](https://github.com/ZhenyuYangK/SEM-cloud/tree/93e69994c7fb033d9e52de27e15b4fceadcd353f/artifacts/sem-tiny)
+- 首项运行的工程检出为`3a20e74`，上游为RoboTwin `e71140e`和RoboOrchardLab `4111276`。已核对运行副本的任务、训练、打包和评估入口，以及SEM部署策略文件，均与锁定源码一致。[实际训练入口](https://github.com/ZhenyuYangK/SEM-RobotTwin/blob/bd1492d3b8c500a27751c89d819c0f001cf69a40/scripts/run_formal_experiments.py) · [历史并行调度](https://github.com/ZhenyuYangK/SEM-RobotTwin/tree/08f6709689f6d24d10321d54281e2603877ff0e8/artifacts/sem-tiny/c7-parallel-control) · [RoboTwin源码](https://github.com/RoboTwin-Platform/RoboTwin/tree/e71140e9734e69686daa420a9be8b75a20ff4587) · [RoboOrchardLab源码](https://github.com/HorizonRobotics/RoboOrchardLab/tree/41112765f9904efb2374dd9c8946fb5af452861a)
+- 完整日志和可续训状态留在云端。先前的全量产物快照可按历史提交访问。[历史快照](https://github.com/ZhenyuYangK/SEM-RobotTwin/tree/93e69994c7fb033d9e52de27e15b4fceadcd353f/artifacts/sem-tiny)
 
 11:03（太平洋时间）确认云端调度已加载50000步和15个有效评估回合的目标，排队的`place_container_plate`将使用这套配置。`adjust_bottle`和`beat_block_hammer`在交接后沿用100000步，验收使用各自的实际训练配置、完成日志和Checkpoint。[项目配置](../configs/project.json)
 

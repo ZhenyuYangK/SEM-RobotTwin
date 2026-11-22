@@ -22,7 +22,7 @@
 
 ## 本地与云端的Git同步
 
-- 项目远端为GitHub仓库`ZhenyuYangK/SEM-cloud`，保留用户确认的公开可见性。
+- 项目远端为GitHub仓库`ZhenyuYangK/SEM-RobotTwin`，保留用户确认的公开可见性。
 - 代码、配置和文档在本地提交到`main`并推送`origin`。云端在`/root/SEM-RoboTwin-git`执行`git pull --ff-only`同步。常规改动走Git。
 - 云端检出后由`scripts/bootstrap_sources.sh --clone`复现锁定的上游源码。Vulkan运行库继续从`/root/SEM-RoboTwin/.runtime/`加载，Python环境及实验数据保存在数据盘。运行库、虚拟环境、模型权重、采集数据和SSH凭据保留在版本库之外。
 

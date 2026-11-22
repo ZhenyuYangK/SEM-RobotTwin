@@ -8,8 +8,8 @@ C7使用Ubuntu22.04.4、Python3.10.12、RTX4090 24GB和CUDA12.1。实测关键�
 - [ ] 首次检出时跳过Git LFS权重。需要评估某个模型时再下载对应任务的权重。
 
 ```bash
-GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ZhenyuYangK/SEM-cloud.git
-cd SEM-cloud
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ZhenyuYangK/SEM-RobotTwin.git
+cd SEM-RobotTwin
 export PREP="$(pwd -P)"
 bash scripts/bootstrap_sources.sh --clone
 bash scripts/run_local_checks.sh
