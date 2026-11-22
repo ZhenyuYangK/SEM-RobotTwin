@@ -49,6 +49,10 @@ ASSET_SHA256
 
 从采集开始重跑时，数据盘保存原始示范、LMDB、日志与Checkpoint。运行前核对空间、Vulkan渲染与GPU规划。已发布权重的评估使用相同场景与机械臂资产。[资源预算](RESOURCE_BUDGET.md) · [采集和评估操作](DATA_TRAIN_EVAL.md)
 
+### 本地URDF检查
+
+如需运行URDF静态审计，先从上述固定版本获取`embodiments.zip`并核对压缩包SHA256。将其中的`aloha-agilex/urdf/arx5_description_isaac.urdf`提取到本地`teacher_inputs/`。运行本地检查脚本可核对该文件SHA256并检查关节与链接结构。[原件SHA256清单](../reports/teacher_inputs_sha256.txt) · [与官方资产的比对记录](../reports/urdf_differences.md#c3云端验收)
+
 ## 启动前预检
 
 | 次序 | 启动前验证 | 应记录的证据 |

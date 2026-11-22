@@ -24,7 +24,7 @@
 
 ## 本地检查
 
-在项目根目录用Python3.10执行以下命令。源码未检出时，原件校验、离线单测和URDF结构检查仍可执行。依赖上游源码的测试在检出后运行。检查报告写入临时目录，退出时自动清理。
+在项目根目录用Python3.10执行以下命令。脚本运行离线单测，并按本地可用文件执行原件校验、URDF结构检查及上游源码验证。检查报告写入临时目录，退出时自动清理。
 
 ```bash
 bash scripts/run_local_checks.sh
@@ -38,7 +38,7 @@ python3 scripts/discover_tasks.py --workspace . --list
 bash scripts/run_local_checks.sh
 ```
 
-RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定首次实际检出并审计的`41112765f9904efb2374dd9c8946fb5af452861a`。两份原始资料位于`teacher_inputs/`，哈希清单见`reports/teacher_inputs_sha256.txt`。
+RoboTwin锁定`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab锁定`41112765f9904efb2374dd9c8946fb5af452861a`。原始资料保存在本地`teacher_inputs/`，哈希值随仓库发布。公开检出可从锁定的RoboTwin资产取得同一URDF。[URDF来源](docs/CLOUD_HANDOFF.md#本地urdf检查) · [原件SHA256清单](reports/teacher_inputs_sha256.txt)
 
 ## 训练任务与工具
 

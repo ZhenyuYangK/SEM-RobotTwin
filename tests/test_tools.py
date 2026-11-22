@@ -26,7 +26,10 @@ from prepare_collection import collection_config
 
 class TestURDF(unittest.TestCase):
     def test_source_urdf_structure(self):
-        result = inspect_urdf(ROOT / 'teacher_inputs/arx5_description_isaac.urdf')
+        path = ROOT / 'teacher_inputs/arx5_description_isaac.urdf'
+        if not path.is_file():
+            self.skipTest('Requires the URDF from the pinned RoboTwin asset release')
+        result = inspect_urdf(path)
         self.assertTrue(result['structural_valid'])
         self.assertEqual(result['robot_name'], 'arx5_description')
         self.assertEqual((result['links'], result['joints']), (54, 53))

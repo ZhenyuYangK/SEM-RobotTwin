@@ -37,7 +37,8 @@ generated/
 *.key
 id_ed25519*
 
-# Keep scripts, templates, input files and project configs versioned
+# Local copies of original input files
+/teacher_inputs/
 
 # Local upstream source checkouts
 /src/

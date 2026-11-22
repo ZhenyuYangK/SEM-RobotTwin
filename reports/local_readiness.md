@@ -6,7 +6,7 @@
 
 | 检查 | 实际结果 |
 |---|---|
-| 两份原始资料 | `SEM评估流程.md`为`22c5a51582bf232ac4bc7aefcc518323f65a536216cb098a574dcba25d0c3e19`，`arx5_description_isaac.urdf`为`097c59fb19a7b482249c6097df8319586ea7cfd268c015516f103b289a7e761a`。两份均按原件保留。 |
+| 两份原始资料 | `SEM评估流程.md`为`22c5a51582bf232ac4bc7aefcc518323f65a536216cb098a574dcba25d0c3e19`，`arx5_description_isaac.urdf`为`097c59fb19a7b482249c6097df8319586ea7cfd268c015516f103b289a7e761a`。原件由本地保管。[URDF来源](../docs/CLOUD_HANDOFF.md#本地urdf检查) |
 | 源码 | `bash scripts/bootstrap_sources.sh --clone`完成文本源码检出，整个`src/`约21MiB。RoboTwin为`e71140e9734e69686daa420a9be8b75a20ff4587`，RoboOrchardLab为`41112765f9904efb2374dd9c8946fb5af452861a`。源码审计与证据行号见`code_audit.md`。 |
 | URDF | 静态结构通过，54个Link、53个Joint、唯一根为`footprint`。30个Mesh路径本地未解析。报告路径指向输入文件的硬链接时，脚本正确拒绝写入。参照库存与结构结果见`urdf_differences.md`和`urdf_audit.json`。 |
 | 任务 | `discover_tasks.py --workspace . --list`发现50个任务。`--validate`通过当前5个任务，顺序为`place_empty_cup`、`adjust_bottle`、`beat_block_hammer`、`place_shoe`、`place_container_plate`。源码证据见`task_candidates.md`。 |

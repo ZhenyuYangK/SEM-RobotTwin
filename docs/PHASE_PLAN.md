@@ -2,10 +2,10 @@
 
 | 阶段 | 设备 | 工作 | 必须输出/验收 | 允许付费云GPU？ |
 |---|---|---|---|---|
-| L0 | 本地 | 解压、校验原始资料、运行单测 | `reports/local_readiness.md` | 否 |
+| L0 | 本地 | 核对可用原件SHA256，运行单测 | `reports/local_readiness.md` | 否 |
 | L1 | 本地 | 获取Git源码并固定RoboTwin提交 | `reports/source_revisions.json` | 否 |
 | L2 | 本地 | 审计SEM模型和RoboTwin采集/评估接口 | `reports/code_audit.md` | 否 |
-| L3 | 本地 | URDF结构、关节、Mesh差异检查 | `reports/urdf_audit.json` | 否 |
+| L3 | 本地 | 用本地原件或锁定官方资产检查URDF结构、关节与Mesh | `reports/urdf_audit.json` | 否 |
 | L4 | 本地 | 从源码发现并选择5个候选任务 | `configs/project.json`及核验结果 | 否 |
 | L5 | 本地 | 完成数据采集、打包、训练、评估脚本审查 | 命令清单、静态测试、无虚构参数 | 否 |
 | L6 | 本地 | 统计工具、预算与云端迁移准备 | 单测通过，云端就绪清单 | 否 |

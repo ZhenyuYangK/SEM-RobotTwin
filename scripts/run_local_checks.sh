@@ -6,13 +6,24 @@ export PYTHONDONTWRITEBYTECODE=1
 report_dir="$(mktemp -d)"
 trap 'rm -f -- "$report_dir/urdf_audit.json" "$report_dir/source_revisions.json"; rmdir -- "$report_dir"' EXIT
 
-echo '== 1/4 Verify input hashes and run unit tests =='
-sha256sum -c reports/teacher_inputs_sha256.txt
+echo '== 1/4 Verify available local input hashes and run unit tests =='
+while read -r checksum input; do
+  if [[ -f "$input" ]]; then
+    printf '%s  %s\n' "$checksum" "$input" | sha256sum -c -
+  else
+    printf 'Skip checksum for absent local input: %s\n' "$input"
+  fi
+done < reports/teacher_inputs_sha256.txt
 python3 -m unittest discover -s tests -v
 
 echo '== 2/4 Source URDF static structural audit =='
-python3 scripts/audit_urdf.py --urdf teacher_inputs/arx5_description_isaac.urdf \
-  --robotwin src/RoboTwin --output "$report_dir/urdf_audit.json"
+urdf=teacher_inputs/arx5_description_isaac.urdf
+if [[ -f "$urdf" ]]; then
+  python3 scripts/audit_urdf.py --urdf "$urdf" \
+    --robotwin src/RoboTwin --output "$report_dir/urdf_audit.json"
+else
+  echo 'URDF audit skipped. See docs/CLOUD_HANDOFF.md for the pinned RoboTwin asset.'
+fi
 
 echo '== 3/4 Locked source checkout audit =='
 python3 scripts/audit_sources.py --workspace . --output "$report_dir/source_revisions.json" >/dev/null
